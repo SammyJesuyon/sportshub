@@ -68,10 +68,12 @@ def test_api_sports_error_envelope_is_not_treated_as_empty_results(monkeypatch):
 
 def test_api_sports_normalizes_matchday_fixtures(monkeypatch):
     call_count = 0
+    observed_params = []
 
     def fake_get(client, url, *, params, headers):
         nonlocal call_count
         call_count += 1
+        observed_params.append(params)
         request = httpx.Request("GET", url, params=params, headers=headers)
         return httpx.Response(
             200,
@@ -113,6 +115,9 @@ def test_api_sports_normalizes_matchday_fixtures(monkeypatch):
     assert cached.fixtures == fixtures
     assert cached.cache_hit is True
     assert call_count == 1
+    assert observed_params == [
+        {"date": "2026-08-13", "timezone": "UTC"}
+    ]
 
 
 def test_matchday_cache_survives_adapter_restart(monkeypatch, tmp_path):

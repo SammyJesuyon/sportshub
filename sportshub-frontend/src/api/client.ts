@@ -40,11 +40,11 @@ export const api = {
   login: (body: { email: string; password: string }) =>
     request<TokenResponse>('/auth/login', { method: 'POST', body: JSON.stringify(body) }),
   me: (token: string) => request<TokenResponse['user']>('/auth/me', {}, token),
-  matchday: (bucket: FixtureBucket, page = 1, pageSize = 12) => request<Matchday>(
-    `/fixtures/matchday?bucket=${bucket}&page=${page}&page_size=${pageSize}`,
+  matchday: (bucket: FixtureBucket, page = 1, pageSize = 12, date?: string, timezone?: string) => request<Matchday>(
+    `/fixtures/matchday?bucket=${bucket}&page=${page}&page_size=${pageSize}${date ? `&date=${encodeURIComponent(date)}` : ''}${timezone ? `&timezone=${encodeURIComponent(timezone)}` : ''}`,
   ),
-  fixtureDetail: (fixtureId: number, fixtureDate: string) => request<FixtureDetail>(
-    `/fixtures/${fixtureId}?date=${encodeURIComponent(fixtureDate)}`,
+  fixtureDetail: (fixtureId: number, fixtureDate: string, timezone?: string) => request<FixtureDetail>(
+    `/fixtures/${fixtureId}?date=${encodeURIComponent(fixtureDate)}${timezone ? `&timezone=${encodeURIComponent(timezone)}` : ''}`,
   ),
   searchTeams: (query: string) => request<Team[]>(`/teams/?search=${encodeURIComponent(query)}`),
   followedTeams: (token: string) => request<Team[]>('/users/me/team-preferences', {}, token),

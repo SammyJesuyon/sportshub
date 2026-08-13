@@ -1,6 +1,7 @@
-from datetime import date
+from datetime import date, datetime, time, timezone
 from math import ceil
 from typing import Literal, Optional
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 import httpx
 from fastapi import APIRouter, Depends, HTTPException, Query, status
@@ -22,6 +23,22 @@ router = APIRouter(prefix="/fixtures", tags=["fixtures"])
 FixtureBucket = Literal["live", "half_time", "full_time", "scheduled"]
 
 
+def local_matchday_utc_dates(requested_date: date, requested_zone: ZoneInfo) -> list[date]:
+    local_start = datetime.combine(requested_date, time.min, requested_zone)
+    local_end = datetime.combine(requested_date, time.max, requested_zone)
+    start_date = local_start.astimezone(timezone.utc).date()
+    end_date = local_end.astimezone(timezone.utc).date()
+    return [start_date] if start_date == end_date else [start_date, end_date]
+
+
+def fixture_is_on_local_date(
+    fixture: ProviderFixture, requested_date: date, requested_zone: ZoneInfo
+) -> bool:
+    return datetime.fromisoformat(fixture.kickoff.replace("Z", "+00:00")).astimezone(
+        requested_zone
+    ).date() == requested_date
+
+
 def fixture_response(fixture: ProviderFixture) -> FixtureResponse:
     return FixtureResponse(
         **{
@@ -36,21 +53,35 @@ def fixture_response(fixture: ProviderFixture) -> FixtureResponse:
 @router.get("/matchday", response_model=MatchdayResponse)
 def get_matchday(
     fixture_date: Optional[date] = Query(default=None, alias="date"),
+    timezone_name: str = Query(default="UTC", alias="timezone", max_length=64),
     bucket: Optional[FixtureBucket] = Query(default=None),
     page: int = Query(default=1, ge=1),
     page_size: int = Query(default=12, ge=1, le=24),
     provider: SportsProvider = Depends(get_sports_provider),
 ):
+    try:
+        requested_zone = ZoneInfo(timezone_name)
+    except ZoneInfoNotFoundError as exc:
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, "Invalid timezone") from exc
     requested_date = fixture_date or date.today()
     try:
-        snapshot = provider.matchday_snapshot(requested_date)
+        snapshots = [
+            provider.matchday_snapshot(utc_date)
+            for utc_date in local_matchday_utc_dates(requested_date, requested_zone)
+        ]
     except (httpx.HTTPError, ValueError) as exc:
         raise HTTPException(
             status.HTTP_503_SERVICE_UNAVAILABLE,
             "Sports provider is temporarily unavailable",
         ) from exc
 
-    fixtures = [fixture_response(fixture) for fixture in snapshot.fixtures]
+    unique_fixtures = {
+        fixture.fixture_id: fixture
+        for snapshot in snapshots
+        for fixture in snapshot.fixtures
+        if fixture_is_on_local_date(fixture, requested_date, requested_zone)
+    }
+    fixtures = [fixture_response(fixture) for fixture in unique_fixtures.values()]
     order = {"live": 0, "half_time": 1, "full_time": 2, "scheduled": 3}
     fixtures.sort(key=lambda fixture: (order[fixture.bucket], fixture.kickoff))
     counts = {
@@ -64,7 +95,7 @@ def get_matchday(
     paginated = filtered[start : start + page_size]
     return MatchdayResponse(
         date=requested_date,
-        timezone="UTC",
+        timezone=requested_zone.key,
         bucket=bucket,
         page=page,
         page_size=page_size,
@@ -79,13 +110,28 @@ def get_matchday(
 def get_fixture_detail(
     fixture_id: int,
     fixture_date: Optional[date] = Query(default=None, alias="date"),
+    timezone_name: str = Query(default="UTC", alias="timezone", max_length=64),
     provider: SportsProvider = Depends(get_sports_provider),
 ):
     requested_date = fixture_date or date.today()
     try:
-        matchday = provider.matchday_snapshot(requested_date)
+        ZoneInfo(timezone_name)
+    except ZoneInfoNotFoundError as exc:
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, "Invalid timezone") from exc
+    try:
+        requested_zone = ZoneInfo(timezone_name)
+        matchdays = [
+            provider.matchday_snapshot(utc_date)
+            for utc_date in local_matchday_utc_dates(requested_date, requested_zone)
+        ]
         fixture = next(
-            (item for item in matchday.fixtures if item.fixture_id == fixture_id), None
+            (
+                item
+                for matchday in matchdays
+                for item in matchday.fixtures
+                if item.fixture_id == fixture_id
+            ),
+            None,
         )
         if fixture is None:
             raise HTTPException(status.HTTP_404_NOT_FOUND, "Fixture not found")

@@ -3,6 +3,16 @@ import { Link, useParams, useSearchParams } from 'react-router-dom'
 import { api } from '../api/client'
 import type { FixtureDetail, FixtureEvent, FixtureLineupPlayer, FixtureTeamStatistics } from '../api/types'
 
+type FixtureTab = 'overview' | 'statistics' | 'lineups' | 'timeline' | 'chat'
+
+const fixtureTabs: { id: FixtureTab; label: string }[] = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'statistics', label: 'Statistics' },
+  { id: 'lineups', label: 'Lineups' },
+  { id: 'timeline', label: 'Timeline' },
+  { id: 'chat', label: 'Chat' },
+]
+
 const preferredStatistics = [
   'Ball Possession',
   'Total Shots',
@@ -62,22 +72,33 @@ function Timeline({ detail }: { detail: FixtureDetail }) {
   return <section className="panel timeline-panel"><div className="section-title"><div><span className="eyebrow">Minute by minute</span><h2>Match timeline</h2></div><span>{detail.events.length} events</span></div>{detail.events.length ? <div className="event-list">{detail.events.map((event, index) => { const copy = eventCopy(event); return <article key={`${event.elapsed}-${event.player_name}-${index}`}><time>{event.elapsed ?? '–'}'{event.extra ? `+${event.extra}` : ''}</time><div><strong>{copy.title}</strong><p>{copy.summary}</p><small>{event.team_name}</small></div></article> })}</div> : <p className="empty-copy">No timeline events are available yet.</p>}</section>
 }
 
+function Overview({ detail }: { detail: FixtureDetail }) {
+  const fixture = detail.fixture
+  return <section className="panel overview-panel"><div className="section-title"><div><span className="eyebrow">Match information</span><h2>Overview</h2></div></div><div className="overview-scoreline"><div><span>Half-time</span><strong>{detail.halftime_home ?? '–'} : {detail.halftime_away ?? '–'}</strong></div><div><span>Full-time</span><strong>{detail.fulltime_home ?? fixture.home.goals ?? '–'} : {detail.fulltime_away ?? fixture.away.goals ?? '–'}</strong></div><div><span>Status</span><strong>{fixture.status_long}</strong></div></div></section>
+}
+
+function ChatPlaceholder() {
+  return <section className="panel chat-placeholder"><span className="coming-soon-mark">💬</span><span className="eyebrow">Fan conversation</span><h2>Match chat is coming soon</h2><p>This tab reserves the match conversation experience for a future SportsHub release. Live chat, moderation, and reporting are not active yet.</p></section>
+}
+
 export function FixtureDetailPage() {
   const { fixtureId } = useParams()
   const [searchParams] = useSearchParams()
   const fixtureDate = searchParams.get('date') ?? new Date().toISOString().slice(0, 10)
   const [detail, setDetail] = useState<FixtureDetail | null>(null)
   const [error, setError] = useState('')
+  const [activeTab, setActiveTab] = useState<FixtureTab>('overview')
+  const timezone = searchParams.get('timezone') ?? Intl.DateTimeFormat().resolvedOptions().timeZone ?? 'UTC'
 
   useEffect(() => {
     const parsedId = Number(fixtureId)
     if (!Number.isInteger(parsedId)) { setError('Invalid fixture.'); return }
-    api.fixtureDetail(parsedId, fixtureDate).then(setDetail).catch((reason) => setError(reason instanceof Error ? reason.message : 'Could not load fixture details.'))
-  }, [fixtureDate, fixtureId])
+    api.fixtureDetail(parsedId, fixtureDate, timezone).then(setDetail).catch((reason) => setError(reason instanceof Error ? reason.message : 'Could not load fixture details.'))
+  }, [fixtureDate, fixtureId, timezone])
 
   if (error) return <section className="workspace-page narrow"><Link className="back-link" to="/">← Matchday center</Link><div className="error-message" role="alert">{error}</div></section>
   if (!detail) return <div className="page-state">Loading fixture details…</div>
   const fixture = detail.fixture
 
-  return <section className="fixture-detail-page"><div className="fixture-detail-wrap"><Link className="back-link" to="/">← Matchday center</Link><header className="fixture-detail-hero"><div><span className="eyebrow">{fixture.league_name}</span><h1>{fixture.home.name} <span>vs</span> {fixture.away.name}</h1><p>{fixture.status_long}{fixture.elapsed ? ` · ${fixture.elapsed}'` : ''}</p></div><div className="detail-score"><strong>{fixture.home.goals ?? '–'}</strong><span>:</span><strong>{fixture.away.goals ?? '–'}</strong></div></header><div className="detail-meta"><div><span>Venue</span><strong>{detail.venue_name ?? 'To be confirmed'}{detail.venue_city ? `, ${detail.venue_city}` : ''}</strong></div><div><span>Kickoff</span><strong>{new Intl.DateTimeFormat(undefined, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(fixture.kickoff))}</strong></div><div><span>Referee</span><strong>{detail.referee ?? 'To be confirmed'}</strong></div></div><div className="fixture-content"><Statistics detail={detail} /><Lineups detail={detail} /><Timeline detail={detail} /></div></div></section>
+  return <section className="fixture-detail-page"><div className="fixture-detail-wrap"><Link className="back-link" to="/">← Matchday center</Link><header className="fixture-detail-hero"><div><span className="eyebrow">{fixture.league_name}</span><h1>{fixture.home.name} <span>vs</span> {fixture.away.name}</h1><p>{fixture.status_long}{fixture.elapsed ? ` · ${fixture.elapsed}'` : ''}</p></div><div className="detail-score"><strong>{fixture.home.goals ?? '–'}</strong><span>:</span><strong>{fixture.away.goals ?? '–'}</strong></div></header><div className="detail-meta"><div><span>Venue</span><strong>{detail.venue_name ?? 'To be confirmed'}{detail.venue_city ? `, ${detail.venue_city}` : ''}</strong></div><div><span>Kickoff · local time</span><strong>{new Intl.DateTimeFormat(undefined, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(fixture.kickoff))}</strong></div><div><span>Referee</span><strong>{detail.referee ?? 'To be confirmed'}</strong></div></div><div className="fixture-tabs" role="tablist" aria-label="Fixture details">{fixtureTabs.map((tab) => <button id={`fixture-tab-${tab.id}`} role="tab" aria-selected={activeTab === tab.id} aria-controls={`fixture-panel-${tab.id}`} className={activeTab === tab.id ? 'active' : ''} onClick={() => setActiveTab(tab.id)} key={tab.id}>{tab.label}{tab.id === 'chat' && <small>SOON</small>}</button>)}</div><div id={`fixture-panel-${activeTab}`} role="tabpanel" aria-labelledby={`fixture-tab-${activeTab}`} className="fixture-tab-panel">{activeTab === 'overview' && <Overview detail={detail} />}{activeTab === 'statistics' && <Statistics detail={detail} />}{activeTab === 'lineups' && <Lineups detail={detail} />}{activeTab === 'timeline' && <Timeline detail={detail} />}{activeTab === 'chat' && <ChatPlaceholder />}</div></div></section>
 }

@@ -19,8 +19,8 @@ function renderApp(path = '/') {
 afterEach(() => vi.restoreAllMocks())
 
 describe('SportsHub web foundation', () => {
-  it('renders real matchday sections and distinct team journeys', async () => {
-    vi.spyOn(globalThis, 'fetch').mockImplementation((input) => {
+  it('renders locale-aware matchday navigation and distinct team journeys', async () => {
+    const fetchMock = vi.spyOn(globalThis, 'fetch').mockImplementation((input) => {
       if (String(input).includes('/fixtures/matchday?')) return jsonResponse({
         date: '2026-08-13', timezone: 'UTC', bucket: 'live', page: 1, page_size: 12, total_items: 1, total_pages: 1,
         counts: { live: 1, half_time: 0, full_time: 0, scheduled: 0 },
@@ -38,6 +38,11 @@ describe('SportsHub web foundation', () => {
     expect(screen.getAllByText('Arsenal')).not.toHaveLength(0)
     expect(screen.queryByText(/api allowance|cache hit|daily api requests/i)).not.toBeInTheDocument()
     expect(screen.getByText(/page 1 of 1/i)).toBeInTheDocument()
+    expect((screen.getByLabelText('Match date', { exact: true }) as HTMLInputElement).value).toMatch(/^\d{4}-\d{2}-\d{2}$/)
+    expect(screen.getByRole('button', { name: /previous day/i })).toBeInTheDocument()
+    expect(fetchMock).toHaveBeenCalledWith(expect.stringMatching(/date=\d{4}-\d{2}-\d{2}.*timezone=/), expect.any(Object))
+    fireEvent.click(screen.getByRole('button', { name: /previous day/i }))
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining('date=2026-08-12'), expect.any(Object)))
   })
 
   it('opens complete fixture details without exposing provider operations', async () => {
@@ -57,13 +62,20 @@ describe('SportsHub web foundation', () => {
     renderApp('/fixtures/1?date=2026-08-13')
     expect(await screen.findByRole('heading', { name: /arsenal vs chelsea/i })).toBeInTheDocument()
     expect(screen.getByText(/emirates stadium/i)).toBeInTheDocument()
-    expect(screen.getByText(/normal goal/i)).toBeInTheDocument()
+    expect(screen.getByRole('tab', { name: /overview/i })).toHaveAttribute('aria-selected', 'true')
+    expect(screen.getByRole('heading', { name: /^overview$/i })).toBeInTheDocument()
+    await userEvent.click(screen.getByRole('tab', { name: /statistics/i }))
     expect(screen.getByRole('heading', { name: /match statistics/i })).toBeInTheDocument()
     expect(screen.getByText(/ball possession/i)).toBeInTheDocument()
     expect(screen.getByText('58%')).toBeInTheDocument()
+    await userEvent.click(screen.getByRole('tab', { name: /^lineups$/i }))
     expect(screen.getByRole('heading', { name: /lineups/i })).toBeInTheDocument()
     expect(screen.getByText(/a\. keeper/i)).toBeInTheDocument()
+    await userEvent.click(screen.getByRole('tab', { name: /timeline/i }))
     expect(screen.getByRole('heading', { name: /match timeline/i })).toBeInTheDocument()
+    expect(screen.getByText(/normal goal/i)).toBeInTheDocument()
+    await userEvent.click(screen.getByRole('tab', { name: /chat/i }))
+    expect(screen.getByRole('heading', { name: /match chat is coming soon/i })).toBeInTheDocument()
     expect(screen.queryByText(/api allowance|cache hit|daily api requests/i)).not.toBeInTheDocument()
   })
 
@@ -132,6 +144,7 @@ describe('SportsHub web foundation', () => {
       return jsonResponse({ detail: 'Preference update failed' }, 503)
     })
     renderApp('/alerts')
+    expect(await screen.findByText(/automatic match-event delivery/i)).toBeInTheDocument()
     const matchEnd = await screen.findByRole('switch', { name: /full-time result/i })
     expect(matchEnd).toHaveAttribute('aria-checked', 'true')
     fireEvent.click(matchEnd)

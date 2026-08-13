@@ -28,6 +28,8 @@ Definition of done: component tests, PostgreSQL integration suite, web productio
 - Keep public team exploration separate from authenticated team selection and following — implemented.
 - Add team and standings pages from normalized backend contracts; fixture statistics, lineups, and timeline are implemented.
 - Keep cache and provider-status telemetry on an authenticated administrator endpoint, never in fan-facing pages or public fixture responses.
+- Browse past and upcoming dates using shared UTC provider snapshots, filter to the browser's IANA timezone, and render kickoff times with the user's locale — implemented.
+- Present fixture overview, statistics, lineups, timeline, and an explicitly inactive chat placeholder as accessible tabs — implemented.
 
 Definition of done: contract tests cover normalization and degraded states; browser tests cover search-to-fixture navigation on desktop and mobile.
 
@@ -61,4 +63,4 @@ Definition of done: every route has positive and negative role tests, and secret
 
 ## Deliberate deferrals
 
-Redis waits until the live-update design has a concrete multi-process shared-state need. Chat, communities, gamification, predictions, wallets, merchandise, subscriptions, native apps, AI recommendations, payment processing, and fulfillment remain outside the SportsHub school-project scope.
+Redis waits until the live-update design has a concrete multi-process shared-state need. The Chat tab is placeholder-only; implementing chat, communities, gamification, predictions, wallets, merchandise, subscriptions, native apps, AI recommendations, payment processing, and fulfillment remains outside the current SportsHub school-project release.

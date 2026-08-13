@@ -270,7 +270,7 @@ class ApiSportsAdapter:
                 ttl_seconds=self._matchday_ttl(fixture_date, fixtures),
                 value=fixtures,
             )
-            self._matchday_cache = {fixture_date: entry}
+            self._matchday_cache[fixture_date] = entry
             self._persist_cache()
             return self._matchday_result(entry, False)
 

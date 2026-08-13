@@ -50,7 +50,7 @@ The detailed acceptance matrix is in [`docs/TEST_PLAN.md`](docs/TEST_PLAN.md).
 ## Web delivery plan
 
 1. **Foundation:** responsive shell, authentication, team following, and global alerts.
-2. **Sports browsing (current):** quota-aware, persistently cached matchday fixtures with local pagination, fixture statistics, lineups, and timeline events; missing detail datasets use guarded provider-resource fallbacks above the quota safety floor. Public team exploration and authenticated team selection are separate journeys. Provider quota and cache telemetry are restricted to administrators. Standings and team pages follow next.
+2. **Sports browsing (current):** locale-aware past and upcoming matchday browsing with shared UTC cache snapshots, local pagination and kickoff display, plus tabbed fixture overview, statistics, lineups, timeline, and a clearly inactive chat placeholder. Missing detail datasets use guarded provider-resource fallbacks above the quota safety floor. Public team exploration and authenticated team selection are separate journeys. Provider quota and cache telemetry are restricted to administrators. Standings and team pages follow next.
 3. **Live match:** fixture detail, independent poller status, SSE connected/detail/update events, heartbeat, disconnect cleanup, and fresh-snapshot reconnect.
 4. **Tickets:** Ticketmaster event results and backend `/events/{eventId}/buy` redirects with Impact/direct fallback.
 5. **Administration:** role-protected user, competition, integration, and notification operations.
@@ -58,4 +58,4 @@ The detailed acceptance matrix is in [`docs/TEST_PLAN.md`](docs/TEST_PLAN.md).
 
 The milestone-level roadmap and definition of done are in [`docs/WEB_PLAN.md`](docs/WEB_PLAN.md).
 
-Redis is intentionally deferred until live shared state needs it. Chat, gamification, predictions, wallets, commerce, subscriptions, payments, and fulfillment remain outside SportsHub scope.
+Redis is intentionally deferred until live shared state needs it. The fixture Chat tab is a non-functional future-feature placeholder; chat implementation, gamification, predictions, wallets, commerce, subscriptions, payments, and fulfillment remain outside the current SportsHub release scope.

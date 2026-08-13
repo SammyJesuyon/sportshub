@@ -14,7 +14,9 @@ from app.integrations.api_sports import (
     ProviderTeamLineup,
     ProviderTeamStatistics,
 )
+from app.api.fixtures import fixture_is_on_local_date, local_matchday_utc_dates
 from app.db.models import User
+from zoneinfo import ZoneInfo
 
 
 def fixture(fixture_id: int, status: str, elapsed=None):
@@ -48,7 +50,7 @@ class MatchdayProvider:
         return []
 
     def matchday_snapshot(self, fixture_date: date):
-        assert fixture_date == date(2026, 8, 13)
+        assert fixture_date in {date(2026, 8, 13), date(2026, 8, 14)}
         return snapshot(
             [
                 fixture(4, "NS"),
@@ -127,7 +129,7 @@ def test_matchday_paginates_without_exposing_operational_metadata(client):
     client.app.state.sports_provider = MatchdayProvider()
     try:
         response = client.get(
-            "/api/v1/fixtures/matchday?date=2026-08-13&page=1&page_size=2"
+            "/api/v1/fixtures/matchday?date=2026-08-13&timezone=America%2FChicago&page=1&page_size=2"
         )
         live = client.get(
             "/api/v1/fixtures/matchday?date=2026-08-13&bucket=live&page=1&page_size=12"
@@ -138,6 +140,7 @@ def test_matchday_paginates_without_exposing_operational_metadata(client):
     assert response.status_code == 200
     payload = response.json()
     assert payload["total_items"] == 4
+    assert payload["timezone"] == "America/Chicago"
     assert payload["total_pages"] == 2
     assert len(payload["fixtures"]) == 2
     assert payload["counts"] == {
@@ -155,7 +158,9 @@ def test_fixture_detail_returns_timeline_statistics_and_lineups(client):
     original = client.app.state.sports_provider
     client.app.state.sports_provider = MatchdayProvider()
     try:
-        response = client.get("/api/v1/fixtures/1?date=2026-08-13")
+        response = client.get(
+            "/api/v1/fixtures/1?date=2026-08-13&timezone=America%2FChicago"
+        )
     finally:
         client.app.state.sports_provider = original
 
@@ -213,6 +218,30 @@ def test_fixture_detail_not_found_does_not_make_detail_call(client):
     finally:
         client.app.state.sports_provider = original
     assert response.status_code == 404
+
+
+def test_matchday_rejects_invalid_timezone(client):
+    response = client.get(
+        "/api/v1/fixtures/matchday?date=2026-08-13&timezone=Not%2FAZone"
+    )
+
+    assert response.status_code == 422
+    assert response.json()["detail"] == "Invalid timezone"
+
+
+def test_local_matchday_uses_shared_utc_snapshots_and_filters_kickoffs():
+    chicago = ZoneInfo("America/Chicago")
+    late_fixture = fixture(91, "NS")
+    late_fixture = ProviderFixture(
+        **{**late_fixture.__dict__, "kickoff": "2026-08-14T03:30:00+00:00"}
+    )
+
+    assert local_matchday_utc_dates(date(2026, 8, 13), chicago) == [
+        date(2026, 8, 13),
+        date(2026, 8, 14),
+    ]
+    assert fixture_is_on_local_date(late_fixture, date(2026, 8, 13), chicago)
+    assert not fixture_is_on_local_date(late_fixture, date(2026, 8, 14), chicago)
 
 
 def test_matchday_provider_failure_is_controlled(client):
