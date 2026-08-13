@@ -1,0 +1,2 @@
+"""SportsHub automated tests."""
+
