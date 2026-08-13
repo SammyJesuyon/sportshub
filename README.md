@@ -1,58 +1,59 @@
-# SportsHub Backend
+# SportsHub Monorepo
 
-SportsHub is the CS425-sized miniature derived from LeagueBook. It is an independent FastAPI modular monolith: the SportsHub Vision and architecture documents control product scope, while LeagueBook contributes implementation patterns only.
+SportsHub is the CS425-sized sports engagement platform derived from LeagueBook. The school project controls scope; LeagueBook contributes proven implementation patterns without bringing its full feature set into this repository.
 
-## Scope boundary
+## Structure
 
-Initial SportsHub scope:
+```text
+sportshub/
+├── sportshub-backend/    FastAPI, SQLAlchemy and Alembic
+├── sportshub-frontend/   React, TypeScript and Vite
+├── docs/                 Test strategy and phased web roadmap
+├── compose.yaml          Full development and integration stack
+└── Makefile              Common workflows
+```
 
-- responsive web client and a later small admin portal;
-- secure accounts and bearer-token authentication;
-- favorite teams and global notification preferences;
-- football teams, fixtures, live scores, standings, and statistics;
-- browser live updates through SSE;
-- official ticket discovery with external purchase redirects.
-
-Explicitly excluded from this miniature are LeagueBook chat/social features, gamification, predictions, points and wallets, merchandise, premium subscriptions, native mobile applications, AI recommendations, payment processing, and ticket fulfillment.
-
-## Implemented first slice
-
-- `POST /api/v1/auth/register`
-- `POST /api/v1/auth/login`
-- `GET /api/v1/auth/me`
-- `GET /api/v1/teams/?search={query}`
-- `PUT /api/v1/users/me/team-preferences`
-- `GET /api/v1/users/me/team-preferences`
-- `GET /api/v1/notifications/preferences`
-- `PUT /api/v1/notifications/preferences`
-- `POST /api/v1/notifications/devices`
-- `GET /health`
-
-The endpoint derives the current user from the bearer token. The client never submits a `userId` for preference mutations. Team-following and notification-preference changes are separate transactions, and notification toggles are global per user. SportsHub currently stores only in-scope match toggles (`enabled`, `pre_match_reminder`, `match_start`, and `match_end`); LeagueBook's chat and commerce toggles are deliberately not copied.
-
-## Run locally
+## Start the full project
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
 cp .env.example .env
-uvicorn app.main:app --reload
+docker compose up --build
 ```
 
-Open `http://127.0.0.1:8000/docs` for Swagger UI.
+- Web: http://localhost:5173
+- API: http://localhost:8010
+- Swagger: http://localhost:8010/docs
+- PostgreSQL: localhost:5432
 
-The local default uses SQLite and a deterministic sample sports adapter, so the project works without external credentials. To search API-Sports, set `SPORTS_PROVIDER=api-sports` and provide `API_SPORTS_KEY`. PostgreSQL can be selected later through `DATABASE_URL` without changing endpoint contracts.
+The `migrate` service applies Alembic migrations before the API starts. Development data is stored in a named Docker volume.
 
-## Test
+## Tests
 
 ```bash
-pytest
+make test              # Fast backend and frontend tests
+make test-integration  # Backend tests against PostgreSQL in Docker
+docker compose config --quiet
+docker compose build
 ```
 
-## Next vertical slices
+Test layers:
 
-1. Fixtures, standings, and team/player statistics behind the same provider-adapter boundary.
-2. Independent fixture polling, current snapshots, and SSE live updates without event replay.
-3. Ticketmaster search and safe `/events/{eventId}/buy` redirects, with Impact fallback behavior.
-4. A small role-protected admin surface for users, competitions, integrations, and notification operations.
+1. Backend unit/API tests cover security, validation, stable team IDs, duplicate follows, transaction separation, notification toggles, device idempotency, provider failure, readiness, and migrations.
+2. Frontend component tests cover public rendering, route protection, account creation, authenticated team following, API authorization headers, and failed preference-update rollback.
+3. Docker/PostgreSQL integration tests apply migrations to the isolated `sportshub_test` database and run the API suite against the real database engine.
+4. Playwright is configured for desktop and mobile smoke tests. These expand as fixtures, SSE, tickets, and administration land.
+
+The detailed acceptance matrix is in [`docs/TEST_PLAN.md`](docs/TEST_PLAN.md).
+
+## Web delivery plan
+
+1. **Foundation (current):** responsive shell, authentication, team following, and global alerts.
+2. **Sports browsing:** provider-backed fixtures, standings, team pages, player/team statistics, empty and degraded states.
+3. **Live match:** fixture detail, independent poller status, SSE connected/detail/update events, heartbeat, disconnect cleanup, and fresh-snapshot reconnect.
+4. **Tickets:** Ticketmaster event results and backend `/events/{eventId}/buy` redirects with Impact/direct fallback.
+5. **Administration:** role-protected user, competition, integration, and notification operations.
+6. **Hardening:** accessibility audit, performance budgets, responsive visual regression, complete Playwright journeys, backup/restore drill, and production deployment configuration.
+
+The milestone-level roadmap and definition of done are in [`docs/WEB_PLAN.md`](docs/WEB_PLAN.md).
+
+Redis is intentionally deferred until live shared state needs it. Chat, gamification, predictions, wallets, commerce, subscriptions, payments, and fulfillment remain outside SportsHub scope.

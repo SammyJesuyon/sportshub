@@ -1,45 +1,40 @@
-# SportsHub Engineering Rules
+# SportsHub Monorepo Engineering Rules
 
-## Product identity
-
-SportsHub is the miniature CS425 project derived from LeagueBook. It is an independent project, not a rename or fork of the full LeagueBook product.
+SportsHub is the miniature CS425 project derived from LeagueBook. It is an independent project, not a rename or full fork.
 
 ## Sources of truth
 
-Use these sources in this order:
+1. `/Users/samsonkitigo/Documents/cs425/CS425.pdf` controls school-project scope and terminology.
+2. SportsHub Lab 3-5 artifacts under `/Users/samsonkitigo/Documents/Codex/2026-07-18/google-drive-plugin-google-drive-openai/outputs/` guide architecture and analyzed use cases.
+3. `/Users/samsonkitigo/Documents/leaguebook-backend` supplies implementation patterns only and must not be modified for SportsHub work unless explicitly requested.
 
-1. `/Users/samsonkitigo/Documents/cs425/CS425.pdf` controls SportsHub product scope and terminology.
-2. SportsHub Lab 3-5 documents under `/Users/samsonkitigo/Documents/Codex/2026-07-18/google-drive-plugin-google-drive-openai/outputs/` guide the planned architecture and analyzed use cases.
-3. `/Users/samsonkitigo/Documents/leaguebook-backend` supplies implementation patterns and provider behavior only. Its extra features do not expand SportsHub scope.
+## Repository structure
 
-Do not modify LeagueBook while implementing SportsHub unless the user explicitly requests a LeagueBook change.
+- `sportshub-backend/`: FastAPI modular monolith.
+- `sportshub-frontend/`: responsive React and TypeScript web application.
+- `compose.yaml`: PostgreSQL, schema migration, API, web, and integration-test orchestration.
 
-## Initial SportsHub scope
+Do not introduce an `apps/` wrapper. Keep backend and frontend as sibling folders.
 
-- Responsive web API and a small admin surface.
-- Registration, login, roles, and profile basics.
-- Favorite teams or competitions and global notification preferences.
-- Football teams, fixtures, live scores, standings, and team/player statistics.
-- Independent fixture polling and browser SSE updates.
-- Official ticket discovery and safe external purchase redirects.
+## Scope boundary
 
-## Excluded LeagueBook capabilities
+Initial scope includes accounts, roles, favorites/preferences, football content, live SSE, notifications, official ticket discovery, and a small admin surface. Do not add LeagueBook chat, communities, gamification, predictions, wallets, merchandise, subscriptions, native applications, AI recommendations, payment processing, or fulfillment without an explicit scope change.
 
-Do not add chat, communities, social moderation, gamification, predictions, points, credits, wallets, cosmetics, boosts, referrals, leaderboards, merchandise, subscriptions, native applications, AI recommendations, payment processing, or ticket fulfillment unless the user explicitly changes SportsHub scope.
+## Architecture invariants
 
-## Architecture
-
-- Keep a FastAPI modular monolith with endpoint, service, repository/persistence, and external-adapter boundaries.
-- Start locally with SQLite and deterministic adapters; preserve PostgreSQL-ready SQLAlchemy models and API-Sports-ready adapters.
-- Derive the authenticated user from bearer tokens. Never accept a browser-provided `userId` for self-service preference mutations.
-- Keep team following and notification configuration as separate transactions.
+- PostgreSQL is the development and production system of record; Alembic owns schema changes.
+- SQLite is allowed only for fast isolated backend tests.
+- Derive the current user from bearer authentication; self-service payloads must reject `userId`.
+- Team following and notification preferences are separate transactions.
 - Notification preferences are global per user, not per team.
-- Do not invent durable queues, SSE replay, `Last-Event-ID`, per-team notification rules, `TicketOffer` persistence, payments, or fulfillment.
-- Keep secrets in environment configuration and validate production configuration.
+- Do not invent durable queues, SSE replay, `Last-Event-ID`, per-team notification rules, or `TicketOffer` persistence.
+- Keep provider-specific behavior behind adapters and secrets in environment configuration.
+- Add Redis only when the live-update implementation has a concrete shared-state requirement.
 
 ## Verification
 
-- Run `PYTHONPYCACHEPREFIX=/tmp/sportshub-pycache python3 -m compileall -q app tests`.
-- Run `PYTHONPYCACHEPREFIX=/tmp/sportshub-pycache python3 -m pytest`.
-- Add tests for authentication, invalid input, duplicate/retry behavior, transaction boundaries, and provider failures as each slice grows.
+- Backend: `cd sportshub-backend && python3 -m pytest`.
+- Frontend: `cd sportshub-frontend && npm test -- --run && npm run build`.
+- Full PostgreSQL integration: `docker compose --profile test run --rm api-test`.
+- Compose validation: `docker compose config --quiet`.
 

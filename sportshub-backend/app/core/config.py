@@ -11,7 +11,7 @@ class Settings(BaseSettings):
 
     app_name: str = "SportsHub API"
     environment: Literal["development", "test", "production"] = "development"
-    database_url: str = "sqlite:///./sportshub.db"
+    database_url: str = "postgresql+psycopg2://sportshub:sportshub_dev_password@localhost:5432/sportshub"
     secret_key: str = "development-only-change-me"
     access_token_expire_minutes: int = 30
     sports_provider: Literal["sample", "api-sports"] = "sample"

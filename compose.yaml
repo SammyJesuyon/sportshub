@@ -1,0 +1,117 @@
+name: sportshub
+
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-sportshub}
+      POSTGRES_USER: ${POSTGRES_USER:-sportshub}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-sportshub_dev_password}
+    ports:
+      - "5432:5432"
+    volumes:
+      - sportshub_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-sportshub} -d ${POSTGRES_DB:-sportshub}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    restart: unless-stopped
+
+  migrate:
+    build:
+      context: ./sportshub-backend
+      target: runtime
+    environment:
+      DATABASE_URL: postgresql+psycopg2://${POSTGRES_USER:-sportshub}:${POSTGRES_PASSWORD:-sportshub_dev_password}@db:5432/${POSTGRES_DB:-sportshub}
+    command: alembic upgrade head
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
+
+  api:
+    build:
+      context: ./sportshub-backend
+      target: development
+    environment:
+      ENVIRONMENT: development
+      DATABASE_URL: postgresql+psycopg2://${POSTGRES_USER:-sportshub}:${POSTGRES_PASSWORD:-sportshub_dev_password}@db:5432/${POSTGRES_DB:-sportshub}
+      SECRET_KEY: ${SECRET_KEY:-development-only-change-me}
+      SPORTS_PROVIDER: ${SPORTS_PROVIDER:-sample}
+      API_SPORTS_KEY: ${API_SPORTS_KEY:-}
+      CORS_ORIGINS: http://localhost:5173
+    ports:
+      - "${API_PORT:-8010}:8000"
+    volumes:
+      - ./sportshub-backend:/app
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health/ready', timeout=2)"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  web:
+    build:
+      context: ./sportshub-frontend
+      target: development
+    environment:
+      VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:8010/api/v1}
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./sportshub-frontend:/app
+      - sportshub_frontend_modules:/app/node_modules
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+
+  test-db-prepare:
+    profiles: ["test"]
+    image: postgres:17-alpine
+    environment:
+      PGHOST: db
+      PGUSER: ${POSTGRES_USER:-sportshub}
+      PGPASSWORD: ${POSTGRES_PASSWORD:-sportshub_dev_password}
+    command: >-
+      sh -c "psql -d postgres -tAc \"SELECT 1 FROM pg_database WHERE datname='sportshub_test'\" | grep -q 1
+      || createdb sportshub_test"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
+
+  test-migrate:
+    profiles: ["test"]
+    build:
+      context: ./sportshub-backend
+      target: runtime
+    environment:
+      DATABASE_URL: postgresql+psycopg2://${POSTGRES_USER:-sportshub}:${POSTGRES_PASSWORD:-sportshub_dev_password}@db:5432/sportshub_test
+    command: alembic upgrade head
+    depends_on:
+      test-db-prepare:
+        condition: service_completed_successfully
+    restart: "no"
+
+  api-test:
+    profiles: ["test"]
+    build:
+      context: ./sportshub-backend
+      target: test
+    environment:
+      TEST_DATABASE_URL: postgresql+psycopg2://${POSTGRES_USER:-sportshub}:${POSTGRES_PASSWORD:-sportshub_dev_password}@db:5432/sportshub_test
+    command: pytest
+    depends_on:
+      test-migrate:
+        condition: service_completed_successfully
+    restart: "no"
+
+volumes:
+  sportshub_postgres_data:
+  sportshub_frontend_modules:

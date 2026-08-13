@@ -1,12 +1,13 @@
-from contextlib import asynccontextmanager
 from typing import Optional
 
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import text
+from sqlalchemy.orm import Session
 
+from app.api.dependencies import get_db
 from app.api.router import router as api_router
 from app.core.config import Settings, get_settings
-from app.db.base import Base
 from app.db.session import create_session_factory
 from app.integrations.api_sports import ApiSportsAdapter, SampleSportsAdapter, SportsProvider
 
@@ -25,16 +26,10 @@ def create_app(
     settings.validate_runtime_safety()
     session_factory = create_session_factory(settings.database_url)
 
-    @asynccontextmanager
-    async def lifespan(app: FastAPI):
-        Base.metadata.create_all(bind=session_factory.kw["bind"])
-        yield
-
     app = FastAPI(
         title=settings.app_name,
         description="CS425-sized SportsHub fan engagement backend",
         version="0.1.0",
-        lifespan=lifespan,
     )
     app.state.settings = settings
     app.state.session_factory = session_factory
@@ -51,6 +46,11 @@ def create_app(
     @app.get("/health", tags=["operations"])
     def health():
         return {"status": "ok", "service": "sportshub-api"}
+
+    @app.get("/health/ready", tags=["operations"])
+    def readiness(db: Session = Depends(get_db)):
+        db.execute(text("SELECT 1"))
+        return {"status": "ready", "database": "connected"}
 
     return app
 

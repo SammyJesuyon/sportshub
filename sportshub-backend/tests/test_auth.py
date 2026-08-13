@@ -4,6 +4,10 @@ def test_health_check(client):
     assert response.status_code == 200
     assert response.json() == {"status": "ok", "service": "sportshub-api"}
 
+    readiness = client.get("/health/ready")
+    assert readiness.status_code == 200
+    assert readiness.json() == {"status": "ready", "database": "connected"}
+
 
 def test_register_authenticate_and_login(client):
     registration = client.post(

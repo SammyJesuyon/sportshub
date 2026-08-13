@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import List, Optional
 
 from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String, UniqueConstraint
@@ -12,6 +12,11 @@ def new_id() -> str:
     return str(uuid.uuid4())
 
 
+def utc_now() -> datetime:
+    """Return naive UTC until the schema migrates to timezone-aware timestamps."""
+    return datetime.now(timezone.utc).replace(tzinfo=None)
+
+
 class User(Base):
     __tablename__ = "users"
 
@@ -21,7 +26,7 @@ class User(Base):
     password_hash: Mapped[str] = mapped_column(String(255))
     role: Mapped[str] = mapped_column(String(20), default="fan")
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=utc_now)
 
     team_preferences: Mapped[List["UserTeamPreference"]] = relationship(
         back_populates="user", cascade="all, delete-orphan"
@@ -45,7 +50,7 @@ class Team(Base):
     logo_url: Mapped[Optional[str]] = mapped_column(String(500))
     provider: Mapped[str] = mapped_column(String(30), default="api-sports")
     updated_at: Mapped[datetime] = mapped_column(
-        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
+        DateTime, default=utc_now, onupdate=utc_now
     )
 
 
@@ -56,7 +61,7 @@ class UserTeamPreference(Base):
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
     user_id: Mapped[str] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
     team_id: Mapped[str] = mapped_column(ForeignKey("teams.id", ondelete="CASCADE"), index=True)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=utc_now)
 
     user: Mapped[User] = relationship(back_populates="team_preferences")
     team: Mapped[Team] = relationship()
@@ -73,7 +78,7 @@ class UserNotificationPreference(Base):
     match_start: Mapped[bool] = mapped_column(Boolean, default=True)
     match_end: Mapped[bool] = mapped_column(Boolean, default=True)
     updated_at: Mapped[datetime] = mapped_column(
-        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
+        DateTime, default=utc_now, onupdate=utc_now
     )
 
     user: Mapped[User] = relationship(back_populates="notification_preference")
@@ -87,6 +92,6 @@ class UserPushDevice(Base):
     user_id: Mapped[str] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
     expo_push_token: Mapped[str] = mapped_column(String(255), index=True)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=utc_now)
 
     user: Mapped[User] = relationship(back_populates="push_devices")
