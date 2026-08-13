@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Optional
 
 from pydantic import BaseModel, ConfigDict, Field
@@ -31,3 +32,25 @@ class PushDeviceResponse(BaseModel):
     id: str
     expo_push_token: str
     is_active: bool
+
+
+class AlertResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: str
+    kind: str
+    title: str
+    summary: str
+    link_url: Optional[str]
+    is_read: bool
+    created_at: datetime
+
+
+class AlertInboxResponse(BaseModel):
+    unread_count: int
+    total_items: int
+    items: list[AlertResponse]
+
+
+class AlertReadAllResponse(BaseModel):
+    updated_count: int

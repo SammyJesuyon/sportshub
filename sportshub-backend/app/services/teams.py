@@ -3,7 +3,7 @@ from typing import List, Union
 from sqlalchemy import or_, select
 from sqlalchemy.orm import Session
 
-from app.db.models import Team, User, UserTeamPreference
+from app.db.models import Team, User, UserAlert, UserTeamPreference
 from app.integrations.api_sports import SportsProvider
 from app.schemas.team import TeamPreferenceResult
 
@@ -96,6 +96,16 @@ class TeamPreferenceService:
         added_ids = set(resolved) - existing_ids
         self.db.add_all(
             UserTeamPreference(user_id=user.id, team_id=team_id) for team_id in added_ids
+        )
+        self.db.add_all(
+            UserAlert(
+                user_id=user.id,
+                kind="team_followed",
+                title=f"{resolved[team_id].name} added to your hub",
+                summary=f"You are now following {resolved[team_id].name}. Matchday updates will appear here as inbox coverage expands.",
+                link_url="/my/teams",
+            )
+            for team_id in added_ids
         )
         self.db.commit()
         return TeamPreferenceResult(

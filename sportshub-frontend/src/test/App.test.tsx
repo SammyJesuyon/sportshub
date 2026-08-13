@@ -40,6 +40,7 @@ describe('SportsHub web foundation', () => {
     expect(screen.getByText(/page 1 of 1/i)).toBeInTheDocument()
     expect((screen.getByLabelText('Match date', { exact: true }) as HTMLInputElement).value).toMatch(/^\d{4}-\d{2}-\d{2}$/)
     expect(screen.getByRole('button', { name: /previous day/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /more sports are coming soon/i })).toBeInTheDocument()
     expect(fetchMock).toHaveBeenCalledWith(expect.stringMatching(/date=\d{4}-\d{2}-\d{2}.*timezone=/), expect.any(Object))
     fireEvent.click(screen.getByRole('button', { name: /previous day/i }))
     await waitFor(() => expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining('date=2026-08-12'), expect.any(Object)))
@@ -135,20 +136,30 @@ describe('SportsHub web foundation', () => {
     }))
   })
 
-  it('rolls back a failed notification toggle', async () => {
+  it('shows persisted alert summaries and keeps the red unread count in sync', async () => {
     localStorage.setItem('sportshub.access_token', 'token-1')
     vi.spyOn(globalThis, 'fetch').mockImplementation((input, init) => {
       const url = String(input)
       if (url.endsWith('/auth/me')) return jsonResponse({ id: 'user-1', email: 'fan@example.com', username: 'sportsfan', role: 'fan' })
-      if (url.endsWith('/notifications/preferences') && (!init || init.method !== 'PUT')) return jsonResponse({ enabled: true, pre_match_reminder: true, match_start: true, match_end: true })
-      return jsonResponse({ detail: 'Preference update failed' }, 503)
+      if (url.endsWith('/notifications/inbox') && (!init || init.method !== 'PUT')) return jsonResponse({
+        unread_count: 2,
+        total_items: 2,
+        items: [
+          { id: 'alert-2', kind: 'team_followed', title: 'Arsenal added to your hub', summary: 'You are now following Arsenal.', link_url: '/my/teams', is_read: false, created_at: '2026-08-13T16:30:00' },
+          { id: 'alert-1', kind: 'welcome', title: 'Welcome to SportsHub', summary: 'Your fan profile is ready.', link_url: null, is_read: false, created_at: '2026-08-13T15:30:00' },
+        ],
+      })
+      if (url.endsWith('/notifications/inbox/read-all') && init?.method === 'PUT') return jsonResponse({ updated_count: 2 })
+      return jsonResponse({}, 404)
     })
     renderApp('/alerts')
-    expect(await screen.findByText(/automatic match-event delivery/i)).toBeInTheDocument()
-    const matchEnd = await screen.findByRole('switch', { name: /full-time result/i })
-    expect(matchEnd).toHaveAttribute('aria-checked', 'true')
-    fireEvent.click(matchEnd)
-    expect(await screen.findByRole('alert')).toHaveTextContent(/preference update failed/i)
-    await waitFor(() => expect(matchEnd).toHaveAttribute('aria-checked', 'true'))
+    expect(await screen.findByText(/you are now following arsenal/i)).toBeInTheDocument()
+    expect(screen.getByText(/your fan profile is ready/i)).toBeInTheDocument()
+    expect(screen.getByLabelText('2 unread alerts')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /alerts, 2 unread/i })).toHaveTextContent('2')
+    await userEvent.click(screen.getByRole('button', { name: /mark all as read/i }))
+    await waitFor(() => expect(screen.getByLabelText('0 unread alerts')).toBeInTheDocument())
+    expect(screen.getByRole('link', { name: /^alerts$/i })).not.toHaveTextContent('2')
+    expect(screen.queryByLabelText('Unread')).not.toBeInTheDocument()
   })
 })

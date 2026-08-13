@@ -9,7 +9,8 @@ FastAPI modular monolith for the SportsHub CS425 miniature. The backend lives as
 - public matchday fixtures grouped as live, half-time, full-time, or scheduled;
 - administrator-only API allowance telemetry, status-aware persistent shared-UTC caching, locale-correct calendar-day filtering, local match pagination, and cached fixture details with statistics, lineups, and timeline events, including quota-floor-protected detail-resource fallbacks;
 - authenticated team following with stable internal IDs;
-- global notification preferences and idempotent Expo device registration;
+- a persisted, user-scoped alert inbox with unread/read state;
+- global notification preferences and idempotent Expo device registration retained as future delivery infrastructure, not required by the current web inbox;
 - liveness and database-readiness endpoints.
 
 The client never submits `userId` for self-service preference operations. Team following and notification settings remain separate transactions.

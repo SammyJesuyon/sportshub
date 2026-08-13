@@ -59,6 +59,14 @@ def test_follow_team_derives_current_user_and_tracks_duplicates(client, fan):
     assert followed.status_code == 200
     assert [team["name"] for team in followed.json()] == ["Arsenal"]
 
+    inbox = client.get("/api/v1/notifications/inbox", headers=fan["headers"])
+    assert inbox.status_code == 200
+    assert inbox.json()["unread_count"] == 2
+    assert [item["kind"] for item in inbox.json()["items"]] == [
+        "team_followed",
+        "welcome",
+    ]
+
 
 def test_follow_rejects_browser_supplied_user_id(client, fan):
     arsenal = search_team(client, "Arsenal")
@@ -160,3 +168,48 @@ def test_register_expo_device_is_idempotent(client, fan):
     assert second.status_code == 201
     assert first.json()["id"] == second.json()["id"]
     assert second.json()["is_active"] is True
+
+
+def test_alert_inbox_is_user_scoped_and_supports_read_state(client, fan):
+    inbox = client.get("/api/v1/notifications/inbox", headers=fan["headers"])
+    alert = inbox.json()["items"][0]
+
+    marked = client.put(
+        f"/api/v1/notifications/inbox/{alert['id']}/read",
+        headers=fan["headers"],
+    )
+    after_mark = client.get("/api/v1/notifications/inbox", headers=fan["headers"])
+    mark_all = client.put(
+        "/api/v1/notifications/inbox/read-all", headers=fan["headers"]
+    )
+
+    assert inbox.status_code == 200
+    assert inbox.json()["unread_count"] == 1
+    assert marked.status_code == 200
+    assert marked.json()["is_read"] is True
+    assert after_mark.json()["unread_count"] == 0
+    assert mark_all.json() == {"updated_count": 0}
+
+
+def test_alert_inbox_requires_authentication_and_hides_other_users_alerts(client, fan):
+    outsider = client.post(
+        "/api/v1/auth/register",
+        json={
+            "email": "other@example.com",
+            "username": "otherfan",
+            "password": "SecurePass123!",
+        },
+    ).json()
+    fan_inbox = client.get(
+        "/api/v1/notifications/inbox", headers=fan["headers"]
+    ).json()
+    fan_alert_id = fan_inbox["items"][0]["id"]
+
+    unauthenticated = client.get("/api/v1/notifications/inbox")
+    hidden = client.put(
+        f"/api/v1/notifications/inbox/{fan_alert_id}/read",
+        headers={"Authorization": f"Bearer {outsider['access_token']}"},
+    )
+
+    assert unauthenticated.status_code == 401
+    assert hidden.status_code == 404

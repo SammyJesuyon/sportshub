@@ -16,7 +16,7 @@ The web application is a responsive fan experience inside the SportsHub monorepo
 
 - Responsive shell, registration, sign-in/sign-out, protected routes.
 - Team search and authenticated team following.
-- Global notification preferences with failed-update rollback.
+- Persisted, user-scoped in-app alert inbox with concise summaries, read state, and a red unread-count badge. Registration and new team follows produce initial inbox records; push delivery is not required for the current web experience.
 - Dockerized web/API/PostgreSQL workflow and automated migration gate.
 
 Definition of done: component tests, PostgreSQL integration suite, web production build, responsive browser inspection, and health checks all pass.
@@ -30,6 +30,7 @@ Definition of done: component tests, PostgreSQL integration suite, web productio
 - Keep cache and provider-status telemetry on an authenticated administrator endpoint, never in fan-facing pages or public fixture responses.
 - Browse past and upcoming dates using shared UTC provider snapshots, filter to the browser's IANA timezone, and render kickoff times with the user's locale — implemented.
 - Present fixture overview, statistics, lineups, timeline, and an explicitly inactive chat placeholder as accessible tabs — implemented.
+- State clearly that football is the current sport and more sports are coming soon, without exposing unsupported sport navigation — implemented.
 
 Definition of done: contract tests cover normalization and degraded states; browser tests cover search-to-fixture navigation on desktop and mobile.
 

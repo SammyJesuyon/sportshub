@@ -49,6 +49,7 @@ export function MyTeamsPage() {
     if (!token) return
     await api.followTeam(token, team.id)
     setFollowed((current) => current.some((item) => item.id === team.id) ? current : [...current, team])
+    window.dispatchEvent(new Event('sportshub:alerts-changed'))
   }
 
   return <section className="workspace-page"><div className="page-intro"><span className="eyebrow">Personalize your hub</span><h1>Choose your teams</h1><p>This authenticated space changes your account and builds your personalized match feed.</p></div>{error && <div className="error-message" role="alert">{error}</div>}<div className="workspace-grid"><TeamSearch followed={followed} onFollow={follow} /><aside className="panel followed-panel"><span className="eyebrow">Your hub</span><h2>Following</h2>{followed.length ? followed.map((team) => <div className="followed-team" key={team.id}><strong>{team.name}</strong><span>{team.country}</span></div>) : <p className="empty-copy">No teams followed yet. Your personalized match feed starts here.</p>}</aside></div></section>

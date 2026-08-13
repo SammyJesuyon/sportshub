@@ -37,6 +37,9 @@ class User(Base):
     push_devices: Mapped[List["UserPushDevice"]] = relationship(
         back_populates="user", cascade="all, delete-orphan"
     )
+    alerts: Mapped[List["UserAlert"]] = relationship(
+        back_populates="user", cascade="all, delete-orphan"
+    )
 
 
 class Team(Base):
@@ -95,3 +98,20 @@ class UserPushDevice(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime, default=utc_now)
 
     user: Mapped[User] = relationship(back_populates="push_devices")
+
+
+class UserAlert(Base):
+    __tablename__ = "user_alerts"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    user_id: Mapped[str] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"), index=True
+    )
+    kind: Mapped[str] = mapped_column(String(40), default="general")
+    title: Mapped[str] = mapped_column(String(160))
+    summary: Mapped[str] = mapped_column(String(500))
+    link_url: Mapped[Optional[str]] = mapped_column(String(500))
+    is_read: Mapped[bool] = mapped_column(Boolean, default=False, index=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=utc_now, index=True)
+
+    user: Mapped[User] = relationship(back_populates="alerts")

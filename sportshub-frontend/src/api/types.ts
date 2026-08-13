@@ -34,6 +34,22 @@ export interface NotificationPreferences {
   match_end: boolean
 }
 
+export interface AlertItem {
+  id: string
+  kind: string
+  title: string
+  summary: string
+  link_url: string | null
+  is_read: boolean
+  created_at: string
+}
+
+export interface AlertInbox {
+  unread_count: number
+  total_items: number
+  items: AlertItem[]
+}
+
 export type FixtureBucket = 'live' | 'half_time' | 'full_time' | 'scheduled'
 
 export interface FixtureTeam {

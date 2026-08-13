@@ -1,12 +1,14 @@
-from sqlalchemy import select
+from typing import Optional
+
+from sqlalchemy import func, select, update
 from sqlalchemy.orm import Session
 
-from app.db.models import User, UserNotificationPreference, UserPushDevice
+from app.db.models import User, UserAlert, UserNotificationPreference, UserPushDevice
 from app.schemas.notification import NotificationPreferenceUpdate
 
 
 class NotificationService:
-    """Stores global-per-user toggles and push device registrations."""
+    """Owns each user's persisted inbox, preferences, and device records."""
 
     def __init__(self, db: Session):
         self.db = db
@@ -49,3 +51,44 @@ class NotificationService:
         self.db.refresh(device)
         return device
 
+    def inbox(self, user: User, limit: int = 50) -> tuple[list[UserAlert], int, int]:
+        alerts = list(
+            self.db.scalars(
+                select(UserAlert)
+                .where(UserAlert.user_id == user.id)
+                .order_by(UserAlert.created_at.desc(), UserAlert.id.desc())
+                .limit(limit)
+            )
+        )
+        unread_count = self.db.scalar(
+            select(func.count(UserAlert.id)).where(
+                UserAlert.user_id == user.id, UserAlert.is_read.is_(False)
+            )
+        ) or 0
+        total_items = self.db.scalar(
+            select(func.count(UserAlert.id)).where(UserAlert.user_id == user.id)
+        ) or 0
+        return alerts, int(unread_count), int(total_items)
+
+    def mark_read(self, user: User, alert_id: str) -> Optional[UserAlert]:
+        alert = self.db.scalar(
+            select(UserAlert).where(
+                UserAlert.id == alert_id, UserAlert.user_id == user.id
+            )
+        )
+        if alert is None:
+            return None
+        if not alert.is_read:
+            alert.is_read = True
+            self.db.commit()
+            self.db.refresh(alert)
+        return alert
+
+    def mark_all_read(self, user: User) -> int:
+        result = self.db.execute(
+            update(UserAlert)
+            .where(UserAlert.user_id == user.id, UserAlert.is_read.is_(False))
+            .values(is_read=True)
+        )
+        self.db.commit()
+        return int(result.rowcount or 0)

@@ -1,4 +1,4 @@
-import type { FixtureBucket, FixtureDetail, Matchday, NotificationPreferences, Team, TeamPreferenceResult, TokenResponse } from './types'
+import type { AlertInbox, AlertItem, FixtureBucket, FixtureDetail, Matchday, NotificationPreferences, Team, TeamPreferenceResult, TokenResponse } from './types'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8010/api/v1'
 
@@ -57,6 +57,17 @@ export const api = {
   updateNotificationPreferences: (token: string, preferences: Partial<NotificationPreferences>) => request<NotificationPreferences>(
     '/notifications/preferences',
     { method: 'PUT', body: JSON.stringify(preferences) },
+    token,
+  ),
+  alertInbox: (token: string) => request<AlertInbox>('/notifications/inbox', {}, token),
+  markAlertRead: (token: string, alertId: string) => request<AlertItem>(
+    `/notifications/inbox/${encodeURIComponent(alertId)}/read`,
+    { method: 'PUT' },
+    token,
+  ),
+  markAllAlertsRead: (token: string) => request<{ updated_count: number }>(
+    '/notifications/inbox/read-all',
+    { method: 'PUT' },
     token,
   ),
 }

@@ -24,6 +24,7 @@ def test_initial_migration_creates_and_removes_schema(tmp_path, monkeypatch):
         "user_team_preferences",
         "user_notification_preferences",
         "user_push_devices",
+        "user_alerts",
     }
 
     command.downgrade(config, "base")

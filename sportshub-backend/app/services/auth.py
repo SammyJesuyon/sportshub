@@ -3,7 +3,7 @@ from sqlalchemy import or_, select
 from sqlalchemy.orm import Session
 
 from app.core.security import create_access_token, hash_password, verify_password
-from app.db.models import User
+from app.db.models import User, UserAlert
 from app.schemas.auth import LoginRequest, RegisterRequest, TokenResponse, UserResponse
 
 
@@ -28,6 +28,16 @@ class AuthService:
             password_hash=hash_password(request.password),
         )
         self.db.add(user)
+        self.db.flush()
+        self.db.add(
+            UserAlert(
+                user_id=user.id,
+                kind="welcome",
+                title="Welcome to SportsHub",
+                summary="Your fan profile is ready. Follow a team to personalize your matchday experience.",
+                link_url="/my/teams",
+            )
+        )
         self.db.commit()
         self.db.refresh(user)
         return self._token_response(user)
@@ -41,4 +51,3 @@ class AuthService:
     def _token_response(self, user: User) -> TokenResponse:
         token = create_access_token(user.id, self.secret_key, self.expires_minutes)
         return TokenResponse(access_token=token, user=UserResponse.model_validate(user))
-

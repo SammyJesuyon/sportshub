@@ -10,7 +10,7 @@ This plan verifies the CS425-sized SportsHub product. Tests should prove the sch
 | Backend API | Authentication, authorization, validation, stable IDs, idempotency, and provider-error behavior | Fast isolated database | Every change |
 | Frontend component | Route protection, forms, loading/empty/error states, authorization headers, and optimistic rollback | Vitest + Testing Library | Every change |
 | PostgreSQL integration | Alembic can build the schema and repository behavior matches PostgreSQL | Docker test database | Every pull request |
-| Browser journey | A fan can register, follow a team, configure global alerts, and retain state after refresh | Desktop and mobile Chromium | Every pull request once the journey exists |
+| Browser journey | A fan can register, follow a team, open the in-app alert inbox, and retain read state after refresh | Desktop and mobile Chromium | Every pull request once the journey exists |
 | Operational smoke | Containers become healthy, migrations run once, data survives an API restart, and logs contain no secrets | Docker Compose | Before a tagged release |
 
 ## Current acceptance coverage
@@ -20,8 +20,8 @@ This plan verifies the CS425-sized SportsHub product. Tests should prove the sch
 - Search teams and return stable internal IDs even when the provider uses external IDs.
 - Append missing user-team associations without duplicating an existing follow.
 - Authenticate preference operations from the bearer token; never accept browser-supplied `userId`.
-- Commit team follows independently from global notification preferences.
-- Update only supplied notification toggles and upsert Expo devices idempotently.
+- Commit team follows and their corresponding inbox records atomically.
+- Scope inbox records and read operations to the authenticated user; keep push delivery outside the current fan-facing workflow.
 - Return a useful error when an external team provider fails.
 - Apply and reverse the initial Alembic revision.
 - Report liveness separately from database readiness.

@@ -6,6 +6,7 @@ test('home page is usable at the configured viewport', async ({ page }) => {
   await expect(page.getByRole('navigation', { name: /primary/i })).toBeVisible()
   await expect(page.getByRole('link', { name: /sign in/i })).toBeVisible()
   await expect(page.getByRole('heading', { name: /matchday center/i })).toBeVisible()
+  await expect(page.getByRole('heading', { name: /more sports are coming soon/i })).toBeVisible()
   await expect(page.getByText(/api allowance|cache hit|daily api requests/i)).toHaveCount(0)
   await expect(page.getByRole('tablist', { name: /fixture status/i })).toBeVisible()
   await expect(page.getByLabel(/choose match date/i)).toBeVisible()
