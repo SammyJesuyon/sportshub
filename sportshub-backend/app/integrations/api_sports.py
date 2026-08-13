@@ -1,4 +1,4 @@
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, replace
 from datetime import date, datetime, timezone
 import json
 from pathlib import Path
@@ -289,6 +289,26 @@ class ApiSportsAdapter:
             detail = self._normalize_fixture_detail(items[0], fixture) if items else None
             if detail is None:
                 raise ValueError("API-Sports fixture detail was unavailable")
+            if not detail.statistics and self._supplementary_detail_allowed():
+                statistics_payload = self._get(
+                    "fixtures/statistics", {"fixture": fixture.fixture_id}
+                )
+                detail = replace(
+                    detail,
+                    statistics=self._normalize_statistics(
+                        statistics_payload.get("response", [])
+                    ),
+                )
+            if not detail.lineups and self._supplementary_detail_allowed():
+                lineups_payload = self._get(
+                    "fixtures/lineups", {"fixture": fixture.fixture_id}
+                )
+                detail = replace(
+                    detail,
+                    lineups=self._normalize_lineups(
+                        lineups_payload.get("response", [])
+                    ),
+                )
             entry = _CacheEntry(
                 stored_at=time(),
                 ttl_seconds=self._detail_ttl(fixture),
@@ -368,6 +388,10 @@ class ApiSportsAdapter:
             return max(base_ttl, 900)
         return base_ttl
 
+    def _supplementary_detail_allowed(self) -> bool:
+        remaining = self._quota.daily_remaining
+        return remaining is None or remaining > 10
+
     @staticmethod
     def _is_fresh(entry: _CacheEntry) -> bool:
         return time() - entry.stored_at < entry.ttl_seconds
@@ -406,7 +430,7 @@ class ApiSportsAdapter:
         if self.cache_path is None:
             return
         payload = {
-            "version": 2,
+            "version": 3,
             "quota": asdict(self._quota),
             "matchdays": {
                 key.isoformat(): {
@@ -444,7 +468,7 @@ class ApiSportsAdapter:
                 )
                 if self._is_fresh(entry):
                     self._matchday_cache[date.fromisoformat(raw_date)] = entry
-            if payload.get("version") == 2:
+            if payload.get("version") == 3:
                 for raw_id, cached in payload.get("details", {}).items():
                     entry = _CacheEntry(
                         stored_at=float(cached["stored_at"]),
@@ -565,8 +589,30 @@ class ApiSportsAdapter:
                     detail=event.get("detail") or "Match event",
                 )
             )
+        statistics = cls._normalize_statistics(item.get("statistics", []))
+        lineups = cls._normalize_lineups(item.get("lineups", []))
+        return ProviderFixtureDetail(
+            fixture=fixture,
+            referee=fixture_data.get("referee"),
+            venue_name=venue.get("name"),
+            venue_city=venue.get("city"),
+            halftime_home=(score.get("halftime") or {}).get("home"),
+            halftime_away=(score.get("halftime") or {}).get("away"),
+            fulltime_home=(score.get("fulltime") or {}).get("home"),
+            fulltime_away=(score.get("fulltime") or {}).get("away"),
+            extratime_home=(score.get("extratime") or {}).get("home"),
+            extratime_away=(score.get("extratime") or {}).get("away"),
+            penalty_home=(score.get("penalty") or {}).get("home"),
+            penalty_away=(score.get("penalty") or {}).get("away"),
+            events=events,
+            statistics=statistics,
+            lineups=lineups,
+        )
+
+    @staticmethod
+    def _normalize_statistics(items: list[dict[str, Any]]) -> list[ProviderTeamStatistics]:
         statistics = []
-        for team_summary in item.get("statistics", []):
+        for team_summary in items:
             team = team_summary.get("team") or {}
             normalized_statistics = []
             for statistic in team_summary.get("statistics", []):
@@ -588,8 +634,12 @@ class ApiSportsAdapter:
                     statistics=normalized_statistics,
                 )
             )
+        return statistics
+
+    @classmethod
+    def _normalize_lineups(cls, items: list[dict[str, Any]]) -> list[ProviderTeamLineup]:
         lineups = []
-        for lineup in item.get("lineups", []):
+        for lineup in items:
             team = lineup.get("team") or {}
             coach = lineup.get("coach") or {}
             lineups.append(
@@ -603,23 +653,7 @@ class ApiSportsAdapter:
                     substitutes=cls._normalize_lineup_players(lineup.get("substitutes", [])),
                 )
             )
-        return ProviderFixtureDetail(
-            fixture=fixture,
-            referee=fixture_data.get("referee"),
-            venue_name=venue.get("name"),
-            venue_city=venue.get("city"),
-            halftime_home=(score.get("halftime") or {}).get("home"),
-            halftime_away=(score.get("halftime") or {}).get("away"),
-            fulltime_home=(score.get("fulltime") or {}).get("home"),
-            fulltime_away=(score.get("fulltime") or {}).get("away"),
-            extratime_home=(score.get("extratime") or {}).get("home"),
-            extratime_away=(score.get("extratime") or {}).get("away"),
-            penalty_home=(score.get("penalty") or {}).get("home"),
-            penalty_away=(score.get("penalty") or {}).get("away"),
-            events=events,
-            statistics=statistics,
-            lineups=lineups,
-        )
+        return lineups
 
     @staticmethod
     def _normalize_lineup_players(items: list[dict[str, Any]]) -> list[ProviderLineupPlayer]:

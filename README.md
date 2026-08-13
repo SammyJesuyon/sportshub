@@ -50,7 +50,7 @@ The detailed acceptance matrix is in [`docs/TEST_PLAN.md`](docs/TEST_PLAN.md).
 ## Web delivery plan
 
 1. **Foundation:** responsive shell, authentication, team following, and global alerts.
-2. **Sports browsing (current):** quota-aware, persistently cached matchday fixtures with local pagination, fixture statistics, lineups, and timeline events; public team exploration and authenticated team selection are separate journeys. Provider quota and cache telemetry are restricted to administrators. Standings and team pages follow next.
+2. **Sports browsing (current):** quota-aware, persistently cached matchday fixtures with local pagination, fixture statistics, lineups, and timeline events; missing detail datasets use guarded provider-resource fallbacks above the quota safety floor. Public team exploration and authenticated team selection are separate journeys. Provider quota and cache telemetry are restricted to administrators. Standings and team pages follow next.
 3. **Live match:** fixture detail, independent poller status, SSE connected/detail/update events, heartbeat, disconnect cleanup, and fresh-snapshot reconnect.
 4. **Tickets:** Ticketmaster event results and backend `/events/{eventId}/buy` redirects with Impact/direct fallback.
 5. **Administration:** role-protected user, competition, integration, and notification operations.

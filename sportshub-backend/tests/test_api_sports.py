@@ -2,7 +2,11 @@ import httpx
 import pytest
 from datetime import date
 
-from app.integrations.api_sports import ApiSportsAdapter
+from app.integrations.api_sports import (
+    ApiSportsAdapter,
+    ProviderFixture,
+    ProviderFixtureTeam,
+)
 
 
 def test_api_sports_team_search_uses_expected_url_and_secret_header(monkeypatch):
@@ -211,3 +215,99 @@ def test_fixture_detail_normalizes_and_persists_statistics_lineups_and_timeline(
     assert detail.lineups[0].starting_xi[0].name == "A. Keeper"
     assert cached.cache_hit is True
     assert calls == 2
+
+
+def test_fixture_detail_uses_quota_aware_supplementary_resources(monkeypatch):
+    calls = []
+
+    def fake_get(client, url, *, params, headers):
+        calls.append(url)
+        request = httpx.Request("GET", url, params=params, headers=headers)
+        response = []
+        if url.endswith("/fixtures"):
+            response = [{
+                "fixture": {"id": 9001, "date": "2026-08-13T19:00:00+00:00", "timezone": "UTC", "status": {"long": "Match Finished", "short": "FT", "elapsed": 90}},
+                "league": {"id": 39, "name": "Premier League", "logo": None},
+                "teams": {"home": {"id": 42, "name": "Arsenal", "logo": None}, "away": {"id": 49, "name": "Chelsea", "logo": None}},
+                "goals": {"home": 2, "away": 1},
+                "events": [],
+                "statistics": [],
+                "lineups": [],
+            }]
+        elif url.endswith("/fixtures/statistics"):
+            response = [{"team": {"id": 42, "name": "Arsenal", "logo": None}, "statistics": [{"type": "Total Shots", "value": 15}]}]
+        elif url.endswith("/fixtures/lineups"):
+            response = [{"team": {"id": 42, "name": "Arsenal", "logo": None}, "formation": "4-3-3", "coach": {"name": "M. Coach"}, "startXI": [], "substitutes": []}]
+        return httpx.Response(
+            200,
+            request=request,
+            headers={"x-ratelimit-requests-limit": "100", "x-ratelimit-requests-remaining": "70"},
+            json={"errors": [], "response": response},
+        )
+
+    monkeypatch.setattr(httpx.Client, "get", fake_get)
+    selected = ProviderFixture(
+        fixture_id=9001,
+        kickoff="2026-08-13T19:00:00+00:00",
+        timezone="UTC",
+        league_id=39,
+        league_name="Premier League",
+        league_logo_url=None,
+        status_short="FT",
+        status_long="Match Finished",
+        elapsed=90,
+        home=ProviderFixtureTeam(42, "Arsenal", None, 2),
+        away=ProviderFixtureTeam(49, "Chelsea", None, 1),
+    )
+    adapter = ApiSportsAdapter("secret-key", "https://v3.football.api-sports.io")
+    detail = adapter.fixture_detail(selected).detail
+    adapter.fixture_detail(selected)
+
+    assert detail.statistics[0].statistics[0].value == "15"
+    assert detail.lineups[0].formation == "4-3-3"
+    assert calls == [
+        "https://v3.football.api-sports.io/fixtures",
+        "https://v3.football.api-sports.io/fixtures/statistics",
+        "https://v3.football.api-sports.io/fixtures/lineups",
+    ]
+
+
+def test_fixture_detail_skips_supplementary_calls_at_quota_floor(monkeypatch):
+    calls = []
+
+    def fake_get(client, url, *, params, headers):
+        calls.append(url)
+        request = httpx.Request("GET", url, params=params, headers=headers)
+        return httpx.Response(
+            200,
+            request=request,
+            headers={"x-ratelimit-requests-limit": "100", "x-ratelimit-requests-remaining": "10"},
+            json={"errors": [], "response": [{
+                "fixture": {"id": 9001, "date": "2026-08-13T19:00:00+00:00", "timezone": "UTC", "status": {"long": "Match Finished", "short": "FT", "elapsed": 90}},
+                "league": {"id": 39, "name": "Premier League", "logo": None},
+                "teams": {"home": {"id": 42, "name": "Arsenal", "logo": None}, "away": {"id": 49, "name": "Chelsea", "logo": None}},
+                "goals": {"home": 2, "away": 1},
+            }]},
+        )
+
+    monkeypatch.setattr(httpx.Client, "get", fake_get)
+    selected = ProviderFixture(
+        fixture_id=9001,
+        kickoff="2026-08-13T19:00:00+00:00",
+        timezone="UTC",
+        league_id=39,
+        league_name="Premier League",
+        league_logo_url=None,
+        status_short="FT",
+        status_long="Match Finished",
+        elapsed=90,
+        home=ProviderFixtureTeam(42, "Arsenal", None, 2),
+        away=ProviderFixtureTeam(49, "Chelsea", None, 1),
+    )
+    detail = ApiSportsAdapter(
+        "secret-key", "https://v3.football.api-sports.io"
+    ).fixture_detail(selected).detail
+
+    assert detail.statistics == []
+    assert detail.lineups == []
+    assert calls == ["https://v3.football.api-sports.io/fixtures"]
