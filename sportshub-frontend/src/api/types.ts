@@ -67,23 +67,7 @@ export interface Matchday {
   total_items: number
   total_pages: number
   counts: Record<FixtureBucket, number>
-  cache: CacheStatus
-  quota: ProviderQuota
   fixtures: Fixture[]
-}
-
-export interface ProviderQuota {
-  daily_limit: number | null
-  daily_remaining: number | null
-  minute_limit: number | null
-  minute_remaining: number | null
-  observed_at: string | null
-}
-
-export interface CacheStatus {
-  hit: boolean
-  age_seconds: number
-  ttl_seconds: number
 }
 
 export interface FixtureEvent {
@@ -94,6 +78,36 @@ export interface FixtureEvent {
   assist_name: string | null
   event_type: string
   detail: string
+}
+
+export interface FixtureStatistic {
+  name: string
+  value: string | null
+}
+
+export interface FixtureTeamStatistics {
+  provider_id: number | null
+  team_name: string
+  logo_url: string | null
+  statistics: FixtureStatistic[]
+}
+
+export interface FixtureLineupPlayer {
+  provider_id: number | null
+  name: string
+  number: number | null
+  position: string | null
+  grid: string | null
+}
+
+export interface FixtureTeamLineup {
+  provider_id: number | null
+  team_name: string
+  logo_url: string | null
+  formation: string | null
+  coach_name: string | null
+  starting_xi: FixtureLineupPlayer[]
+  substitutes: FixtureLineupPlayer[]
 }
 
 export interface FixtureDetail {
@@ -110,6 +124,6 @@ export interface FixtureDetail {
   penalty_home: number | null
   penalty_away: number | null
   events: FixtureEvent[]
-  cache: CacheStatus
-  quota: ProviderQuota
+  statistics: FixtureTeamStatistics[]
+  lineups: FixtureTeamLineup[]
 }

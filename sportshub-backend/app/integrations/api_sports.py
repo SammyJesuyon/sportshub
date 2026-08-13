@@ -52,6 +52,40 @@ class ProviderFixtureEvent:
 
 
 @dataclass(frozen=True)
+class ProviderFixtureStatistic:
+    name: str
+    value: Optional[str]
+
+
+@dataclass(frozen=True)
+class ProviderTeamStatistics:
+    provider_id: Optional[int]
+    team_name: str
+    logo_url: Optional[str]
+    statistics: list[ProviderFixtureStatistic]
+
+
+@dataclass(frozen=True)
+class ProviderLineupPlayer:
+    provider_id: Optional[int]
+    name: str
+    number: Optional[int]
+    position: Optional[str]
+    grid: Optional[str]
+
+
+@dataclass(frozen=True)
+class ProviderTeamLineup:
+    provider_id: Optional[int]
+    team_name: str
+    logo_url: Optional[str]
+    formation: Optional[str]
+    coach_name: Optional[str]
+    starting_xi: list[ProviderLineupPlayer]
+    substitutes: list[ProviderLineupPlayer]
+
+
+@dataclass(frozen=True)
 class ProviderFixtureDetail:
     fixture: ProviderFixture
     referee: Optional[str]
@@ -66,6 +100,8 @@ class ProviderFixtureDetail:
     penalty_home: Optional[int]
     penalty_away: Optional[int]
     events: list[ProviderFixtureEvent]
+    statistics: list[ProviderTeamStatistics]
+    lineups: list[ProviderTeamLineup]
 
 
 @dataclass(frozen=True)
@@ -95,6 +131,14 @@ class ProviderFixtureDetailSnapshot:
     quota: ProviderQuota
 
 
+@dataclass(frozen=True)
+class ProviderOperationalStatus:
+    quota: ProviderQuota
+    matchday_cache_entries: int
+    fixture_detail_cache_entries: int
+    persistent_cache_enabled: bool
+
+
 @dataclass
 class _CacheEntry:
     stored_at: float
@@ -110,6 +154,8 @@ class SportsProvider(Protocol):
     def fixture_detail(
         self, fixture: ProviderFixture
     ) -> ProviderFixtureDetailSnapshot: ...
+
+    def operational_status(self) -> ProviderOperationalStatus: ...
 
 
 LIVE_FIXTURE_STATUSES = frozenset({"1H", "2H", "ET", "BT", "P", "LIVE"})
@@ -160,8 +206,18 @@ class SampleSportsAdapter:
             penalty_home=None,
             penalty_away=None,
             events=[],
+            statistics=[],
+            lineups=[],
         )
         return ProviderFixtureDetailSnapshot(detail, True, 0, 3600, ProviderQuota())
+
+    def operational_status(self) -> ProviderOperationalStatus:
+        return ProviderOperationalStatus(
+            quota=ProviderQuota(),
+            matchday_cache_entries=0,
+            fixture_detail_cache_entries=0,
+            persistent_cache_enabled=False,
+        )
 
 
 class ApiSportsAdapter:
@@ -241,6 +297,15 @@ class ApiSportsAdapter:
             self._detail_cache[fixture.fixture_id] = entry
             self._persist_cache()
             return self._detail_result(entry, False)
+
+    def operational_status(self) -> ProviderOperationalStatus:
+        with self._cache_lock:
+            return ProviderOperationalStatus(
+                quota=self._quota,
+                matchday_cache_entries=len(self._matchday_cache),
+                fixture_detail_cache_entries=len(self._detail_cache),
+                persistent_cache_enabled=self.cache_path is not None,
+            )
 
     def _get(self, resource: str, params: dict[str, Any]) -> dict[str, Any]:
         with httpx.Client(timeout=10.0) as client:
@@ -341,6 +406,7 @@ class ApiSportsAdapter:
         if self.cache_path is None:
             return
         payload = {
+            "version": 2,
             "quota": asdict(self._quota),
             "matchdays": {
                 key.isoformat(): {
@@ -378,14 +444,15 @@ class ApiSportsAdapter:
                 )
                 if self._is_fresh(entry):
                     self._matchday_cache[date.fromisoformat(raw_date)] = entry
-            for raw_id, cached in payload.get("details", {}).items():
-                entry = _CacheEntry(
-                    stored_at=float(cached["stored_at"]),
-                    ttl_seconds=int(cached["ttl_seconds"]),
-                    value=self._detail_from_dict(cached["detail"]),
-                )
-                if self._is_fresh(entry):
-                    self._detail_cache[int(raw_id)] = entry
+            if payload.get("version") == 2:
+                for raw_id, cached in payload.get("details", {}).items():
+                    entry = _CacheEntry(
+                        stored_at=float(cached["stored_at"]),
+                        ttl_seconds=int(cached["ttl_seconds"]),
+                        value=self._detail_from_dict(cached["detail"]),
+                    )
+                    if self._is_fresh(entry):
+                        self._detail_cache[int(raw_id)] = entry
         except (OSError, ValueError, KeyError, TypeError, json.JSONDecodeError):
             self._matchday_cache = {}
             self._detail_cache = {}
@@ -407,6 +474,34 @@ class ApiSportsAdapter:
                 **item,
                 "fixture": cls._fixture_from_dict(item["fixture"]),
                 "events": [ProviderFixtureEvent(**event) for event in item["events"]],
+                "statistics": [
+                    ProviderTeamStatistics(
+                        **{
+                            **team,
+                            "statistics": [
+                                ProviderFixtureStatistic(**statistic)
+                                for statistic in team["statistics"]
+                            ],
+                        }
+                    )
+                    for team in item.get("statistics", [])
+                ],
+                "lineups": [
+                    ProviderTeamLineup(
+                        **{
+                            **lineup,
+                            "starting_xi": [
+                                ProviderLineupPlayer(**player)
+                                for player in lineup["starting_xi"]
+                            ],
+                            "substitutes": [
+                                ProviderLineupPlayer(**player)
+                                for player in lineup["substitutes"]
+                            ],
+                        }
+                    )
+                    for lineup in item.get("lineups", [])
+                ],
             }
         )
 
@@ -470,6 +565,44 @@ class ApiSportsAdapter:
                     detail=event.get("detail") or "Match event",
                 )
             )
+        statistics = []
+        for team_summary in item.get("statistics", []):
+            team = team_summary.get("team") or {}
+            normalized_statistics = []
+            for statistic in team_summary.get("statistics", []):
+                name = statistic.get("type")
+                if not name:
+                    continue
+                raw_value = statistic.get("value")
+                normalized_statistics.append(
+                    ProviderFixtureStatistic(
+                        name=str(name),
+                        value=None if raw_value is None else str(raw_value),
+                    )
+                )
+            statistics.append(
+                ProviderTeamStatistics(
+                    provider_id=int(team["id"]) if team.get("id") is not None else None,
+                    team_name=team.get("name") or "Team",
+                    logo_url=team.get("logo"),
+                    statistics=normalized_statistics,
+                )
+            )
+        lineups = []
+        for lineup in item.get("lineups", []):
+            team = lineup.get("team") or {}
+            coach = lineup.get("coach") or {}
+            lineups.append(
+                ProviderTeamLineup(
+                    provider_id=int(team["id"]) if team.get("id") is not None else None,
+                    team_name=team.get("name") or "Team",
+                    logo_url=team.get("logo"),
+                    formation=lineup.get("formation"),
+                    coach_name=coach.get("name"),
+                    starting_xi=cls._normalize_lineup_players(lineup.get("startXI", [])),
+                    substitutes=cls._normalize_lineup_players(lineup.get("substitutes", [])),
+                )
+            )
         return ProviderFixtureDetail(
             fixture=fixture,
             referee=fixture_data.get("referee"),
@@ -484,4 +617,26 @@ class ApiSportsAdapter:
             penalty_home=(score.get("penalty") or {}).get("home"),
             penalty_away=(score.get("penalty") or {}).get("away"),
             events=events,
+            statistics=statistics,
+            lineups=lineups,
         )
+
+    @staticmethod
+    def _normalize_lineup_players(items: list[dict[str, Any]]) -> list[ProviderLineupPlayer]:
+        players = []
+        for item in items:
+            player = item.get("player") or {}
+            if not player.get("name"):
+                continue
+            players.append(
+                ProviderLineupPlayer(
+                    provider_id=(
+                        int(player["id"]) if player.get("id") is not None else None
+                    ),
+                    name=player["name"],
+                    number=player.get("number"),
+                    position=player.get("pos"),
+                    grid=player.get("grid"),
+                )
+            )
+        return players

@@ -26,20 +26,6 @@ class FixtureResponse(BaseModel):
     away: FixtureTeamResponse
 
 
-class QuotaResponse(BaseModel):
-    daily_limit: Optional[int]
-    daily_remaining: Optional[int]
-    minute_limit: Optional[int]
-    minute_remaining: Optional[int]
-    observed_at: Optional[str]
-
-
-class CacheResponse(BaseModel):
-    hit: bool
-    age_seconds: int
-    ttl_seconds: int
-
-
 class MatchdayResponse(BaseModel):
     date: date
     timezone: str
@@ -49,8 +35,6 @@ class MatchdayResponse(BaseModel):
     total_items: int
     total_pages: int
     counts: dict[str, int]
-    cache: CacheResponse
-    quota: QuotaResponse
     fixtures: list[FixtureResponse]
 
 
@@ -62,6 +46,36 @@ class FixtureEventResponse(BaseModel):
     assist_name: Optional[str]
     event_type: str
     detail: str
+
+
+class FixtureStatisticResponse(BaseModel):
+    name: str
+    value: Optional[str]
+
+
+class FixtureTeamStatisticsResponse(BaseModel):
+    provider_id: Optional[int]
+    team_name: str
+    logo_url: Optional[str]
+    statistics: list[FixtureStatisticResponse]
+
+
+class FixtureLineupPlayerResponse(BaseModel):
+    provider_id: Optional[int]
+    name: str
+    number: Optional[int]
+    position: Optional[str]
+    grid: Optional[str]
+
+
+class FixtureTeamLineupResponse(BaseModel):
+    provider_id: Optional[int]
+    team_name: str
+    logo_url: Optional[str]
+    formation: Optional[str]
+    coach_name: Optional[str]
+    starting_xi: list[FixtureLineupPlayerResponse]
+    substitutes: list[FixtureLineupPlayerResponse]
 
 
 class FixtureDetailResponse(BaseModel):
@@ -78,8 +92,8 @@ class FixtureDetailResponse(BaseModel):
     penalty_home: Optional[int]
     penalty_away: Optional[int]
     events: list[FixtureEventResponse]
-    cache: CacheResponse
-    quota: QuotaResponse
+    statistics: list[FixtureTeamStatisticsResponse]
+    lineups: list[FixtureTeamLineupResponse]
 
 
 class PaginationQuery(BaseModel):

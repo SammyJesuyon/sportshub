@@ -26,8 +26,8 @@ Definition of done: component tests, PostgreSQL integration suite, web productio
 - Show provider-backed matchday fixtures on the home page, grouped into live, half-time, full-time, and scheduled sections — implemented.
 - Monitor the 100-request free-tier allowance from response headers, persist provider snapshots across restarts, paginate locally, and cache fixture detail responses — implemented.
 - Keep public team exploration separate from authenticated team selection and following — implemented.
-- Add fixture, team, standings, and statistics pages from normalized backend contracts.
-- Add cache and provider-status messaging without exposing provider internals.
+- Add team and standings pages from normalized backend contracts; fixture statistics, lineups, and timeline are implemented.
+- Keep cache and provider-status telemetry on an authenticated administrator endpoint, never in fan-facing pages or public fixture responses.
 
 Definition of done: contract tests cover normalization and degraded states; browser tests cover search-to-fixture navigation on desktop and mobile.
 

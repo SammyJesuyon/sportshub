@@ -8,16 +8,13 @@ from fastapi import APIRouter, Depends, HTTPException, Query, status
 from app.api.dependencies import get_sports_provider
 from app.integrations.api_sports import (
     ProviderFixture,
-    ProviderQuota,
     SportsProvider,
     fixture_bucket,
 )
 from app.schemas.fixture import (
-    CacheResponse,
     FixtureDetailResponse,
     FixtureResponse,
     MatchdayResponse,
-    QuotaResponse,
 )
 
 
@@ -34,10 +31,6 @@ def fixture_response(fixture: ProviderFixture) -> FixtureResponse:
         },
         bucket=fixture_bucket(fixture.status_short),
     )
-
-
-def quota_response(quota: ProviderQuota) -> QuotaResponse:
-    return QuotaResponse(**quota.__dict__)
 
 
 @router.get("/matchday", response_model=MatchdayResponse)
@@ -78,12 +71,6 @@ def get_matchday(
         total_items=total_items,
         total_pages=total_pages,
         counts=counts,
-        cache=CacheResponse(
-            hit=snapshot.cache_hit,
-            age_seconds=snapshot.cache_age_seconds,
-            ttl_seconds=snapshot.cache_ttl_seconds,
-        ),
-        quota=quota_response(snapshot.quota),
         fixtures=paginated,
     )
 
@@ -126,10 +113,19 @@ def get_fixture_detail(
         penalty_home=detail.penalty_home,
         penalty_away=detail.penalty_away,
         events=[event.__dict__ for event in detail.events],
-        cache=CacheResponse(
-            hit=snapshot.cache_hit,
-            age_seconds=snapshot.cache_age_seconds,
-            ttl_seconds=snapshot.cache_ttl_seconds,
-        ),
-        quota=quota_response(snapshot.quota),
+        statistics=[
+            {
+                **team.__dict__,
+                "statistics": [statistic.__dict__ for statistic in team.statistics],
+            }
+            for team in detail.statistics
+        ],
+        lineups=[
+            {
+                **lineup.__dict__,
+                "starting_xi": [player.__dict__ for player in lineup.starting_xi],
+                "substitutes": [player.__dict__ for player in lineup.substitutes],
+            }
+            for lineup in detail.lineups
+        ],
     )

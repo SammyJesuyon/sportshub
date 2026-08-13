@@ -5,10 +5,16 @@ from app.integrations.api_sports import (
     ProviderFixtureDetail,
     ProviderFixtureDetailSnapshot,
     ProviderFixtureEvent,
+    ProviderFixtureStatistic,
     ProviderFixtureTeam,
+    ProviderLineupPlayer,
     ProviderMatchdaySnapshot,
+    ProviderOperationalStatus,
     ProviderQuota,
+    ProviderTeamLineup,
+    ProviderTeamStatistics,
 )
+from app.db.models import User
 
 
 def fixture(fixture_id: int, status: str, elapsed=None):
@@ -67,6 +73,37 @@ class MatchdayProvider:
             penalty_home=None,
             penalty_away=None,
             events=[ProviderFixtureEvent(72, None, "Arsenal", "A. Player", None, "Goal", "Normal Goal")],
+            statistics=[
+                ProviderTeamStatistics(
+                    42,
+                    "Arsenal",
+                    None,
+                    [
+                        ProviderFixtureStatistic("Ball Possession", "58%"),
+                        ProviderFixtureStatistic("Shots on Goal", "7"),
+                    ],
+                ),
+                ProviderTeamStatistics(
+                    49,
+                    "Chelsea",
+                    None,
+                    [
+                        ProviderFixtureStatistic("Ball Possession", "42%"),
+                        ProviderFixtureStatistic("Shots on Goal", "3"),
+                    ],
+                ),
+            ],
+            lineups=[
+                ProviderTeamLineup(
+                    42,
+                    "Arsenal",
+                    None,
+                    "4-3-3",
+                    "M. Coach",
+                    [ProviderLineupPlayer(1, "A. Keeper", 1, "G", "1:1")],
+                    [ProviderLineupPlayer(2, "A. Substitute", 12, "D", None)],
+                )
+            ],
         )
         return ProviderFixtureDetailSnapshot(
             detail=detail,
@@ -76,8 +113,16 @@ class MatchdayProvider:
             quota=ProviderQuota(100, 70, 10, 8, "2026-08-13T20:00:01+00:00"),
         )
 
+    def operational_status(self):
+        return ProviderOperationalStatus(
+            quota=ProviderQuota(100, 70, 10, 8, "2026-08-13T20:00:01+00:00"),
+            matchday_cache_entries=1,
+            fixture_detail_cache_entries=1,
+            persistent_cache_enabled=True,
+        )
 
-def test_matchday_paginates_cached_snapshot_and_exposes_quota(client):
+
+def test_matchday_paginates_without_exposing_operational_metadata(client):
     original = client.app.state.sports_provider
     client.app.state.sports_provider = MatchdayProvider()
     try:
@@ -101,12 +146,12 @@ def test_matchday_paginates_cached_snapshot_and_exposes_quota(client):
         "full_time": 1,
         "scheduled": 1,
     }
-    assert payload["cache"] == {"hit": True, "age_seconds": 12, "ttl_seconds": 300}
-    assert payload["quota"]["daily_remaining"] == 71
+    assert "cache" not in payload
+    assert "quota" not in payload
     assert [item["bucket"] for item in live.json()["fixtures"]] == ["live"]
 
 
-def test_fixture_detail_returns_events_and_cache_metadata(client):
+def test_fixture_detail_returns_timeline_statistics_and_lineups(client):
     original = client.app.state.sports_provider
     client.app.state.sports_provider = MatchdayProvider()
     try:
@@ -119,7 +164,45 @@ def test_fixture_detail_returns_events_and_cache_metadata(client):
     assert payload["fixture"]["fixture_id"] == 1
     assert payload["venue_name"] == "Emirates Stadium"
     assert payload["events"][0]["detail"] == "Normal Goal"
-    assert payload["quota"]["daily_remaining"] == 70
+    assert payload["statistics"][0]["statistics"][0] == {
+        "name": "Ball Possession",
+        "value": "58%",
+    }
+    assert payload["lineups"][0]["formation"] == "4-3-3"
+    assert payload["lineups"][0]["starting_xi"][0]["name"] == "A. Keeper"
+    assert "cache" not in payload
+    assert "quota" not in payload
+
+
+def test_provider_status_is_admin_only(client, fan):
+    original = client.app.state.sports_provider
+    client.app.state.sports_provider = MatchdayProvider()
+    try:
+        forbidden = client.get("/api/v1/admin/provider-status", headers=fan["headers"])
+        with client.app.state.session_factory() as db:
+            user = db.get(User, fan["user"]["id"])
+            user.role = "admin"
+            db.commit()
+        allowed = client.get("/api/v1/admin/provider-status", headers=fan["headers"])
+    finally:
+        client.app.state.sports_provider = original
+
+    assert forbidden.status_code == 403
+    assert allowed.status_code == 200
+    assert allowed.json() == {
+        "quota": {
+            "daily_limit": 100,
+            "daily_remaining": 70,
+            "minute_limit": 10,
+            "minute_remaining": 8,
+            "observed_at": "2026-08-13T20:00:01+00:00",
+        },
+        "cache": {
+            "matchday_entries": 1,
+            "fixture_detail_entries": 1,
+            "persistent": True,
+        },
+    }
 
 
 def test_fixture_detail_not_found_does_not_make_detail_call(client):
