@@ -17,6 +17,8 @@ sportshub/
 
 ```bash
 cp .env.example .env
+cp sportshub-backend/.env.example sportshub-backend/.env
+# Add API_SPORTS_KEY to sportshub-backend/.env
 docker compose up --build
 ```
 

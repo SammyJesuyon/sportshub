@@ -50,6 +50,9 @@ class ApiSportsAdapter:
             )
             response.raise_for_status()
         payload = response.json()
+        provider_errors = payload.get("errors")
+        if provider_errors:
+            raise ValueError("API-Sports rejected the request")
         results = []
         for item in payload.get("response", []):
             team = item.get("team", {})

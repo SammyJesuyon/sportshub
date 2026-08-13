@@ -12,6 +12,18 @@ FastAPI modular monolith for the SportsHub CS425 miniature. The backend lives as
 
 The client never submits `userId` for self-service preference operations. Team following and notification settings remain separate transactions.
 
+## Football provider
+
+Set the backend-specific `sportshub-backend/.env` from `.env.example`:
+
+```bash
+SPORTS_PROVIDER=api-sports
+API_SPORTS_KEY=your-key
+API_SPORTS_BASE_URL=https://v3.football.api-sports.io
+```
+
+The [API-Football dashboard](https://dashboard.api-football.com/) manages the subscription and key; it is not used as the runtime API URL. Docker Compose reads this backend `.env` without exposing the key to the frontend.
+
 ## Database
 
 PostgreSQL is the development and production system of record. Alembic owns the schema:
