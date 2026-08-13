@@ -14,7 +14,11 @@ from app.integrations.api_sports import ApiSportsAdapter, SampleSportsAdapter, S
 
 def select_sports_provider(settings: Settings) -> SportsProvider:
     if settings.sports_provider == "api-sports":
-        return ApiSportsAdapter(settings.api_sports_key, settings.api_sports_base_url)
+        return ApiSportsAdapter(
+            settings.api_sports_key,
+            settings.api_sports_base_url,
+            settings.api_sports_cache_path,
+        )
     return SampleSportsAdapter()
 
 

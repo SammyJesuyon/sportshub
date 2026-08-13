@@ -6,7 +6,17 @@ test('home page is usable at the configured viewport', async ({ page }) => {
   await expect(page.getByRole('navigation', { name: /primary/i })).toBeVisible()
   await expect(page.getByRole('link', { name: /sign in/i })).toBeVisible()
   await expect(page.getByRole('heading', { name: /matchday center/i })).toBeVisible()
-  await expect(page.getByRole('heading', { name: /live now/i })).toBeVisible()
+  await expect(page.getByRole('complementary', { name: /football data usage/i })).toBeVisible()
+  await expect(page.getByRole('tablist', { name: /fixture status/i })).toBeVisible()
+  await expect(page.getByLabel(/fixture pagination/i)).toBeVisible()
+
+  const firstFixture = page.getByRole('link', { name: /view .* fixture details/i }).first()
+  if (await firstFixture.count()) {
+    await firstFixture.click()
+    await expect(page).toHaveURL(/\/fixtures\/\d+\?date=/)
+    await page.goBack()
+    await expect(page.getByRole('heading', { name: /matchday center/i })).toBeVisible()
+  }
 
   await page.getByRole('link', { name: /explore teams/i }).click()
   await expect(page).toHaveURL(/\/explore\/teams$/)

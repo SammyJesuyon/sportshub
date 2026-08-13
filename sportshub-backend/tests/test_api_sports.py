@@ -96,7 +96,8 @@ def test_api_sports_normalizes_matchday_fixtures(monkeypatch):
     monkeypatch.setattr(httpx.Client, "get", fake_get)
 
     adapter = ApiSportsAdapter("secret-key", "https://v3.football.api-sports.io")
-    fixtures = adapter.fixtures_for_date(date(2026, 8, 13))
+    snapshot = adapter.matchday_snapshot(date(2026, 8, 13))
+    fixtures = snapshot.fixtures
 
     assert len(fixtures) == 1
     assert fixtures[0].fixture_id == 9001
@@ -104,5 +105,39 @@ def test_api_sports_normalizes_matchday_fixtures(monkeypatch):
     assert fixtures[0].home.name == "Arsenal"
     assert fixtures[0].home.goals == 2
 
-    assert adapter.fixtures_for_date(date(2026, 8, 13)) == fixtures
+    cached = adapter.matchday_snapshot(date(2026, 8, 13))
+    assert cached.fixtures == fixtures
+    assert cached.cache_hit is True
     assert call_count == 1
+
+
+def test_matchday_cache_survives_adapter_restart(monkeypatch, tmp_path):
+    calls = 0
+
+    def fake_get(client, url, *, params, headers):
+        nonlocal calls
+        calls += 1
+        request = httpx.Request("GET", url, params=params, headers=headers)
+        return httpx.Response(
+            200,
+            request=request,
+            headers={
+                "x-ratelimit-requests-limit": "100",
+                "x-ratelimit-requests-remaining": "70",
+                "x-ratelimit-limit": "10",
+                "x-ratelimit-remaining": "9",
+            },
+            json={"errors": [], "response": []},
+        )
+
+    monkeypatch.setattr(httpx.Client, "get", fake_get)
+    cache_path = tmp_path / "provider-cache.json"
+    first = ApiSportsAdapter("secret", "https://v3.football.api-sports.io", str(cache_path))
+    first.matchday_snapshot(date(2026, 8, 13))
+
+    restored = ApiSportsAdapter("secret", "https://v3.football.api-sports.io", str(cache_path))
+    snapshot = restored.matchday_snapshot(date(2026, 8, 13))
+
+    assert snapshot.cache_hit is True
+    assert snapshot.quota.daily_remaining == 70
+    assert calls == 1

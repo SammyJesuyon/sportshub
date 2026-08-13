@@ -1,4 +1,4 @@
-import type { Matchday, NotificationPreferences, Team, TeamPreferenceResult, TokenResponse } from './types'
+import type { FixtureBucket, FixtureDetail, Matchday, NotificationPreferences, Team, TeamPreferenceResult, TokenResponse } from './types'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8010/api/v1'
 
@@ -40,7 +40,12 @@ export const api = {
   login: (body: { email: string; password: string }) =>
     request<TokenResponse>('/auth/login', { method: 'POST', body: JSON.stringify(body) }),
   me: (token: string) => request<TokenResponse['user']>('/auth/me', {}, token),
-  matchday: () => request<Matchday>('/fixtures/matchday'),
+  matchday: (bucket: FixtureBucket, page = 1, pageSize = 12) => request<Matchday>(
+    `/fixtures/matchday?bucket=${bucket}&page=${page}&page_size=${pageSize}`,
+  ),
+  fixtureDetail: (fixtureId: number, fixtureDate: string) => request<FixtureDetail>(
+    `/fixtures/${fixtureId}?date=${encodeURIComponent(fixtureDate)}`,
+  ),
   searchTeams: (query: string) => request<Team[]>(`/teams/?search=${encodeURIComponent(query)}`),
   followedTeams: (token: string) => request<Team[]>('/users/me/team-preferences', {}, token),
   followTeam: (token: string, teamId: string) => request<TeamPreferenceResult>(

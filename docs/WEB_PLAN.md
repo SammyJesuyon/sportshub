@@ -24,6 +24,7 @@ Definition of done: component tests, PostgreSQL integration suite, web productio
 ### 2. Sports browsing — in progress
 
 - Show provider-backed matchday fixtures on the home page, grouped into live, half-time, full-time, and scheduled sections — implemented.
+- Monitor the 100-request free-tier allowance from response headers, persist provider snapshots across restarts, paginate locally, and cache fixture detail responses — implemented.
 - Keep public team exploration separate from authenticated team selection and following — implemented.
 - Add fixture, team, standings, and statistics pages from normalized backend contracts.
 - Add cache and provider-status messaging without exposing provider internals.

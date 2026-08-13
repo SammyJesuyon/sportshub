@@ -21,8 +21,11 @@ afterEach(() => vi.restoreAllMocks())
 describe('SportsHub web foundation', () => {
   it('renders real matchday sections and distinct team journeys', async () => {
     vi.spyOn(globalThis, 'fetch').mockImplementation((input) => {
-      if (String(input).endsWith('/fixtures/matchday')) return jsonResponse({
-        date: '2026-08-13', timezone: 'UTC', fixtures: [
+      if (String(input).includes('/fixtures/matchday?')) return jsonResponse({
+        date: '2026-08-13', timezone: 'UTC', bucket: 'live', page: 1, page_size: 12, total_items: 1, total_pages: 1,
+        counts: { live: 1, half_time: 0, full_time: 0, scheduled: 0 },
+        cache: { hit: true, age_seconds: 5, ttl_seconds: 300 },
+        quota: { daily_limit: 100, daily_remaining: 71, minute_limit: 10, minute_remaining: 9, observed_at: '2026-08-13T20:00:00Z' }, fixtures: [
           { fixture_id: 1, kickoff: '2026-08-13T19:00:00+00:00', timezone: 'UTC', league_id: 39, league_name: 'Premier League', league_logo_url: null, status_short: '2H', status_long: 'Second Half', elapsed: 72, bucket: 'live', home: { provider_id: 42, name: 'Arsenal', logo_url: null, goals: 2 }, away: { provider_id: 49, name: 'Chelsea', logo_url: null, goals: 1 } },
         ],
       })
@@ -34,6 +37,25 @@ describe('SportsHub web foundation', () => {
     expect(screen.getByRole('link', { name: /explore teams/i })).toHaveAttribute('href', '/explore/teams')
     expect(await screen.findByRole('heading', { name: /live now/i })).toBeInTheDocument()
     expect(screen.getAllByText('Arsenal')).not.toHaveLength(0)
+    expect(screen.getByText(/71 \/ 100 remaining/i)).toBeInTheDocument()
+    expect(screen.getByText(/page 1 of 1/i)).toBeInTheDocument()
+  })
+
+  it('opens cached fixture details from the public matchday route', async () => {
+    vi.spyOn(globalThis, 'fetch').mockImplementation((input) => {
+      if (String(input).includes('/fixtures/1?date=')) return jsonResponse({
+        fixture: { fixture_id: 1, kickoff: '2026-08-13T19:00:00+00:00', timezone: 'UTC', league_id: 39, league_name: 'Premier League', league_logo_url: null, status_short: 'FT', status_long: 'Match Finished', elapsed: 90, bucket: 'full_time', home: { provider_id: 42, name: 'Arsenal', logo_url: null, goals: 2 }, away: { provider_id: 49, name: 'Chelsea', logo_url: null, goals: 1 } },
+        referee: 'A. Referee', venue_name: 'Emirates Stadium', venue_city: 'London', halftime_home: 1, halftime_away: 0, fulltime_home: 2, fulltime_away: 1, extratime_home: null, extratime_away: null, penalty_home: null, penalty_away: null,
+        events: [{ elapsed: 72, extra: null, team_name: 'Arsenal', player_name: 'A. Player', assist_name: null, event_type: 'Goal', detail: 'Normal Goal' }],
+        cache: { hit: true, age_seconds: 12, ttl_seconds: 86400 }, quota: { daily_limit: 100, daily_remaining: 70, minute_limit: 10, minute_remaining: 8, observed_at: '2026-08-13T20:00:00Z' },
+      })
+      return jsonResponse({}, 404)
+    })
+    renderApp('/fixtures/1?date=2026-08-13')
+    expect(await screen.findByRole('heading', { name: /arsenal vs chelsea/i })).toBeInTheDocument()
+    expect(screen.getByText(/emirates stadium/i)).toBeInTheDocument()
+    expect(screen.getByText(/normal goal/i)).toBeInTheDocument()
+    expect(screen.getByText(/70 daily api requests remaining/i)).toBeInTheDocument()
   })
 
   it('protects team preferences behind authentication', async () => {

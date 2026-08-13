@@ -17,6 +17,7 @@ class Settings(BaseSettings):
     sports_provider: Literal["sample", "api-sports"] = "sample"
     api_sports_key: str = ""
     api_sports_base_url: str = "https://v3.football.api-sports.io"
+    api_sports_cache_path: str = ".cache/api_sports_cache.json"
     cors_origins: str = "http://localhost:3000,http://localhost:5173"
 
     @property

@@ -7,6 +7,7 @@ FastAPI modular monolith for the SportsHub CS425 miniature. The backend lives as
 - account registration, login, current-user bearer authentication;
 - team search through a stable sports-provider adapter;
 - public matchday fixtures grouped as live, half-time, full-time, or scheduled;
+- API allowance telemetry, status-aware persistent caching, local match pagination, and cached fixture details;
 - authenticated team following with stable internal IDs;
 - global notification preferences and idempotent Expo device registration;
 - liveness and database-readiness endpoints.

@@ -1,7 +1,9 @@
-from dataclasses import dataclass
-from datetime import date
-from threading import Lock
-from time import monotonic
+from dataclasses import asdict, dataclass
+from datetime import date, datetime, timezone
+import json
+from pathlib import Path
+from threading import RLock
+from time import time
 from typing import Any, Optional, Protocol
 
 import httpx
@@ -38,10 +40,76 @@ class ProviderFixture:
     away: ProviderFixtureTeam
 
 
+@dataclass(frozen=True)
+class ProviderFixtureEvent:
+    elapsed: Optional[int]
+    extra: Optional[int]
+    team_name: str
+    player_name: Optional[str]
+    assist_name: Optional[str]
+    event_type: str
+    detail: str
+
+
+@dataclass(frozen=True)
+class ProviderFixtureDetail:
+    fixture: ProviderFixture
+    referee: Optional[str]
+    venue_name: Optional[str]
+    venue_city: Optional[str]
+    halftime_home: Optional[int]
+    halftime_away: Optional[int]
+    fulltime_home: Optional[int]
+    fulltime_away: Optional[int]
+    extratime_home: Optional[int]
+    extratime_away: Optional[int]
+    penalty_home: Optional[int]
+    penalty_away: Optional[int]
+    events: list[ProviderFixtureEvent]
+
+
+@dataclass(frozen=True)
+class ProviderQuota:
+    daily_limit: Optional[int] = None
+    daily_remaining: Optional[int] = None
+    minute_limit: Optional[int] = None
+    minute_remaining: Optional[int] = None
+    observed_at: Optional[str] = None
+
+
+@dataclass(frozen=True)
+class ProviderMatchdaySnapshot:
+    fixtures: list[ProviderFixture]
+    cache_hit: bool
+    cache_age_seconds: int
+    cache_ttl_seconds: int
+    quota: ProviderQuota
+
+
+@dataclass(frozen=True)
+class ProviderFixtureDetailSnapshot:
+    detail: ProviderFixtureDetail
+    cache_hit: bool
+    cache_age_seconds: int
+    cache_ttl_seconds: int
+    quota: ProviderQuota
+
+
+@dataclass
+class _CacheEntry:
+    stored_at: float
+    ttl_seconds: int
+    value: Any
+
+
 class SportsProvider(Protocol):
     def search_teams(self, query: str) -> list[ProviderTeam]: ...
 
-    def fixtures_for_date(self, fixture_date: date) -> list[ProviderFixture]: ...
+    def matchday_snapshot(self, fixture_date: date) -> ProviderMatchdaySnapshot: ...
+
+    def fixture_detail(
+        self, fixture: ProviderFixture
+    ) -> ProviderFixtureDetailSnapshot: ...
 
 
 LIVE_FIXTURE_STATUSES = frozenset({"1H", "2H", "ET", "BT", "P", "LIVE"})
@@ -74,20 +142,42 @@ class SampleSportsAdapter:
         normalized = query.casefold()
         return [team for team in self._teams if normalized in team.name.casefold()]
 
-    def fixtures_for_date(self, fixture_date: date) -> list[ProviderFixture]:
-        return []
+    def matchday_snapshot(self, fixture_date: date) -> ProviderMatchdaySnapshot:
+        return ProviderMatchdaySnapshot([], True, 0, 3600, ProviderQuota())
+
+    def fixture_detail(self, fixture: ProviderFixture) -> ProviderFixtureDetailSnapshot:
+        detail = ProviderFixtureDetail(
+            fixture=fixture,
+            referee=None,
+            venue_name=None,
+            venue_city=None,
+            halftime_home=None,
+            halftime_away=None,
+            fulltime_home=None,
+            fulltime_away=None,
+            extratime_home=None,
+            extratime_away=None,
+            penalty_home=None,
+            penalty_away=None,
+            events=[],
+        )
+        return ProviderFixtureDetailSnapshot(detail, True, 0, 3600, ProviderQuota())
 
 
 class ApiSportsAdapter:
-    """API-Sports boundary for football teams and matchday fixtures."""
+    """Quota-aware API-Sports boundary for football teams and fixtures."""
 
-    def __init__(self, api_key: str, base_url: str):
+    def __init__(self, api_key: str, base_url: str, cache_path: Optional[str] = None):
         if not api_key:
             raise ValueError("API_SPORTS_KEY is required when SPORTS_PROVIDER=api-sports")
         self.api_key = api_key
         self.base_url = base_url.rstrip("/")
-        self._fixture_cache: dict[date, tuple[float, list[ProviderFixture]]] = {}
-        self._fixture_cache_lock = Lock()
+        self.cache_path = Path(cache_path) if cache_path else None
+        self._matchday_cache: dict[date, _CacheEntry] = {}
+        self._detail_cache: dict[int, _CacheEntry] = {}
+        self._cache_lock = RLock()
+        self._quota = ProviderQuota()
+        self._restore_cache()
 
     def search_teams(self, query: str) -> list[ProviderTeam]:
         payload = self._get("teams", {"search": query})
@@ -105,11 +195,11 @@ class ApiSportsAdapter:
                 )
         return results
 
-    def fixtures_for_date(self, fixture_date: date) -> list[ProviderFixture]:
-        with self._fixture_cache_lock:
-            cached = self._fixture_cache.get(fixture_date)
-            if cached and monotonic() - cached[0] < 30:
-                return list(cached[1])
+    def matchday_snapshot(self, fixture_date: date) -> ProviderMatchdaySnapshot:
+        with self._cache_lock:
+            cached = self._matchday_cache.get(fixture_date)
+            if cached and self._is_fresh(cached):
+                return self._matchday_result(cached, True)
 
             payload = self._get(
                 "fixtures", {"date": fixture_date.isoformat(), "timezone": "UTC"}
@@ -119,8 +209,38 @@ class ApiSportsAdapter:
                 for item in payload.get("response", [])
                 if (fixture := self._normalize_fixture(item)) is not None
             ]
-            self._fixture_cache = {fixture_date: (monotonic(), fixtures)}
-            return list(fixtures)
+            entry = _CacheEntry(
+                stored_at=time(),
+                ttl_seconds=self._matchday_ttl(fixture_date, fixtures),
+                value=fixtures,
+            )
+            self._matchday_cache = {fixture_date: entry}
+            self._persist_cache()
+            return self._matchday_result(entry, False)
+
+    def fixture_detail(
+        self, fixture: ProviderFixture
+    ) -> ProviderFixtureDetailSnapshot:
+        with self._cache_lock:
+            cached = self._detail_cache.get(fixture.fixture_id)
+            if cached and self._is_fresh(cached):
+                return self._detail_result(cached, True)
+
+            payload = self._get(
+                "fixtures", {"id": fixture.fixture_id, "timezone": "UTC"}
+            )
+            items = payload.get("response", [])
+            detail = self._normalize_fixture_detail(items[0], fixture) if items else None
+            if detail is None:
+                raise ValueError("API-Sports fixture detail was unavailable")
+            entry = _CacheEntry(
+                stored_at=time(),
+                ttl_seconds=self._detail_ttl(fixture),
+                value=detail,
+            )
+            self._detail_cache[fixture.fixture_id] = entry
+            self._persist_cache()
+            return self._detail_result(entry, False)
 
     def _get(self, resource: str, params: dict[str, Any]) -> dict[str, Any]:
         with httpx.Client(timeout=10.0) as client:
@@ -129,12 +249,166 @@ class ApiSportsAdapter:
                 params=params,
                 headers={"x-apisports-key": self.api_key},
             )
+            self._capture_quota(response.headers)
             response.raise_for_status()
         payload = response.json()
-        provider_errors = payload.get("errors")
-        if provider_errors:
+        if payload.get("errors"):
             raise ValueError("API-Sports rejected the request")
         return payload
+
+    def _capture_quota(self, headers: httpx.Headers) -> None:
+        self._quota = ProviderQuota(
+            daily_limit=self._header_int(headers, "x-ratelimit-requests-limit"),
+            daily_remaining=self._header_int(headers, "x-ratelimit-requests-remaining"),
+            minute_limit=self._header_int(headers, "x-ratelimit-limit"),
+            minute_remaining=self._header_int(headers, "x-ratelimit-remaining"),
+            observed_at=datetime.now(timezone.utc).isoformat(),
+        )
+        self._persist_cache()
+
+    def _matchday_ttl(
+        self, fixture_date: date, fixtures: list[ProviderFixture]
+    ) -> int:
+        today = datetime.now(timezone.utc).date()
+        buckets = {fixture_bucket(fixture.status_short) for fixture in fixtures}
+        if fixture_date < today:
+            base_ttl = 86_400
+        elif "live" in buckets or "half_time" in buckets:
+            base_ttl = 300
+        elif "scheduled" in buckets:
+            base_ttl = 1_800
+        else:
+            base_ttl = 21_600
+        return self._quota_adjusted_ttl(base_ttl)
+
+    def _detail_ttl(self, fixture: ProviderFixture) -> int:
+        bucket = fixture_bucket(fixture.status_short)
+        base_ttl = {
+            "live": 300,
+            "half_time": 300,
+            "full_time": 86_400,
+            "scheduled": 1_800,
+        }[bucket]
+        return self._quota_adjusted_ttl(base_ttl)
+
+    def _quota_adjusted_ttl(self, base_ttl: int) -> int:
+        remaining = self._quota.daily_remaining
+        if remaining is None:
+            return base_ttl
+        if remaining <= 10:
+            return max(base_ttl, 21_600)
+        if remaining <= 25:
+            return max(base_ttl, 3_600)
+        if remaining <= 50:
+            return max(base_ttl, 900)
+        return base_ttl
+
+    @staticmethod
+    def _is_fresh(entry: _CacheEntry) -> bool:
+        return time() - entry.stored_at < entry.ttl_seconds
+
+    def _matchday_result(
+        self, entry: _CacheEntry, cache_hit: bool
+    ) -> ProviderMatchdaySnapshot:
+        return ProviderMatchdaySnapshot(
+            fixtures=list(entry.value),
+            cache_hit=cache_hit,
+            cache_age_seconds=max(0, int(time() - entry.stored_at)),
+            cache_ttl_seconds=entry.ttl_seconds,
+            quota=self._quota,
+        )
+
+    def _detail_result(
+        self, entry: _CacheEntry, cache_hit: bool
+    ) -> ProviderFixtureDetailSnapshot:
+        return ProviderFixtureDetailSnapshot(
+            detail=entry.value,
+            cache_hit=cache_hit,
+            cache_age_seconds=max(0, int(time() - entry.stored_at)),
+            cache_ttl_seconds=entry.ttl_seconds,
+            quota=self._quota,
+        )
+
+    @staticmethod
+    def _header_int(headers: httpx.Headers, name: str) -> Optional[int]:
+        raw_value = headers.get(name)
+        try:
+            return int(raw_value) if raw_value is not None else None
+        except ValueError:
+            return None
+
+    def _persist_cache(self) -> None:
+        if self.cache_path is None:
+            return
+        payload = {
+            "quota": asdict(self._quota),
+            "matchdays": {
+                key.isoformat(): {
+                    "stored_at": entry.stored_at,
+                    "ttl_seconds": entry.ttl_seconds,
+                    "fixtures": [asdict(fixture) for fixture in entry.value],
+                }
+                for key, entry in self._matchday_cache.items()
+            },
+            "details": {
+                str(key): {
+                    "stored_at": entry.stored_at,
+                    "ttl_seconds": entry.ttl_seconds,
+                    "detail": asdict(entry.value),
+                }
+                for key, entry in self._detail_cache.items()
+            },
+        }
+        self.cache_path.parent.mkdir(parents=True, exist_ok=True)
+        temporary = self.cache_path.with_suffix(".tmp")
+        temporary.write_text(json.dumps(payload), encoding="utf-8")
+        temporary.replace(self.cache_path)
+
+    def _restore_cache(self) -> None:
+        if self.cache_path is None or not self.cache_path.exists():
+            return
+        try:
+            payload = json.loads(self.cache_path.read_text(encoding="utf-8"))
+            self._quota = ProviderQuota(**payload.get("quota", {}))
+            for raw_date, cached in payload.get("matchdays", {}).items():
+                entry = _CacheEntry(
+                    stored_at=float(cached["stored_at"]),
+                    ttl_seconds=int(cached["ttl_seconds"]),
+                    value=[self._fixture_from_dict(item) for item in cached["fixtures"]],
+                )
+                if self._is_fresh(entry):
+                    self._matchday_cache[date.fromisoformat(raw_date)] = entry
+            for raw_id, cached in payload.get("details", {}).items():
+                entry = _CacheEntry(
+                    stored_at=float(cached["stored_at"]),
+                    ttl_seconds=int(cached["ttl_seconds"]),
+                    value=self._detail_from_dict(cached["detail"]),
+                )
+                if self._is_fresh(entry):
+                    self._detail_cache[int(raw_id)] = entry
+        except (OSError, ValueError, KeyError, TypeError, json.JSONDecodeError):
+            self._matchday_cache = {}
+            self._detail_cache = {}
+
+    @staticmethod
+    def _fixture_from_dict(item: dict[str, Any]) -> ProviderFixture:
+        return ProviderFixture(
+            **{
+                **item,
+                "home": ProviderFixtureTeam(**item["home"]),
+                "away": ProviderFixtureTeam(**item["away"]),
+            }
+        )
+
+    @classmethod
+    def _detail_from_dict(cls, item: dict[str, Any]) -> ProviderFixtureDetail:
+        return ProviderFixtureDetail(
+            **{
+                **item,
+                "fixture": cls._fixture_from_dict(item["fixture"]),
+                "events": [ProviderFixtureEvent(**event) for event in item["events"]],
+            }
+        )
 
     @staticmethod
     def _normalize_fixture(item: dict[str, Any]) -> Optional[ProviderFixture]:
@@ -169,4 +443,45 @@ class ApiSportsAdapter:
                 logo_url=away.get("logo"),
                 goals=goals.get("away"),
             ),
+        )
+
+    @classmethod
+    def _normalize_fixture_detail(
+        cls, item: dict[str, Any], fallback: ProviderFixture
+    ) -> Optional[ProviderFixtureDetail]:
+        fixture = cls._normalize_fixture(item) or fallback
+        fixture_data = item.get("fixture", {})
+        venue = fixture_data.get("venue", {})
+        score = item.get("score", {})
+        events = []
+        for event in item.get("events", []):
+            time = event.get("time", {})
+            team = event.get("team", {})
+            player = event.get("player", {})
+            assist = event.get("assist", {})
+            events.append(
+                ProviderFixtureEvent(
+                    elapsed=time.get("elapsed"),
+                    extra=time.get("extra"),
+                    team_name=team.get("name") or "Team",
+                    player_name=player.get("name"),
+                    assist_name=assist.get("name"),
+                    event_type=event.get("type") or "Event",
+                    detail=event.get("detail") or "Match event",
+                )
+            )
+        return ProviderFixtureDetail(
+            fixture=fixture,
+            referee=fixture_data.get("referee"),
+            venue_name=venue.get("name"),
+            venue_city=venue.get("city"),
+            halftime_home=(score.get("halftime") or {}).get("home"),
+            halftime_away=(score.get("halftime") or {}).get("away"),
+            fulltime_home=(score.get("fulltime") or {}).get("home"),
+            fulltime_away=(score.get("fulltime") or {}).get("away"),
+            extratime_home=(score.get("extratime") or {}).get("home"),
+            extratime_away=(score.get("extratime") or {}).get("away"),
+            penalty_home=(score.get("penalty") or {}).get("home"),
+            penalty_away=(score.get("penalty") or {}).get("away"),
+            events=events,
         )

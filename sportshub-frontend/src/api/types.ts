@@ -61,5 +61,55 @@ export interface Fixture {
 export interface Matchday {
   date: string
   timezone: string
+  bucket: FixtureBucket | null
+  page: number
+  page_size: number
+  total_items: number
+  total_pages: number
+  counts: Record<FixtureBucket, number>
+  cache: CacheStatus
+  quota: ProviderQuota
   fixtures: Fixture[]
+}
+
+export interface ProviderQuota {
+  daily_limit: number | null
+  daily_remaining: number | null
+  minute_limit: number | null
+  minute_remaining: number | null
+  observed_at: string | null
+}
+
+export interface CacheStatus {
+  hit: boolean
+  age_seconds: number
+  ttl_seconds: number
+}
+
+export interface FixtureEvent {
+  elapsed: number | null
+  extra: number | null
+  team_name: string
+  player_name: string | null
+  assist_name: string | null
+  event_type: string
+  detail: string
+}
+
+export interface FixtureDetail {
+  fixture: Fixture
+  referee: string | null
+  venue_name: string | null
+  venue_city: string | null
+  halftime_home: number | null
+  halftime_away: number | null
+  fulltime_home: number | null
+  fulltime_away: number | null
+  extratime_home: number | null
+  extratime_away: number | null
+  penalty_home: number | null
+  penalty_away: number | null
+  events: FixtureEvent[]
+  cache: CacheStatus
+  quota: ProviderQuota
 }
