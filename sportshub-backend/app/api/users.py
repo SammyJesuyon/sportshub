@@ -31,3 +31,14 @@ def update_team_preferences(
         )
     return result
 
+
+@router.delete("/me/team-preferences/{team_id}", response_model=TeamResponse)
+def remove_team_preference(
+    team_id: str,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    team = TeamPreferenceService(db).remove(current_user, team_id)
+    if team is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Followed team not found")
+    return team

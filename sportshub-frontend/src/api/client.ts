@@ -53,6 +53,11 @@ export const api = {
     { method: 'PUT', body: JSON.stringify({ team_ids: [teamId] }) },
     token,
   ),
+  removeTeam: (token: string, teamId: string) => request<Team>(
+    `/users/me/team-preferences/${encodeURIComponent(teamId)}`,
+    { method: 'DELETE' },
+    token,
+  ),
   notificationPreferences: (token: string) => request<NotificationPreferences>('/notifications/preferences', {}, token),
   updateNotificationPreferences: (token: string, preferences: Partial<NotificationPreferences>) => request<NotificationPreferences>(
     '/notifications/preferences',

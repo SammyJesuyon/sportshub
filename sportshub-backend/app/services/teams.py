@@ -1,4 +1,4 @@
-from typing import List, Union
+from typing import List, Optional, Union
 
 from sqlalchemy import or_, select
 from sqlalchemy.orm import Session
@@ -114,3 +114,29 @@ class TeamPreferenceService:
             duplicate_count=len(existing_ids),
             not_found_ids=not_found,
         )
+
+    def remove(self, user: User, supplied_team_id: str) -> Optional[Team]:
+        filters = [Team.id == supplied_team_id, Team.third_party_id == supplied_team_id]
+        if supplied_team_id.isdigit():
+            filters.append(Team.api_team_id == int(supplied_team_id))
+
+        team = self.db.scalar(
+            select(Team)
+            .join(UserTeamPreference, UserTeamPreference.team_id == Team.id)
+            .where(
+                UserTeamPreference.user_id == user.id,
+                or_(*filters),
+            )
+        )
+        if team is None:
+            return None
+
+        association = self.db.scalar(
+            select(UserTeamPreference).where(
+                UserTeamPreference.user_id == user.id,
+                UserTeamPreference.team_id == team.id,
+            )
+        )
+        self.db.delete(association)
+        self.db.commit()
+        return team

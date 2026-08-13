@@ -80,6 +80,54 @@ def test_follow_rejects_browser_supplied_user_id(client, fan):
     assert response.status_code == 422
 
 
+def test_remove_team_only_deletes_current_users_association(client, fan):
+    arsenal = search_team(client, "Arsenal")
+    client.put(
+        "/api/v1/users/me/team-preferences",
+        headers=fan["headers"],
+        json={"team_ids": [arsenal["id"]]},
+    )
+    outsider = client.post(
+        "/api/v1/auth/register",
+        json={
+            "email": "other@example.com",
+            "username": "otherfan",
+            "password": "SecurePass123!",
+        },
+    ).json()
+    outsider_headers = {"Authorization": f"Bearer {outsider['access_token']}"}
+    client.put(
+        "/api/v1/users/me/team-preferences",
+        headers=outsider_headers,
+        json={"team_ids": [arsenal["id"]]},
+    )
+
+    removed = client.delete(
+        f"/api/v1/users/me/team-preferences/{arsenal['id']}",
+        headers=fan["headers"],
+    )
+    repeated = client.delete(
+        f"/api/v1/users/me/team-preferences/{arsenal['id']}",
+        headers=fan["headers"],
+    )
+
+    assert removed.status_code == 200
+    assert removed.json()["name"] == "Arsenal"
+    assert client.get(
+        "/api/v1/users/me/team-preferences", headers=fan["headers"]
+    ).json() == []
+    assert [team["name"] for team in client.get(
+        "/api/v1/users/me/team-preferences", headers=outsider_headers
+    ).json()] == ["Arsenal"]
+    assert search_team(client, "Arsenal")["id"] == arsenal["id"]
+    assert repeated.status_code == 404
+
+
+def test_remove_team_requires_authentication(client):
+    response = client.delete("/api/v1/users/me/team-preferences/team-1")
+    assert response.status_code == 401
+
+
 def test_unresolved_team_returns_not_found(client, fan):
     response = client.put(
         "/api/v1/users/me/team-preferences",

@@ -136,6 +136,31 @@ describe('SportsHub web foundation', () => {
     }))
   })
 
+  it('removes a followed team only after inline confirmation', async () => {
+    localStorage.setItem('sportshub.access_token', 'token-1')
+    const arsenal = { id: 'team-1', api_team_id: 42, third_party_id: '42', name: 'Arsenal', country: 'England', logo_url: null }
+    const fetchMock = vi.spyOn(globalThis, 'fetch').mockImplementation((input, init) => {
+      const url = String(input)
+      if (url.endsWith('/auth/me')) return jsonResponse({ id: 'user-1', email: 'fan@example.com', username: 'sportsfan', role: 'fan' })
+      if (url.endsWith('/notifications/inbox')) return jsonResponse({ unread_count: 0, total_items: 0, items: [] })
+      if (url.endsWith('/users/me/team-preferences') && (!init || init.method !== 'PUT')) return jsonResponse([arsenal])
+      if (url.endsWith('/users/me/team-preferences/team-1') && init?.method === 'DELETE') return jsonResponse(arsenal)
+      return jsonResponse({}, 404)
+    })
+    const user = userEvent.setup()
+    renderApp('/my/teams')
+    const remove = await screen.findByRole('button', { name: /remove arsenal from your hub/i })
+    await user.click(remove)
+    expect(screen.getByText('Arsenal')).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: /confirm remove arsenal/i }))
+    expect(await screen.findByText(/arsenal was removed from your hub/i)).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /remove arsenal from your hub/i })).not.toBeInTheDocument()
+    expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining('/users/me/team-preferences/team-1'), expect.objectContaining({
+      method: 'DELETE',
+      headers: expect.objectContaining({ Authorization: 'Bearer token-1' }),
+    }))
+  })
+
   it('shows persisted alert summaries and keeps the red unread count in sync', async () => {
     localStorage.setItem('sportshub.access_token', 'token-1')
     vi.spyOn(globalThis, 'fetch').mockImplementation((input, init) => {

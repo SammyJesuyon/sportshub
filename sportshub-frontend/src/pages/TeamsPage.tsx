@@ -40,6 +40,9 @@ export function MyTeamsPage() {
   const { token } = useAuth()
   const [followed, setFollowed] = useState<Team[]>([])
   const [error, setError] = useState('')
+  const [message, setMessage] = useState('')
+  const [confirmingTeamId, setConfirmingTeamId] = useState<string | null>(null)
+  const [removingTeamId, setRemovingTeamId] = useState<string | null>(null)
 
   useEffect(() => {
     if (token) api.followedTeams(token).then(setFollowed).catch(() => setError('Could not load followed teams.'))
@@ -47,10 +50,26 @@ export function MyTeamsPage() {
 
   const follow = async (team: Team) => {
     if (!token) return
+    setMessage('')
     await api.followTeam(token, team.id)
     setFollowed((current) => current.some((item) => item.id === team.id) ? current : [...current, team])
     window.dispatchEvent(new Event('sportshub:alerts-changed'))
   }
 
-  return <section className="workspace-page"><div className="page-intro"><span className="eyebrow">Personalize your hub</span><h1>Choose your teams</h1><p>This authenticated space changes your account and builds your personalized match feed.</p></div>{error && <div className="error-message" role="alert">{error}</div>}<div className="workspace-grid"><TeamSearch followed={followed} onFollow={follow} /><aside className="panel followed-panel"><span className="eyebrow">Your hub</span><h2>Following</h2>{followed.length ? followed.map((team) => <div className="followed-team" key={team.id}><strong>{team.name}</strong><span>{team.country}</span></div>) : <p className="empty-copy">No teams followed yet. Your personalized match feed starts here.</p>}</aside></div></section>
+  const remove = async (team: Team) => {
+    if (!token) return
+    setRemovingTeamId(team.id); setError(''); setMessage('')
+    try {
+      await api.removeTeam(token, team.id)
+      setFollowed((current) => current.filter((item) => item.id !== team.id))
+      setConfirmingTeamId(null)
+      setMessage(`${team.name} was removed from your hub.`)
+    } catch (reason) {
+      setError(reason instanceof Error ? reason.message : 'Could not remove that team.')
+    } finally {
+      setRemovingTeamId(null)
+    }
+  }
+
+  return <section className="workspace-page"><div className="page-intro"><span className="eyebrow">Personalize your hub</span><h1>Choose your teams</h1><p>This authenticated space changes your account and builds your personalized match feed.</p></div>{error && <div className="error-message" role="alert">{error}</div>}{message && <div className="success-message" role="status">{message}</div>}<div className="workspace-grid"><TeamSearch followed={followed} onFollow={follow} /><aside className="panel followed-panel"><span className="eyebrow">Your hub</span><h2>Following</h2>{followed.length ? followed.map((team) => <div className="followed-team" key={team.id}><div><strong>{team.name}</strong><span>{team.country ?? 'International'}</span></div>{confirmingTeamId === team.id ? <div className="remove-confirmation"><button className="team-remove confirm" disabled={removingTeamId === team.id} onClick={() => remove(team)} aria-label={`Confirm remove ${team.name}`}>{removingTeamId === team.id ? 'Removing…' : 'Confirm'}</button><button className="team-remove cancel" disabled={removingTeamId === team.id} onClick={() => setConfirmingTeamId(null)}>Cancel</button></div> : <button className="team-remove" onClick={() => { setConfirmingTeamId(team.id); setMessage('') }} aria-label={`Remove ${team.name} from your hub`}>Remove</button>}</div>) : <p className="empty-copy">No teams followed yet. Your personalized match feed starts here.</p>}</aside></div></section>
 }

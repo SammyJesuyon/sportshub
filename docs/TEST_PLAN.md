@@ -19,6 +19,7 @@ This plan verifies the CS425-sized SportsHub product. Tests should prove the sch
 - Protect `/teams` and `/alerts` in the browser.
 - Search teams and return stable internal IDs even when the provider uses external IDs.
 - Append missing user-team associations without duplicating an existing follow.
+- Remove only the authenticated user's team association after confirmation, without deleting the shared team or another user's follow.
 - Authenticate preference operations from the bearer token; never accept browser-supplied `userId`.
 - Commit team follows and their corresponding inbox records atomically.
 - Scope inbox records and read operations to the authenticated user; keep push delivery outside the current fan-facing workflow.

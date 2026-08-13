@@ -15,7 +15,7 @@ The web application is a responsive fan experience inside the SportsHub monorepo
 ### 1. Foundation — implemented
 
 - Responsive shell, registration, sign-in/sign-out, protected routes.
-- Team search and authenticated team following.
+- Team search plus authenticated adding and confirmed removal of followed teams.
 - Persisted, user-scoped in-app alert inbox with concise summaries, read state, and a red unread-count badge. Registration and new team follows produce initial inbox records; push delivery is not required for the current web experience.
 - Dockerized web/API/PostgreSQL workflow and automated migration gate.
 
