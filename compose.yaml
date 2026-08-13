@@ -40,7 +40,7 @@ services:
     environment:
       ENVIRONMENT: development
       DATABASE_URL: postgresql+psycopg2://${POSTGRES_USER:-sportshub}:${POSTGRES_PASSWORD:-sportshub_dev_password}@db:5432/${POSTGRES_DB:-sportshub}
-      CORS_ORIGINS: http://localhost:5173
+      CORS_ORIGINS: http://localhost:5173,http://127.0.0.1:5173
     ports:
       - "${API_PORT:-8010}:8000"
     volumes:

@@ -1,5 +1,6 @@
 import httpx
 import pytest
+from datetime import date
 
 from app.integrations.api_sports import ApiSportsAdapter
 
@@ -59,3 +60,49 @@ def test_api_sports_error_envelope_is_not_treated_as_empty_results(monkeypatch):
         ApiSportsAdapter("invalid-key", "https://v3.football.api-sports.io").search_teams(
             "Arsenal"
         )
+
+
+def test_api_sports_normalizes_matchday_fixtures(monkeypatch):
+    call_count = 0
+
+    def fake_get(client, url, *, params, headers):
+        nonlocal call_count
+        call_count += 1
+        request = httpx.Request("GET", url, params=params, headers=headers)
+        return httpx.Response(
+            200,
+            request=request,
+            json={
+                "errors": [],
+                "response": [
+                    {
+                        "fixture": {
+                            "id": 9001,
+                            "date": "2026-08-13T19:00:00+00:00",
+                            "timezone": "UTC",
+                            "status": {"long": "Second Half", "short": "2H", "elapsed": 72},
+                        },
+                        "league": {"id": 39, "name": "Premier League", "logo": "league.png"},
+                        "teams": {
+                            "home": {"id": 42, "name": "Arsenal", "logo": "arsenal.png"},
+                            "away": {"id": 49, "name": "Chelsea", "logo": "chelsea.png"},
+                        },
+                        "goals": {"home": 2, "away": 1},
+                    }
+                ],
+            },
+        )
+
+    monkeypatch.setattr(httpx.Client, "get", fake_get)
+
+    adapter = ApiSportsAdapter("secret-key", "https://v3.football.api-sports.io")
+    fixtures = adapter.fixtures_for_date(date(2026, 8, 13))
+
+    assert len(fixtures) == 1
+    assert fixtures[0].fixture_id == 9001
+    assert fixtures[0].status_short == "2H"
+    assert fixtures[0].home.name == "Arsenal"
+    assert fixtures[0].home.goals == 2
+
+    assert adapter.fixtures_for_date(date(2026, 8, 13)) == fixtures
+    assert call_count == 1

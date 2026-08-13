@@ -1,4 +1,4 @@
-import type { NotificationPreferences, Team, TeamPreferenceResult, TokenResponse } from './types'
+import type { Matchday, NotificationPreferences, Team, TeamPreferenceResult, TokenResponse } from './types'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8010/api/v1'
 
@@ -20,13 +20,14 @@ function errorMessage(payload: unknown): string {
 }
 
 async function request<T>(path: string, options: RequestInit = {}, token?: string): Promise<T> {
+  const headers: Record<string, string> = {
+    ...(options.headers as Record<string, string> | undefined),
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  }
+  if (options.body !== undefined) headers['Content-Type'] = 'application/json'
   const response = await fetch(`${API_BASE_URL}${path}`, {
     ...options,
-    headers: {
-      'Content-Type': 'application/json',
-      ...options.headers,
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    },
+    headers,
   })
   const payload = await response.json().catch(() => null)
   if (!response.ok) throw new ApiError(response.status, errorMessage(payload))
@@ -39,6 +40,7 @@ export const api = {
   login: (body: { email: string; password: string }) =>
     request<TokenResponse>('/auth/login', { method: 'POST', body: JSON.stringify(body) }),
   me: (token: string) => request<TokenResponse['user']>('/auth/me', {}, token),
+  matchday: () => request<Matchday>('/fixtures/matchday'),
   searchTeams: (query: string) => request<Team[]>(`/teams/?search=${encodeURIComponent(query)}`),
   followedTeams: (token: string) => request<Team[]>('/users/me/team-preferences', {}, token),
   followTeam: (token: string, teamId: string) => request<TeamPreferenceResult>(

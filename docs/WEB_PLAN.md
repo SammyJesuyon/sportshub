@@ -21,9 +21,10 @@ The web application is a responsive fan experience inside the SportsHub monorepo
 
 Definition of done: component tests, PostgreSQL integration suite, web production build, responsive browser inspection, and health checks all pass.
 
-### 2. Sports browsing
+### 2. Sports browsing — in progress
 
-- Replace clearly labeled fixture samples with provider-backed competitions and fixtures.
+- Show provider-backed matchday fixtures on the home page, grouped into live, half-time, full-time, and scheduled sections — implemented.
+- Keep public team exploration separate from authenticated team selection and following — implemented.
 - Add fixture, team, standings, and statistics pages from normalized backend contracts.
 - Add cache and provider-status messaging without exposing provider internals.
 

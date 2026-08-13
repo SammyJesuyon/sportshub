@@ -19,16 +19,40 @@ function renderApp(path = '/') {
 afterEach(() => vi.restoreAllMocks())
 
 describe('SportsHub web foundation', () => {
-  it('renders the responsive home experience', () => {
+  it('renders real matchday sections and distinct team journeys', async () => {
+    vi.spyOn(globalThis, 'fetch').mockImplementation((input) => {
+      if (String(input).endsWith('/fixtures/matchday')) return jsonResponse({
+        date: '2026-08-13', timezone: 'UTC', fixtures: [
+          { fixture_id: 1, kickoff: '2026-08-13T19:00:00+00:00', timezone: 'UTC', league_id: 39, league_name: 'Premier League', league_logo_url: null, status_short: '2H', status_long: 'Second Half', elapsed: 72, bucket: 'live', home: { provider_id: 42, name: 'Arsenal', logo_url: null, goals: 2 }, away: { provider_id: 49, name: 'Chelsea', logo_url: null, goals: 1 } },
+        ],
+      })
+      return jsonResponse({}, 404)
+    })
     renderApp()
     expect(screen.getByRole('heading', { name: /every score/i })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: /create your fan profile/i })).toHaveAttribute('href', '/register')
-    expect(screen.getByText(/sample data until fixture ingestion/i)).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /explore teams/i })).toHaveAttribute('href', '/explore/teams')
+    expect(await screen.findByRole('heading', { name: /live now/i })).toBeInTheDocument()
+    expect(screen.getAllByText('Arsenal')).not.toHaveLength(0)
   })
 
   it('protects team preferences behind authentication', async () => {
-    renderApp('/teams')
+    renderApp('/my/teams')
     expect(await screen.findByRole('heading', { name: /welcome back/i })).toBeInTheDocument()
+  })
+
+  it('keeps team exploration public and does not expose follow actions', async () => {
+    vi.spyOn(globalThis, 'fetch').mockImplementation((input) => {
+      if (String(input).includes('/teams/?search=')) return jsonResponse([{ id: 'team-1', api_team_id: 42, third_party_id: '42', name: 'Arsenal', country: 'England', logo_url: null }])
+      return jsonResponse({}, 404)
+    })
+    const user = userEvent.setup()
+    renderApp('/explore/teams')
+    await user.type(screen.getByLabelText(/team name/i), 'Arsenal')
+    await user.click(screen.getByRole('button', { name: /^search$/i }))
+    expect(await screen.findByRole('heading', { name: /explore teams/i })).toBeInTheDocument()
+    expect(await screen.findByRole('link', { name: /sign in to follow/i })).toHaveAttribute('href', '/login')
+    expect(screen.queryByRole('button', { name: /^follow$/i })).not.toBeInTheDocument()
   })
 
   it('registers a fan and navigates to team selection', async () => {
@@ -57,7 +81,7 @@ describe('SportsHub web foundation', () => {
       return jsonResponse({}, 404)
     })
     const user = userEvent.setup()
-    renderApp('/teams')
+    renderApp('/my/teams')
     await user.type(await screen.findByLabelText(/team name/i), 'Arsenal')
     await user.click(screen.getByRole('button', { name: /^search$/i }))
     await user.click(await screen.findByRole('button', { name: /^follow$/i }))

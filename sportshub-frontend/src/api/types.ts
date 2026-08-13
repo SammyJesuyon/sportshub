@@ -33,3 +33,33 @@ export interface NotificationPreferences {
   match_start: boolean
   match_end: boolean
 }
+
+export type FixtureBucket = 'live' | 'half_time' | 'full_time' | 'scheduled'
+
+export interface FixtureTeam {
+  provider_id: number
+  name: string
+  logo_url: string | null
+  goals: number | null
+}
+
+export interface Fixture {
+  fixture_id: number
+  kickoff: string
+  timezone: string
+  league_id: number
+  league_name: string
+  league_logo_url: string | null
+  status_short: string
+  status_long: string
+  elapsed: number | null
+  bucket: FixtureBucket
+  home: FixtureTeam
+  away: FixtureTeam
+}
+
+export interface Matchday {
+  date: string
+  timezone: string
+  fixtures: Fixture[]
+}

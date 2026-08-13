@@ -49,8 +49,8 @@ The detailed acceptance matrix is in [`docs/TEST_PLAN.md`](docs/TEST_PLAN.md).
 
 ## Web delivery plan
 
-1. **Foundation (current):** responsive shell, authentication, team following, and global alerts.
-2. **Sports browsing:** provider-backed fixtures, standings, team pages, player/team statistics, empty and degraded states.
+1. **Foundation:** responsive shell, authentication, team following, and global alerts.
+2. **Sports browsing (current):** real matchday fixtures grouped into live, half-time, full-time, and scheduled states; public team exploration and authenticated team selection are separate journeys. Standings, team pages, and statistics follow next.
 3. **Live match:** fixture detail, independent poller status, SSE connected/detail/update events, heartbeat, disconnect cleanup, and fresh-snapshot reconnect.
 4. **Tickets:** Ticketmaster event results and backend `/events/{eventId}/buy` redirects with Impact/direct fallback.
 5. **Administration:** role-protected user, competition, integration, and notification operations.
