@@ -21,13 +21,19 @@ afterEach(() => vi.restoreAllMocks())
 describe('SportsHub web foundation', () => {
   it('renders locale-aware matchday navigation and distinct team journeys', async () => {
     const fetchMock = vi.spyOn(globalThis, 'fetch').mockImplementation((input) => {
-      if (String(input).includes('/fixtures/matchday?')) return jsonResponse({
-        date: '2026-08-13', timezone: 'UTC', bucket: 'live', page: 1, page_size: 12, total_items: 1, total_pages: 1,
+      if (String(input).includes('/fixtures/matchday?')) {
+        const requestUrl = new URL(String(input))
+        const requestedDate = requestUrl.searchParams.get('date')!
+        const requestedTimezone = requestUrl.searchParams.get('timezone')!
+        return jsonResponse({
+        date: requestedDate, timezone: requestedTimezone, bucket: 'live', page: 1, page_size: 12, total_items: 2, total_pages: 1,
         counts: { live: 1, half_time: 0, full_time: 0, scheduled: 0 },
         fixtures: [
-          { fixture_id: 1, kickoff: '2026-08-13T19:00:00+00:00', timezone: 'UTC', league_id: 39, league_name: 'Premier League', league_logo_url: null, status_short: '2H', status_long: 'Second Half', elapsed: 72, bucket: 'live', home: { provider_id: 42, name: 'Arsenal', logo_url: null, goals: 2 }, away: { provider_id: 49, name: 'Chelsea', logo_url: null, goals: 1 } },
+          { fixture_id: 1, kickoff: `${requestedDate}T14:00:00-05:00`, timezone: requestedTimezone, league_id: 39, league_name: 'Premier League', league_logo_url: null, status_short: '2H', status_long: 'Second Half', elapsed: 72, bucket: 'live', home: { provider_id: 42, name: 'Arsenal', logo_url: null, goals: 2 }, away: { provider_id: 49, name: 'Chelsea', logo_url: null, goals: 1 } },
+          { fixture_id: 2, kickoff: '2026-08-12T14:00:00-05:00', timezone: requestedTimezone, league_id: 39, league_name: 'Premier League', league_logo_url: null, status_short: 'FT', status_long: 'Match Finished', elapsed: 90, bucket: 'full_time', home: { provider_id: 40, name: 'Liverpool', logo_url: null, goals: 1 }, away: { provider_id: 50, name: 'Manchester City', logo_url: null, goals: 1 } },
         ],
       })
+      }
       return jsonResponse({}, 404)
     })
     renderApp()
@@ -36,14 +42,20 @@ describe('SportsHub web foundation', () => {
     expect(screen.getByRole('link', { name: /explore teams/i })).toHaveAttribute('href', '/explore/teams')
     expect(await screen.findByRole('heading', { name: /live now/i })).toBeInTheDocument()
     expect(screen.getAllByText('Arsenal')).not.toHaveLength(0)
+    expect(screen.queryByText('Liverpool')).not.toBeInTheDocument()
+    expect(screen.getAllByText(/kickoff/i)).not.toHaveLength(0)
     expect(screen.queryByText(/api allowance|cache hit|daily api requests/i)).not.toBeInTheDocument()
     expect(screen.getByText(/page 1 of 1/i)).toBeInTheDocument()
-    expect((screen.getByLabelText('Match date', { exact: true }) as HTMLInputElement).value).toMatch(/^\d{4}-\d{2}-\d{2}$/)
+    const matchDate = (screen.getByLabelText('Match date', { exact: true }) as HTMLInputElement).value
+    expect(matchDate).toMatch(/^\d{4}-\d{2}-\d{2}$/)
     expect(screen.getByRole('button', { name: /previous day/i })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: /more sports are coming soon/i })).toBeInTheDocument()
     expect(fetchMock).toHaveBeenCalledWith(expect.stringMatching(/date=\d{4}-\d{2}-\d{2}.*timezone=/), expect.any(Object))
+    const previousDate = new Date(`${matchDate}T12:00:00`)
+    previousDate.setDate(previousDate.getDate() - 1)
+    const previousDateValue = previousDate.toISOString().slice(0, 10)
     fireEvent.click(screen.getByRole('button', { name: /previous day/i }))
-    await waitFor(() => expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining('date=2026-08-12'), expect.any(Object)))
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining(`date=${previousDateValue}`), expect.any(Object)))
   })
 
   it('opens complete fixture details without exposing provider operations', async () => {

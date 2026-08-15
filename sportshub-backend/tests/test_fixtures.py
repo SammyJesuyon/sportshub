@@ -167,6 +167,8 @@ def test_fixture_detail_returns_timeline_statistics_and_lineups(client):
     assert response.status_code == 200
     payload = response.json()
     assert payload["fixture"]["fixture_id"] == 1
+    assert payload["fixture"]["kickoff"] == "2026-08-13T14:00:00-05:00"
+    assert payload["fixture"]["timezone"] == "America/Chicago"
     assert payload["venue_name"] == "Emirates Stadium"
     assert payload["events"][0]["detail"] == "Normal Goal"
     assert payload["statistics"][0]["statistics"][0] == {
@@ -242,6 +244,73 @@ def test_local_matchday_uses_shared_utc_snapshots_and_filters_kickoffs():
     ]
     assert fixture_is_on_local_date(late_fixture, date(2026, 8, 13), chicago)
     assert not fixture_is_on_local_date(late_fixture, date(2026, 8, 14), chicago)
+
+
+def test_matchday_excludes_finished_fixtures_from_adjacent_local_days(client):
+    class BoundaryProvider(MatchdayProvider):
+        def matchday_snapshot(self, fixture_date):
+            previous_local_day = ProviderFixture(
+                **{
+                    **fixture(100, "FT", 90).__dict__,
+                    "kickoff": "2026-08-13T04:59:59+00:00",
+                }
+            )
+            selected_local_day = ProviderFixture(
+                **{
+                    **fixture(101, "FT", 90).__dict__,
+                    "kickoff": "2026-08-13T05:00:00+00:00",
+                }
+            )
+            next_local_day = ProviderFixture(
+                **{
+                    **fixture(102, "FT", 90).__dict__,
+                    "kickoff": "2026-08-14T05:00:00+00:00",
+                }
+            )
+            return snapshot([previous_local_day, selected_local_day, next_local_day])
+
+    original = client.app.state.sports_provider
+    client.app.state.sports_provider = BoundaryProvider()
+    try:
+        response = client.get(
+            "/api/v1/fixtures/matchday?date=2026-08-13&timezone=America%2FChicago&bucket=full_time"
+        )
+    finally:
+        client.app.state.sports_provider = original
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["total_items"] == 1
+    assert [item["fixture_id"] for item in payload["fixtures"]] == [101]
+    assert payload["fixtures"][0]["kickoff"] == "2026-08-13T00:00:00-05:00"
+    assert payload["fixtures"][0]["timezone"] == "America/Chicago"
+
+
+def test_matchday_uses_provider_timezone_for_naive_kickoff(client):
+    class NaiveKickoffProvider(MatchdayProvider):
+        def matchday_snapshot(self, fixture_date):
+            local_fixture = ProviderFixture(
+                **{
+                    **fixture(103, "1H", 12).__dict__,
+                    "kickoff": "2026-08-13T00:30:00",
+                    "timezone": "America/New_York",
+                }
+            )
+            return snapshot([local_fixture])
+
+    original = client.app.state.sports_provider
+    client.app.state.sports_provider = NaiveKickoffProvider()
+    try:
+        response = client.get(
+            "/api/v1/fixtures/matchday?date=2026-08-12&timezone=America%2FChicago&bucket=live"
+        )
+    finally:
+        client.app.state.sports_provider = original
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["total_items"] == 1
+    assert payload["fixtures"][0]["kickoff"] == "2026-08-12T23:30:00-05:00"
 
 
 def test_matchday_provider_failure_is_controlled(client):

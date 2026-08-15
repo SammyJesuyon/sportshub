@@ -1,3 +1,4 @@
+from dataclasses import replace
 from datetime import date, datetime, time, timezone
 from math import ceil
 from typing import Literal, Optional
@@ -34,19 +35,36 @@ def local_matchday_utc_dates(requested_date: date, requested_zone: ZoneInfo) -> 
 def fixture_is_on_local_date(
     fixture: ProviderFixture, requested_date: date, requested_zone: ZoneInfo
 ) -> bool:
-    return datetime.fromisoformat(fixture.kickoff.replace("Z", "+00:00")).astimezone(
-        requested_zone
-    ).date() == requested_date
+    return fixture_kickoff(fixture).astimezone(requested_zone).date() == requested_date
 
 
-def fixture_response(fixture: ProviderFixture) -> FixtureResponse:
+def fixture_kickoff(fixture: ProviderFixture) -> datetime:
+    """Return an aware kickoff instant, including for provider timestamps without an offset."""
+    kickoff = datetime.fromisoformat(fixture.kickoff.replace("Z", "+00:00"))
+    if kickoff.tzinfo is not None:
+        return kickoff
+    try:
+        provider_zone = ZoneInfo(fixture.timezone)
+    except ZoneInfoNotFoundError:
+        provider_zone = timezone.utc
+    return kickoff.replace(tzinfo=provider_zone)
+
+
+def fixture_response(
+    fixture: ProviderFixture, requested_zone: ZoneInfo = ZoneInfo("UTC")
+) -> FixtureResponse:
+    local_fixture = replace(
+        fixture,
+        kickoff=fixture_kickoff(fixture).astimezone(requested_zone).isoformat(),
+        timezone=requested_zone.key,
+    )
     return FixtureResponse(
         **{
-            **fixture.__dict__,
-            "home": fixture.home.__dict__,
-            "away": fixture.away.__dict__,
+            **local_fixture.__dict__,
+            "home": local_fixture.home.__dict__,
+            "away": local_fixture.away.__dict__,
         },
-        bucket=fixture_bucket(fixture.status_short),
+        bucket=fixture_bucket(local_fixture.status_short),
     )
 
 
@@ -63,7 +81,7 @@ def get_matchday(
         requested_zone = ZoneInfo(timezone_name)
     except ZoneInfoNotFoundError as exc:
         raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, "Invalid timezone") from exc
-    requested_date = fixture_date or date.today()
+    requested_date = fixture_date or datetime.now(requested_zone).date()
     try:
         snapshots = [
             provider.matchday_snapshot(utc_date)
@@ -81,7 +99,10 @@ def get_matchday(
         for fixture in snapshot.fixtures
         if fixture_is_on_local_date(fixture, requested_date, requested_zone)
     }
-    fixtures = [fixture_response(fixture) for fixture in unique_fixtures.values()]
+    fixtures = [
+        fixture_response(fixture, requested_zone)
+        for fixture in unique_fixtures.values()
+    ]
     order = {"live": 0, "half_time": 1, "full_time": 2, "scheduled": 3}
     fixtures.sort(key=lambda fixture: (order[fixture.bucket], fixture.kickoff))
     counts = {
@@ -113,13 +134,12 @@ def get_fixture_detail(
     timezone_name: str = Query(default="UTC", alias="timezone", max_length=64),
     provider: SportsProvider = Depends(get_sports_provider),
 ):
-    requested_date = fixture_date or date.today()
-    try:
-        ZoneInfo(timezone_name)
-    except ZoneInfoNotFoundError as exc:
-        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, "Invalid timezone") from exc
     try:
         requested_zone = ZoneInfo(timezone_name)
+    except ZoneInfoNotFoundError as exc:
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, "Invalid timezone") from exc
+    requested_date = fixture_date or datetime.now(requested_zone).date()
+    try:
         matchdays = [
             provider.matchday_snapshot(utc_date)
             for utc_date in local_matchday_utc_dates(requested_date, requested_zone)
@@ -146,7 +166,7 @@ def get_fixture_detail(
 
     detail = snapshot.detail
     return FixtureDetailResponse(
-        fixture=fixture_response(detail.fixture),
+        fixture=fixture_response(detail.fixture, requested_zone),
         referee=detail.referee,
         venue_name=detail.venue_name,
         venue_city=detail.venue_city,
