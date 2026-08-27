@@ -1,0 +1,191 @@
+{
+  "sourcePptx": "/Users/samsonkitigo/Documents/Codex/sportshub/docs/SportsHub_Project_Presentation.pptx",
+  "workspace": "/Users/samsonkitigo/Documents/Codex/sportshub",
+  "outDir": "/Users/samsonkitigo/Documents/Codex/sportshub/tmp/presentation-revision-jwytUc/template-inspect",
+  "generatedAt": "2026-08-25T14:07:52.460Z",
+  "slideCount": 14,
+  "slideArtifacts": [
+    {
+      "slide": 1,
+      "previewPath": "/Users/samsonkitigo/Documents/Codex/sportshub/tmp/presentation-revision-jwytUc/template-inspect/source-slides/source-slide-01.png",
+      "previewRelativePath": "tmp/presentation-revision-jwytUc/template-inspect/source-slides/source-slide-01.png",
+      "layoutPath": "/Users/samsonkitigo/Documents/Codex/sportshub/tmp/presentation-revision-jwytUc/template-inspect/layouts/source-slide-01.layout.json",
+      "layoutRelativePath": "tmp/presentation-revision-jwytUc/template-inspect/layouts/source-slide-01.layout.json"
+    },
+    {
+      "slide": 2,
+      "previewPath": "/Users/samsonkitigo/Documents/Codex/sportshub/tmp/presentation-revision-jwytUc/template-inspect/source-slides/source-slide-02.png",
+      "previewRelativePath": "tmp/presentation-revision-jwytUc/template-inspect/source-slides/source-slide-02.png",
+      "layoutPath": "/Users/samsonkitigo/Documents/Codex/sportshub/tmp/presentation-revision-jwytUc/template-inspect/layouts/source-slide-02.layout.json",
+      "layoutRelativePath": "tmp/presentation-revision-jwytUc/template-inspect/layouts/source-slide-02.layout.json"
+    },
+    {
+      "slide": 3,
+      "previewPath": "/Users/samsonkitigo/Documents/Codex/sportshub/tmp/presentation-revision-jwytUc/template-inspect/source-slides/source-slide-03.png",
+      "previewRelativePath": "tmp/presentation-revision-jwytUc/template-inspect/source-slides/source-slide-03.png",
+      "layoutPath": "/Users/samsonkitigo/Documents/Codex/sportshub/tmp/presentation-revision-jwytUc/template-inspect/layouts/source-slide-03.layout.json",
+      "layoutRelativePath": "tmp/presentation-revision-jwytUc/template-inspect/layouts/source-slide-03.layout.json"
+    },
+    {
+      "slide": 4,
+      "previewPath": "/Users/samsonkitigo/Documents/Codex/sportshub/tmp/presentation-revision-jwytUc/template-inspect/source-slides/source-slide-04.png",
+      "previewRelativePath": "tmp/presentation-revision-jwytUc/template-inspect/source-slides/source-slide-04.png",
+      "layoutPath": "/Users/samsonkitigo/Documents/Codex/sportshub/tmp/presentation-revision-jwytUc/template-inspect/layouts/source-slide-04.layout.json",
+      "layoutRelativePath": "tmp/presentation-revision-jwytUc/template-inspect/layouts/source-slide-04.layout.json"
+    },
+    {
+      "slide": 5,
+      "previewPath": "/Users/samsonkitigo/Documents/Codex/sportshub/tmp/presentation-revision-jwytUc/template-inspect/source-slides/source-slide-05.png",
+      "previewRelativePath": "tmp/presentation-revision-jwytUc/template-inspect/source-slides/source-slide-05.png",
+      "layoutPath": "/Users/samsonkitigo/Documents/Codex/sportshub/tmp/presentation-revision-jwytUc/template-inspect/layouts/source-slide-05.layout.json",
+      "layoutRelativePath": "tmp/presentation-revision-jwytUc/template-inspect/layouts/source-slide-05.layout.json"
+    },
+    {
+      "slide": 6,
+      "previewPath": "/Users/samsonkitigo/Documents/Codex/sportshub/tmp/presentation-revision-jwytUc/template-inspect/source-slides/source-slide-06.png",
+      "previewRelativePath": "tmp/presentation-revision-jwytUc/template-inspect/source-slides/source-slide-06.png",
+      "layoutPath": "/Users/samsonkitigo/Documents/Codex/sportshub/tmp/presentation-revision-jwytUc/template-inspect/layouts/source-slide-06.layout.json",
+      "layoutRelativePath": "tmp/presentation-revision-jwytUc/template-inspect/layouts/source-slide-06.layout.json"
+    },
+    {
+      "slide": 7,
+      "previewPath": "/Users/samsonkitigo/Documents/Codex/sportshub/tmp/presentation-revision-jwytUc/template-inspect/source-slides/source-slide-07.png",
+      "previewRelativePath": "tmp/presentation-revision-jwytUc/template-inspect/source-slides/source-slide-07.png",
+      "layoutPath": "/Users/samsonkitigo/Documents/Codex/sportshub/tmp/presentation-revision-jwytUc/template-inspect/layouts/source-slide-07.layout.json",
+      "layoutRelativePath": "tmp/presentation-revision-jwytUc/template-inspect/layouts/source-slide-07.layout.json"
+    },
+    {
+      "slide": 8,
+      "previewPath": "/Users/samsonkitigo/Documents/Codex/sportshub/tmp/presentation-revision-jwytUc/template-inspect/source-slides/source-slide-08.png",
+      "previewRelativePath": "tmp/presentation-revision-jwytUc/template-inspect/source-slides/source-slide-08.png",
+      "layoutPath": "/Users/samsonkitigo/Documents/Codex/sportshub/tmp/presentation-revision-jwytUc/template-inspect/layouts/source-slide-08.layout.json",
+      "layoutRelativePath": "tmp/presentation-revision-jwytUc/template-inspect/layouts/source-slide-08.layout.json"
+    },
+    {
+      "slide": 9,
+      "previewPath": "/Users/samsonkitigo/Documents/Codex/sportshub/tmp/presentation-revision-jwytUc/template-inspect/source-slides/source-slide-09.png",
+      "previewRelativePath": "tmp/presentation-revision-jwytUc/template-inspect/source-slides/source-slide-09.png",
+      "layoutPath": "/Users/samsonkitigo/Documents/Codex/sportshub/tmp/presentation-revision-jwytUc/template-inspect/layouts/source-slide-09.layout.json",
+      "layoutRelativePath": "tmp/presentation-revision-jwytUc/template-inspect/layouts/source-slide-09.layout.json"
+    },
+    {
+      "slide": 10,
+      "previewPath": "/Users/samsonkitigo/Documents/Codex/sportshub/tmp/presentation-revision-jwytUc/template-inspect/source-slides/source-slide-10.png",
+      "previewRelativePath": "tmp/presentation-revision-jwytUc/template-inspect/source-slides/source-slide-10.png",
+      "layoutPath": "/Users/samsonkitigo/Documents/Codex/sportshub/tmp/presentation-revision-jwytUc/template-inspect/layouts/source-slide-10.layout.json",
+      "layoutRelativePath": "tmp/presentation-revision-jwytUc/template-inspect/layouts/source-slide-10.layout.json"
+    },
+    {
+      "slide": 11,
+      "previewPath": "/Users/samsonkitigo/Documents/Codex/sportshub/tmp/presentation-revision-jwytUc/template-inspect/source-slides/source-slide-11.png",
+      "previewRelativePath": "tmp/presentation-revision-jwytUc/template-inspect/source-slides/source-slide-11.png",
+      "layoutPath": "/Users/samsonkitigo/Documents/Codex/sportshub/tmp/presentation-revision-jwytUc/template-inspect/layouts/source-slide-11.layout.json",
+      "layoutRelativePath": "tmp/presentation-revision-jwytUc/template-inspect/layouts/source-slide-11.layout.json"
+    },
+    {
+      "slide": 12,
+      "previewPath": "/Users/samsonkitigo/Documents/Codex/sportshub/tmp/presentation-revision-jwytUc/template-inspect/source-slides/source-slide-12.png",
+      "previewRelativePath": "tmp/presentation-revision-jwytUc/template-inspect/source-slides/source-slide-12.png",
+      "layoutPath": "/Users/samsonkitigo/Documents/Codex/sportshub/tmp/presentation-revision-jwytUc/template-inspect/layouts/source-slide-12.layout.json",
+      "layoutRelativePath": "tmp/presentation-revision-jwytUc/template-inspect/layouts/source-slide-12.layout.json"
+    },
+    {
+      "slide": 13,
+      "previewPath": "/Users/samsonkitigo/Documents/Codex/sportshub/tmp/presentation-revision-jwytUc/template-inspect/source-slides/source-slide-13.png",
+      "previewRelativePath": "tmp/presentation-revision-jwytUc/template-inspect/source-slides/source-slide-13.png",
+      "layoutPath": "/Users/samsonkitigo/Documents/Codex/sportshub/tmp/presentation-revision-jwytUc/template-inspect/layouts/source-slide-13.layout.json",
+      "layoutRelativePath": "tmp/presentation-revision-jwytUc/template-inspect/layouts/source-slide-13.layout.json"
+    },
+    {
+      "slide": 14,
+      "previewPath": "/Users/samsonkitigo/Documents/Codex/sportshub/tmp/presentation-revision-jwytUc/template-inspect/source-slides/source-slide-14.png",
+      "previewRelativePath": "tmp/presentation-revision-jwytUc/template-inspect/source-slides/source-slide-14.png",
+      "layoutPath": "/Users/samsonkitigo/Documents/Codex/sportshub/tmp/presentation-revision-jwytUc/template-inspect/layouts/source-slide-14.layout.json",
+      "layoutRelativePath": "tmp/presentation-revision-jwytUc/template-inspect/layouts/source-slide-14.layout.json"
+    }
+  ],
+  "inspectPath": "/Users/samsonkitigo/Documents/Codex/sportshub/tmp/presentation-revision-jwytUc/template-inspect/template-inspect.ndjson",
+  "inspectRelativePath": "tmp/presentation-revision-jwytUc/template-inspect/template-inspect.ndjson",
+  "inspectTruncated": true,
+  "inspectMetadata": {
+    "revision": "z9396f",
+    "target": {
+      "id": "pr/kwsg4s"
+    },
+    "kind": {
+      "requested": "slide,textbox,shape,image,table,chart",
+      "tokens": [
+        "slide",
+        "textbox",
+        "shape",
+        "image",
+        "table",
+        "chart"
+      ]
+    },
+    "include": {
+      "tokens": []
+    },
+    "exclude": {
+      "tokens": []
+    },
+    "notices": []
+  },
+  "extractedMedia": [
+    {
+      "entry": "ppt/media/image.jpeg",
+      "path": "/Users/samsonkitigo/Documents/Codex/sportshub/tmp/presentation-revision-jwytUc/template-inspect/assets/ppt/media/image.jpeg",
+      "relativePath": "tmp/presentation-revision-jwytUc/template-inspect/assets/ppt/media/image.jpeg",
+      "bytes": 63352
+    },
+    {
+      "entry": "ppt/media/image.png",
+      "path": "/Users/samsonkitigo/Documents/Codex/sportshub/tmp/presentation-revision-jwytUc/template-inspect/assets/ppt/media/image.png",
+      "relativePath": "tmp/presentation-revision-jwytUc/template-inspect/assets/ppt/media/image.png",
+      "bytes": 120212
+    },
+    {
+      "entry": "ppt/media/image2.png",
+      "path": "/Users/samsonkitigo/Documents/Codex/sportshub/tmp/presentation-revision-jwytUc/template-inspect/assets/ppt/media/image2.png",
+      "relativePath": "tmp/presentation-revision-jwytUc/template-inspect/assets/ppt/media/image2.png",
+      "bytes": 114890
+    },
+    {
+      "entry": "ppt/media/image3.png",
+      "path": "/Users/samsonkitigo/Documents/Codex/sportshub/tmp/presentation-revision-jwytUc/template-inspect/assets/ppt/media/image3.png",
+      "relativePath": "tmp/presentation-revision-jwytUc/template-inspect/assets/ppt/media/image3.png",
+      "bytes": 94387
+    },
+    {
+      "entry": "ppt/media/image2.jpeg",
+      "path": "/Users/samsonkitigo/Documents/Codex/sportshub/tmp/presentation-revision-jwytUc/template-inspect/assets/ppt/media/image2.jpeg",
+      "relativePath": "tmp/presentation-revision-jwytUc/template-inspect/assets/ppt/media/image2.jpeg",
+      "bytes": 40231
+    },
+    {
+      "entry": "ppt/media/image3.jpeg",
+      "path": "/Users/samsonkitigo/Documents/Codex/sportshub/tmp/presentation-revision-jwytUc/template-inspect/assets/ppt/media/image3.jpeg",
+      "relativePath": "tmp/presentation-revision-jwytUc/template-inspect/assets/ppt/media/image3.jpeg",
+      "bytes": 73046
+    },
+    {
+      "entry": "ppt/media/image4.jpeg",
+      "path": "/Users/samsonkitigo/Documents/Codex/sportshub/tmp/presentation-revision-jwytUc/template-inspect/assets/ppt/media/image4.jpeg",
+      "relativePath": "tmp/presentation-revision-jwytUc/template-inspect/assets/ppt/media/image4.jpeg",
+      "bytes": 46534
+    }
+  ],
+  "fonts": [
+    "+mj-lt",
+    "+mn-lt",
+    "Aptos",
+    "Calibri",
+    "Calibri Light"
+  ],
+  "packageParts": {
+    "mediaCount": 7,
+    "slideXmlCount": 14,
+    "chartCount": 0,
+    "tableSlideCount": 0
+  }
+}

@@ -1,55 +1,108 @@
-# SportsHub Backend
+# SportsHub API
 
-FastAPI modular monolith for the SportsHub CS425 miniature. The backend lives as a sibling of `sportshub-frontend` in the root monorepo.
+The SportsHub API is a FastAPI service for football fixtures, team discovery, authentication, user team preferences, and the in-app alert inbox. PostgreSQL is the system of record, SQLAlchemy handles persistence, and Alembic owns schema changes.
 
-## Implemented API slice
+## Start the API
 
-- account registration, login, current-user bearer authentication;
-- team search through a stable sports-provider adapter;
-- public matchday fixtures grouped as live, half-time, full-time, or scheduled;
-- administrator-only API allowance telemetry, status-aware persistent shared-UTC caching, locale-correct calendar-day filtering, local match pagination, and cached fixture details with statistics, lineups, and timeline events, including quota-floor-protected detail-resource fallbacks;
-- authenticated team following with stable internal IDs;
-- a persisted, user-scoped alert inbox with unread/read state;
-- global notification preferences and idempotent Expo device registration retained as future delivery infrastructure, not required by the current web inbox;
-- liveness and database-readiness endpoints.
-
-The client never submits `userId` for self-service preference operations. Team following and notification settings remain separate transactions.
-
-## Football provider
-
-Set the backend-specific `sportshub-backend/.env` from `.env.example`:
-
-```bash
-SPORTS_PROVIDER=api-sports
-API_SPORTS_KEY=your-key
-API_SPORTS_BASE_URL=https://v3.football.api-sports.io
-```
-
-The [API-Football dashboard](https://dashboard.api-football.com/) manages the subscription and key; it is not used as the runtime API URL. Docker Compose reads this backend `.env` without exposing the key to the frontend.
-
-## Database
-
-PostgreSQL is the development and production system of record. Alembic owns the schema:
-
-```bash
-alembic upgrade head
-```
-
-SQLite is used only by fast isolated tests. The root Docker Compose integration profile runs the backend test suite against PostgreSQL.
-
-## Run and test
-
-The preferred workflow is from the repository root:
+The recommended path is to start the complete stack from the repository root:
 
 ```bash
 docker compose up --build
-make test
+```
+
+The API is then available at <http://localhost:8010>, with interactive documentation at <http://localhost:8010/docs>.
+
+For live provider data, create `sportshub-backend/.env` and add the configuration described in the root README. The file is intentionally local and must not be committed.
+
+The live adapter uses iSportsAPI behind the same internal provider contract as the sample data source. Current UTC matchdays come from the livescore feed; other dates use the schedule feed; fixture details combine the event, statistics, and lineup feeds when those resources are available. Responses are normalized before they reach the API layer and cached by matchday, fixture, team, and search query. The adapter also retries the documented secondary iSportsAPI host after a network or gateway failure.
+
+### Run without Docker
+
+Use Python 3.12 or newer and a running PostgreSQL database:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements-dev.txt
+alembic upgrade head
+uvicorn app.main:app --reload --port 8010
+```
+
+Set `DATABASE_URL` and any provider settings in your shell or in a local `.env` before starting the process.
+
+## API surface
+
+All application routes are versioned under `/api/v1`.
+
+| Area | Method and path | Purpose |
+| --- | --- | --- |
+| Authentication | `POST /auth/register` | Create an account and issue a bearer token |
+| Authentication | `POST /auth/login` | Authenticate and issue a bearer token |
+| Authentication | `GET /auth/me` | Return the authenticated user |
+| Fixtures | `GET /fixtures/matchday` | Return a paginated date-scoped matchday |
+| Fixtures | `GET /fixtures/{fixture_id}` | Return fixture overview, statistics, lineups, and timeline |
+| Teams | `GET /teams/?search={query}` | Search cached or provider-backed teams |
+| Teams | `GET /teams/{team_id}` | Return a team profile |
+| My Hub | `GET /users/me/team-preferences` | List the current user's followed teams |
+| My Hub | `PUT /users/me/team-preferences` | Add resolvable teams to the current user's hub |
+| My Hub | `DELETE /users/me/team-preferences/{team_id}` | Remove a followed team |
+| Alerts | `GET /notifications/inbox` | Return alerts and unread count |
+| Alerts | `PUT /notifications/inbox/{alert_id}/read` | Mark one alert as read |
+| Alerts | `PUT /notifications/inbox/read-all` | Mark all alerts as read |
+| Alerts | `GET /notifications/preferences` | Return global user alert preferences |
+| Alerts | `PUT /notifications/preferences` | Update supplied global alert toggles |
+| Alerts | `POST /notifications/devices` | Register or reactivate an Expo device record |
+| Operations | `GET /admin/provider-status` | Return protected provider diagnostics |
+
+Health endpoints are available at `/health` and `/health/ready`.
+
+## Application layers
+
+```text
+app/api/           HTTP validation, response mapping, auth dependencies
+app/services/      Business rules and transaction coordination
+app/repositories/  SQLAlchemy queries and persistence operations
+app/db/            Models, sessions, and database setup
+app/integrations/  External sports-provider adapters and cache behavior
+app/schemas/       Request and response contracts
+```
+
+Keeping these responsibilities separate makes the main flows easy to test: endpoints do not contain database queries, services do not know about HTTP responses, and repositories do not make product decisions.
+
+## Database and migrations
+
+Create a new migration after changing a model:
+
+```bash
+alembic revision --autogenerate -m "describe the change"
+alembic upgrade head
+```
+
+With Docker, migrations run automatically before the API starts. The current model includes users, teams, user-team associations, global notification preferences, push-device records, alert records, and provider-backed team detail fields.
+
+## Tests
+
+```bash
+python3 -m pytest
+```
+
+Run the PostgreSQL-backed suite from the repository root:
+
+```bash
 make test-integration
 ```
 
-For direct backend tests:
+The suite covers authentication, endpoint behavior, service rules, repositories, migrations, provider caching, locale-aware matchdays, fixture details, team preferences, and alerts.
 
-```bash
-python3 -m pip install -r requirements.txt
-python3 -m pytest
-```
+## Implementation decisions worth explaining in a demo
+
+- Authenticated preference endpoints derive the user from the bearer token; the client never supplies a `userId`.
+- Team following and notification preferences are separate transactions.
+- Notification toggles are global per user, not event rules stored per team.
+- Repositories are explicit dependencies, so persistence can be tested without mixing it into controllers.
+- iSportsAPI access sits behind an adapter and cache, which protects the rest of the code from third-party response details and limits repeat requests.
+- Provider status information is administrative and is not displayed as quota telemetry to ordinary users.
+
+## Not in the current release
+
+The API does not yet provide live SSE streams, a background fixture poller, scheduled match-event alert generation, chat, ticket discovery, payment or fulfillment, Redis caching, or cloud deployment.

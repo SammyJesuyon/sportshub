@@ -1,6 +1,7 @@
 .DS_Store
 .env
 *.log
+.tmp/
 
 sportshub-backend/.env
 sportshub-backend/.pytest_cache/
@@ -19,4 +20,3 @@ sportshub-frontend/dist/
 sportshub-frontend/coverage/
 sportshub-frontend/playwright-report/
 sportshub-frontend/test-results/
-

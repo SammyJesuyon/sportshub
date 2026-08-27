@@ -15,6 +15,16 @@ class ProviderTeam:
     name: str
     country: Optional[str] = None
     logo_url: Optional[str] = None
+    code: Optional[str] = None
+    founded: Optional[int] = None
+    national: Optional[bool] = None
+    venue_name: Optional[str] = None
+    venue_address: Optional[str] = None
+    venue_city: Optional[str] = None
+    venue_capacity: Optional[int] = None
+    venue_surface: Optional[str] = None
+    venue_image_url: Optional[str] = None
+    league_provider_id: Optional[int] = None
 
 
 @dataclass(frozen=True)
@@ -149,6 +159,12 @@ class _CacheEntry:
 class SportsProvider(Protocol):
     def search_teams(self, query: str) -> list[ProviderTeam]: ...
 
+    def get_team(self, provider_id: int) -> Optional[ProviderTeam]: ...
+
+    def team_schedule(
+        self, provider_id: int, league_provider_id: Optional[int] = None
+    ) -> list[ProviderFixture]: ...
+
     def matchday_snapshot(self, fixture_date: date) -> ProviderMatchdaySnapshot: ...
 
     def fixture_detail(
@@ -177,7 +193,20 @@ class SampleSportsAdapter:
     """Deterministic local adapter used for coursework, development, and tests."""
 
     _teams = (
-        ProviderTeam(42, "Arsenal", "England", "https://media.api-sports.io/football/teams/42.png"),
+        ProviderTeam(
+            42,
+            "Arsenal",
+            "England",
+            "https://media.api-sports.io/football/teams/42.png",
+            "ARS",
+            1886,
+            False,
+            "Emirates Stadium",
+            "Hornsey Road",
+            "London",
+            60260,
+            "grass",
+        ),
         ProviderTeam(49, "Chelsea", "England", "https://media.api-sports.io/football/teams/49.png"),
         ProviderTeam(40, "Liverpool", "England", "https://media.api-sports.io/football/teams/40.png"),
         ProviderTeam(50, "Manchester City", "England", "https://media.api-sports.io/football/teams/50.png"),
@@ -187,6 +216,17 @@ class SampleSportsAdapter:
     def search_teams(self, query: str) -> list[ProviderTeam]:
         normalized = query.casefold()
         return [team for team in self._teams if normalized in team.name.casefold()]
+
+    def get_team(self, provider_id: int) -> Optional[ProviderTeam]:
+        return next(
+            (team for team in self._teams if team.provider_id == provider_id),
+            None,
+        )
+
+    def team_schedule(
+        self, provider_id: int, league_provider_id: Optional[int] = None
+    ) -> list[ProviderFixture]:
+        return []
 
     def matchday_snapshot(self, fixture_date: date) -> ProviderMatchdaySnapshot:
         return ProviderMatchdaySnapshot([], True, 0, 3600, ProviderQuota())
@@ -231,25 +271,49 @@ class ApiSportsAdapter:
         self.cache_path = Path(cache_path) if cache_path else None
         self._matchday_cache: dict[date, _CacheEntry] = {}
         self._detail_cache: dict[int, _CacheEntry] = {}
+        self._team_schedule_cache: dict[int, _CacheEntry] = {}
         self._cache_lock = RLock()
         self._quota = ProviderQuota()
         self._restore_cache()
 
     def search_teams(self, query: str) -> list[ProviderTeam]:
         payload = self._get("teams", {"search": query})
-        results = []
-        for item in payload.get("response", []):
-            team = item.get("team", {})
-            if team.get("id") and team.get("name"):
-                results.append(
-                    ProviderTeam(
-                        provider_id=int(team["id"]),
-                        name=team["name"],
-                        country=team.get("country"),
-                        logo_url=team.get("logo"),
-                    )
-                )
-        return results
+        return [
+            team
+            for item in payload.get("response", [])
+            if (team := self._normalize_team(item)) is not None
+        ]
+
+    def get_team(self, provider_id: int) -> Optional[ProviderTeam]:
+        payload = self._get("teams", {"id": provider_id})
+        items = payload.get("response", [])
+        return self._normalize_team(items[0]) if items else None
+
+    def team_schedule(
+        self, provider_id: int, league_provider_id: Optional[int] = None
+    ) -> list[ProviderFixture]:
+        with self._cache_lock:
+            cached = self._team_schedule_cache.get(provider_id)
+            if cached and self._is_fresh(cached):
+                return list(cached.value)
+
+        responses = [
+            self._get("fixtures", {"team": provider_id, "last": 5, "timezone": "UTC"}),
+            self._get("fixtures", {"team": provider_id, "next": 5, "timezone": "UTC"}),
+        ]
+        fixtures = {
+            fixture.fixture_id: fixture
+            for payload in responses
+            for item in payload.get("response", [])
+            if (fixture := self._normalize_fixture(item)) is not None
+        }
+        ordered = sorted(fixtures.values(), key=lambda fixture: fixture.kickoff)
+        with self._cache_lock:
+            self._team_schedule_cache[provider_id] = _CacheEntry(
+                time(), self._quota_adjusted_ttl(21_600), ordered
+            )
+            self._persist_cache()
+        return ordered
 
     def matchday_snapshot(self, fixture_date: date) -> ProviderMatchdaySnapshot:
         with self._cache_lock:
@@ -430,7 +494,7 @@ class ApiSportsAdapter:
         if self.cache_path is None:
             return
         payload = {
-            "version": 3,
+            "version": 4,
             "quota": asdict(self._quota),
             "matchdays": {
                 key.isoformat(): {
@@ -447,6 +511,14 @@ class ApiSportsAdapter:
                     "detail": asdict(entry.value),
                 }
                 for key, entry in self._detail_cache.items()
+            },
+            "team_schedules": {
+                str(key): {
+                    "stored_at": entry.stored_at,
+                    "ttl_seconds": entry.ttl_seconds,
+                    "fixtures": [asdict(fixture) for fixture in entry.value],
+                }
+                for key, entry in self._team_schedule_cache.items()
             },
         }
         self.cache_path.parent.mkdir(parents=True, exist_ok=True)
@@ -468,7 +540,7 @@ class ApiSportsAdapter:
                 )
                 if self._is_fresh(entry):
                     self._matchday_cache[date.fromisoformat(raw_date)] = entry
-            if payload.get("version") == 3:
+            if payload.get("version") in {3, 4}:
                 for raw_id, cached in payload.get("details", {}).items():
                     entry = _CacheEntry(
                         stored_at=float(cached["stored_at"]),
@@ -477,9 +549,22 @@ class ApiSportsAdapter:
                     )
                     if self._is_fresh(entry):
                         self._detail_cache[int(raw_id)] = entry
+            if payload.get("version") == 4:
+                for raw_id, cached in payload.get("team_schedules", {}).items():
+                    entry = _CacheEntry(
+                        stored_at=float(cached["stored_at"]),
+                        ttl_seconds=int(cached["ttl_seconds"]),
+                        value=[
+                            self._fixture_from_dict(item)
+                            for item in cached["fixtures"]
+                        ],
+                    )
+                    if self._is_fresh(entry):
+                        self._team_schedule_cache[int(raw_id)] = entry
         except (OSError, ValueError, KeyError, TypeError, json.JSONDecodeError):
             self._matchday_cache = {}
             self._detail_cache = {}
+            self._team_schedule_cache = {}
 
     @staticmethod
     def _fixture_from_dict(item: dict[str, Any]) -> ProviderFixture:
@@ -527,6 +612,28 @@ class ApiSportsAdapter:
                     for lineup in item.get("lineups", [])
                 ],
             }
+        )
+
+    @staticmethod
+    def _normalize_team(item: dict[str, Any]) -> Optional[ProviderTeam]:
+        team = item.get("team", {})
+        venue = item.get("venue") or {}
+        if not team.get("id") or not team.get("name"):
+            return None
+        return ProviderTeam(
+            provider_id=int(team["id"]),
+            name=team["name"],
+            country=team.get("country"),
+            logo_url=team.get("logo"),
+            code=team.get("code"),
+            founded=team.get("founded"),
+            national=team.get("national"),
+            venue_name=venue.get("name"),
+            venue_address=venue.get("address"),
+            venue_city=venue.get("city"),
+            venue_capacity=venue.get("capacity"),
+            venue_surface=venue.get("surface"),
+            venue_image_url=venue.get("image"),
         )
 
     @staticmethod

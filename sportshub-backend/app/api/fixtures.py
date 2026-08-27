@@ -104,7 +104,14 @@ def get_matchday(
         for fixture in unique_fixtures.values()
     ]
     order = {"live": 0, "half_time": 1, "full_time": 2, "scheduled": 3}
-    fixtures.sort(key=lambda fixture: (order[fixture.bucket], fixture.kickoff))
+
+    def fixture_sort_key(fixture: FixtureResponse):
+        kickoff = datetime.fromisoformat(fixture.kickoff).timestamp()
+        if fixture.bucket in {"live", "half_time"}:
+            kickoff = -kickoff
+        return order[fixture.bucket], kickoff
+
+    fixtures.sort(key=fixture_sort_key)
     counts = {
         item: sum(1 for fixture in fixtures if fixture.bucket == item)
         for item in order

@@ -1,0 +1,21 @@
+01 Cover — working release plus next-release story.
+02 Problem, purpose, stakeholders, and football-first boundary.
+03 Technology rationale — React/TypeScript, FastAPI/Pydantic, PostgreSQL.
+04 Engineering foundation — repository/service separation, Alembic, provider adapter/cache, layered tests.
+05 Current release feature map — six implemented capabilities.
+06 Accounts and protected access.
+07 Matchday center.
+08 Fixture details.
+09 Explore Teams.
+10 My Hub.
+11 Alerts inbox and preference foundation.
+12 Provider integration, caching, and degraded behavior.
+13 Security and data design.
+14 Automated test evidence.
+15 Live demonstration route.
+16 Next release — realtime match updates and event-generated alerts.
+17 Next release — official tickets, standings, and administration.
+18 Next release — shared-state, cloud, observability, and release hardening.
+19 Later product horizon — more sports, native apps, AI, social/commerce ideas.
+20 Closing synthesis and questions.
+

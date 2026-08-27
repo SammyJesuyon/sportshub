@@ -1,6 +1,6 @@
 # SportsHub Test Plan
 
-This plan verifies the CS425-sized SportsHub product. Tests should prove the school-project behavior without importing LeagueBook features that are outside scope.
+This plan verifies the CS425-sized SportsHub product. Tests should prove the school-project behavior without introducing features that are outside scope.
 
 ## Release gates
 

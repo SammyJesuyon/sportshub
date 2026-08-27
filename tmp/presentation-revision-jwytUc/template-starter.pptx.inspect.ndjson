@@ -1,0 +1,498 @@
+{"kind":"deck","id":"pr/mf6zwd","name":"Deck"}
+{"kind":"layout","layoutId":"/ppt/slideMasters/slideMaster1.xml","name":"Master","type":"master"}
+{"kind":"layout","layoutId":"/ppt/slideLayouts/slideLayout1.xml","name":"Title Slide","type":"title"}
+{"kind":"slide","id":"sl/apwwtb","slide":1,"title":"SPORTSHUB","textShapes":8}
+{"kind":"textbox","id":"sh/9sbmlcba","slide":1,"text":"SPORTSHUB","textPreview":"SPORTSHUB","textChars":9,"textLines":1,"bbox":[54,42,400,30]}
+{"kind":"textbox","id":"sh/ehobqpkz","slide":1,"text":"A focused football\nmatchday experience","textPreview":"A focused football | matchday experience","textChars":38,"textLines":2,"bbox":[54,146,540,158]}
+{"kind":"textbox","id":"sh/fixczalk","slide":1,"text":"CS425 project demonstration","textPreview":"CS425 project demonstration","textChars":27,"textLines":1,"bbox":[54,328,500,34]}
+{"kind":"textbox","id":"sh/sf6tof29","slide":1,"text":"Samson Kitigo · Student ID 618666","textPreview":"Samson Kitigo · Student ID 618666","textChars":33,"textLines":1,"bbox":[54,384,500,30]}
+{"kind":"shape","id":"sh/tgfuxk3u","slide":1,"bbox":[54,476,110,32]}
+{"kind":"textbox","id":"sh/6dobm5k3","slide":1,"text":"REACT","textPreview":"REACT","textChars":5,"textLines":1,"bbox":[64,482,90,20]}
+{"kind":"shape","id":"sh/rexcvalo","slide":1,"bbox":[178,476,120,32]}
+{"kind":"textbox","id":"sh/4b6tkv2x","slide":1,"text":"FASTAPI","textPreview":"FASTAPI","textChars":7,"textLines":1,"bbox":[188,482,100,20]}
+{"kind":"shape","id":"sh/5cfut03i","slide":1,"bbox":[312,476,148,32]}
+{"kind":"textbox","id":"sh/xwvmpcb6","slide":1,"text":"POSTGRESQL","textPreview":"POSTGRESQL","textChars":10,"textLines":1,"bbox":[322,482,128,20]}
+{"kind":"textbox","id":"sh/wv25grul","slide":1,"text":"A working web release backed by a documented path to live updates, alerts, ticket discovery, and administration.","textPreview":"A working web release backed by a documented path to live updates, alerts, ticket discovery, and administration.","textChars":112,"textLines":1,"bbox":[54,538,520,78]}
+{"kind":"shape","id":"sh/but4nmt0","slide":1,"bbox":[631,43,590,594]}
+{"kind":"image","id":"im/va5o7qd8","slide":1,"name":"","geometry":"roundRect","bbox":[636,48,580,584]}
+{"kind":"notes","id":"nt/apwwtb","slide":1,"text":"Introduce SportsHub as a football-first fan platform and immediately distinguish the working course release from its documented evolution.\nThe presentation moves from the problem and technology choices to requirements, implementation, UML evidence, testing, demonstration, and roadmap.\n\n[Sources]\n- /Users/samsonkitigo/Documents/Codex/sportshub/README.md\n- /Users/samsonkitigo/Documents/Codex/sportshub/.tmp/submission-review/screenshots/home-desktop.png\n[/Sources]"}
+{"kind":"slide","id":"sl/g3pa54","slide":2,"title":"SPORTSHUB · CS425 PROJECT","textShapes":19}
+{"kind":"textbox","id":"sh/ipsjy90r","slide":2,"text":"SPORTSHUB · CS425 PROJECT","textPreview":"SPORTSHUB · CS425 PROJECT","textChars":25,"textLines":1,"bbox":[54,34,620,24]}
+{"kind":"textbox","id":"sh/pcvat432","slide":2,"text":"SportsHub connects the pieces of a fan’s matchday","textPreview":"SportsHub connects the pieces of a fan’s matchday","textChars":49,"textLines":1,"bbox":[54,69,1160,76]}
+{"kind":"textbox","id":"sh/4bm9kzmh","slide":2,"text":"02","textPreview":"02","textChars":2,"textLines":1,"bbox":[1176,671,50,22]}
+{"kind":"shape","id":"sh/fmt8nul0","slide":2,"bbox":[54,166,442,468]}
+{"kind":"textbox","id":"sh/ulkrep4f","slide":2,"text":"Problem and purpose","textPreview":"Problem and purpose","textChars":19,"textLines":1,"bbox":[82,198,350,34]}
+{"kind":"textbox","id":"sh/h8vqpk36","slide":2,"text":"Scores and fan tools often live in separate places.","textPreview":"Scores and fan tools often live in separate places.","textChars":51,"textLines":1,"bbox":[82,250,356,126]}
+{"kind":"textbox","id":"sh/gnm9gzml","slide":2,"text":"SportsHub brings the essential football journey into one responsive experience while keeping the architecture open to richer live and administrative capabilities.","textPreview":"SportsHub brings the essential football journey into one responsive experience while keeping the architecture open to richer live and adm...","textChars":162,"textLines":1,"bbox":[82,400,348,154]}
+{"kind":"shape","id":"sh/zixszel4","slide":2,"bbox":[82,574,174,32]}
+{"kind":"textbox","id":"sh/ehorq94j","slide":2,"text":"FOOTBALL FIRST","textPreview":"FOOTBALL FIRST","textChars":14,"textLines":1,"bbox":[92,580,154,20]}
+{"kind":"shape","id":"sh/knq50vq5","slide":2,"bbox":[534,166,320,214]}
+{"kind":"shape","id":"sh/5oz690rq","slide":2,"bbox":[554,186,42,42]}
+{"kind":"textbox","id":"sh/il8nyl8f","slide":2,"text":"01","textPreview":"01","textChars":2,"textLines":1,"bbox":[554,195,42,22]}
+{"kind":"textbox","id":"sh/jmho7q90","slide":2,"text":"Fans","textPreview":"Fans","textChars":4,"textLines":1,"bbox":[612,185,222,38]}
+{"kind":"textbox","id":"sh/wj65wbq9","slide":2,"text":"Browse matchdays, inspect fixtures, follow teams, and manage alert preferences.","textPreview":"Browse matchdays, inspect fixtures, follow teams, and manage alert preferences.","textChars":79,"textLines":1,"bbox":[556,242,276,120]}
+{"kind":"shape","id":"sh/xkf65gru","slide":2,"bbox":[886,166,320,214]}
+{"kind":"shape","id":"sh/ahonul83","slide":2,"bbox":[906,186,42,42]}
+{"kind":"textbox","id":"sh/vixo369o","slide":2,"text":"02","textPreview":"02","textChars":2,"textLines":1,"bbox":[906,195,42,22]}
+{"kind":"textbox","id":"sh/8f65sbqd","slide":2,"text":"Administrators","textPreview":"Administrators","textChars":14,"textLines":1,"bbox":[964,185,222,38]}
+{"kind":"textbox","id":"sh/9gf61gri","slide":2,"text":"A planned portal manages featured tournaments, integrations, configuration, and operations.","textPreview":"A planned portal manages featured tournaments, integrations, configuration, and operations.","textChars":91,"textLines":1,"bbox":[908,242,276,120]}
+{"kind":"shape","id":"sh/pc7m5sjm","slide":2,"bbox":[534,412,320,214]}
+{"kind":"shape","id":"sh/obylw721","slide":2,"bbox":[554,432,42,42]}
+{"kind":"textbox","id":"sh/nap4321g","slide":2,"text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[554,441,42,22]}
+{"kind":"textbox","id":"sh/29g3uxkv","slide":2,"text":"External providers","textPreview":"External providers","textChars":18,"textLines":1,"bbox":[612,431,222,38]}
+{"kind":"textbox","id":"sh/18n21sja","slide":2,"text":"Sports data, ticket inventory, and delivery networks remain outside the SportsHub system boundary.","textPreview":"Sports data, ticket inventory, and delivery networks remain outside the SportsHub system boundary.","textChars":98,"textLines":1,"bbox":[556,488,276,120]}
+{"kind":"shape","id":"sh/0nelsn2p","slide":2,"bbox":[886,412,320,214]}
+{"kind":"shape","id":"sh/fm5kzi1k","slide":2,"bbox":[906,432,42,42]}
+{"kind":"textbox","id":"sh/elw3qdkz","slide":2,"text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[906,441,42,22]}
+{"kind":"textbox","id":"sh/l4rmdcju","slide":2,"text":"Course objective","textPreview":"Course objective","textChars":16,"textLines":1,"bbox":[964,431,222,38]}
+{"kind":"textbox","id":"sh/kjil4ri9","slide":2,"text":"Demonstrate requirements traceability, layered design, persistence, testing, and a working application.","textPreview":"Demonstrate requirements traceability, layered design, persistence, testing, and a working application.","textChars":103,"textLines":1,"bbox":[908,488,276,120]}
+{"kind":"notes","id":"nt/g3pa54","slide":2,"text":"Explain the product in stakeholder terms before discussing features.\nSportsHub owns accounts, preferences, internal associations, alert records, and normalized application behavior; external systems remain authoritative for sports and ticket data.\n\n[Sources]\n- /Users/samsonkitigo/Documents/Codex/sportshub/docs/sportshub_usecase.pdf\n- /Users/samsonkitigo/Documents/Codex/sportshub/docs/sportshub_architecture.pdf\n- /Users/samsonkitigo/Documents/Codex/sportshub/README.md\n[/Sources]"}
+{"kind":"slide","id":"sl/qjbl4z","slide":3,"title":"SPORTSHUB · CS425 PROJECT","textShapes":13}
+{"kind":"textbox","id":"sh/29kvy90r","slide":3,"text":"SPORTSHUB · CS425 PROJECT","textPreview":"SPORTSHUB · CS425 PROJECT","textChars":25,"textLines":1,"bbox":[54,34,620,24]}
+{"kind":"textbox","id":"sh/0bixg7mx","slide":3,"text":"The core stack favors speed, clarity, and strong boundaries","textPreview":"The core stack favors speed, clarity, and strong boundaries","textChars":59,"textLines":1,"bbox":[54,69,1160,76]}
+{"kind":"textbox","id":"sh/lcre9cni","slide":3,"text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[1176,671,50,22]}
+{"kind":"shape","id":"sh/qlgfax4v","slide":3,"bbox":[54,180,362,414]}
+{"kind":"shape","id":"sh/bmpw325g","slide":3,"bbox":[54,180,362,8]}
+{"kind":"textbox","id":"sh/cnixc7m1","slide":3,"text":"React + TypeScript","textPreview":"React + TypeScript","textChars":18,"textLines":1,"bbox":[78,214,314,38]}
+{"kind":"textbox","id":"sh/d8re5cnm","slide":3,"text":"Responsive client and explicit contracts","textPreview":"Responsive client and explicit contracts","textChars":40,"textLines":1,"bbox":[78,260,314,54]}
+{"kind":"textbox","id":"sh/ahkfmh4f","slide":3,"text":"•  Reusable page and form components\n•  Client-side routing for clear fan journeys\n•  Type checking catches API-shape mistakes early\n•  Vite keeps local development and builds fast","textPreview":"•  Reusable page and form components | •  Client-side routing for clear fan journeys | •  Type checking catches API-shape mistakes early ...","textChars":180,"textLines":4,"bbox":[78,332,314,220]}
+{"kind":"shape","id":"sh/vitgfmlk","slide":3,"bbox":[459,180,362,414]}
+{"kind":"shape","id":"sh/balkbmtk","slide":3,"bbox":[459,180,362,8]}
+{"kind":"textbox","id":"sh/a9cj2hcz","slide":3,"text":"FastAPI + Pydantic","textPreview":"FastAPI + Pydantic","textChars":18,"textLines":1,"bbox":[483,214,314,38]}
+{"kind":"textbox","id":"sh/xcn2dwbq","slide":3,"text":"Small API surface with built-in validation","textPreview":"Small API surface with built-in validation","textChars":42,"textLines":1,"bbox":[483,260,314,54]}
+{"kind":"textbox","id":"sh/wbe14ru5","slide":3,"text":"•  Versioned REST endpoints and OpenAPI documentation\n•  Typed request and response schemas\n•  Dependency-based authentication and authorization\n•  Straightforward unit and API testing","textPreview":"•  Versioned REST endpoints and OpenAPI documentation | •  Typed request and response schemas | •  Dependency-based authentication and au...","textChars":184,"textLines":4,"bbox":[483,332,314,220]}
+{"kind":"shape","id":"sh/je5kf6tg","slide":3,"bbox":[864,180,362,414]}
+{"kind":"shape","id":"sh/ydw361cv","slide":3,"bbox":[864,180,362,8]}
+{"kind":"textbox","id":"sh/lgn2hwbm","slide":3,"text":"Docker Compose","textPreview":"Docker Compose","textChars":14,"textLines":1,"bbox":[888,214,314,38]}
+{"kind":"textbox","id":"sh/kfel8bu1","slide":3,"text":"One repeatable environment for the full stack","textPreview":"One repeatable environment for the full stack","textChars":45,"textLines":1,"bbox":[888,260,314,54]}
+{"kind":"textbox","id":"sh/725kj6ts","slide":3,"text":"•  Starts PostgreSQL, migrations, API, and web client\n•  Reduces machine-specific setup differences\n•  Preserves service boundaries without microservices\n•  Supports a separate PostgreSQL test profile","textPreview":"•  Starts PostgreSQL, migrations, API, and web client | •  Reduces machine-specific setup differences | •  Preserves service boundaries w...","textChars":200,"textLines":4,"bbox":[888,332,314,220]}
+{"kind":"textbox","id":"sh/6hw3a1c7","slide":3,"text":"Selection principle: use mature tools that make the architecture visible without adding unnecessary operational complexity.","textPreview":"Selection principle: use mature tools that make the architecture visible without adding unnecessary operational complexity.","textChars":123,"textLines":1,"bbox":[54,626,1172,34]}
+{"kind":"notes","id":"nt/qjbl4z","slide":3,"text":"Describe why each technology was selected, not only what it is.\nReact and FastAPI create a clean browser-to-API boundary; TypeScript and Pydantic validate both sides; Docker makes the demonstration reproducible.\n\n[Sources]\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-frontend/package.json\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-backend/requirements.txt\n- /Users/samsonkitigo/Documents/Codex/sportshub/compose.yaml\n[/Sources]"}
+{"kind":"slide","id":"sl/qrsx31","slide":4,"title":"SPORTSHUB · CS425 PROJECT","textShapes":16}
+{"kind":"textbox","id":"sh/oj65sveh","slide":4,"text":"SPORTSHUB · CS425 PROJECT","textPreview":"SPORTSHUB · CS425 PROJECT","textChars":25,"textLines":1,"bbox":[54,34,620,24]}
+{"kind":"textbox","id":"sh/94nup43m","slide":4,"text":"Persistence and integrations can evolve independently","textPreview":"Persistence and integrations can evolve independently","textChars":53,"textLines":1,"bbox":[54,69,1160,76]}
+{"kind":"textbox","id":"sh/o3etgj2h","slide":4,"text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[1176,671,50,22]}
+{"kind":"shape","id":"sh/bq5crels","slide":4,"bbox":[54,166,1172,104]}
+{"kind":"textbox","id":"sh/apwbi9k7","slide":4,"text":"PostgreSQL","textPreview":"PostgreSQL","textChars":10,"textLines":1,"bbox":[80,186,244,30]}
+{"kind":"textbox","id":"sh/xs7uto3y","slide":4,"text":"Relational integrity for users, teams, preferences, and alerts","textPreview":"Relational integrity for users, teams, preferences, and alerts","textChars":62,"textLines":1,"bbox":[330,182,382,54]}
+{"kind":"textbox","id":"sh/wrytkj2d","slide":4,"text":"Transactions and constraints fit account-to-team associations and user-scoped records.","textPreview":"Transactions and constraints fit account-to-team associations and user-scoped records.","textChars":86,"textLines":1,"bbox":[744,182,442,62]}
+{"kind":"shape","id":"sh/rulsfulo","slide":4,"bbox":[54,278,1172,104]}
+{"kind":"textbox","id":"sh/qtcb6p43","slide":4,"text":"SQLAlchemy + Alembic","textPreview":"SQLAlchemy + Alembic","textChars":20,"textLines":1,"bbox":[80,298,244,30]}
+{"kind":"textbox","id":"sh/4vypw3m1","slide":4,"text":"Explicit repositories plus repeatable schema evolution","textPreview":"Explicit repositories plus repeatable schema evolution","textChars":54,"textLines":1,"bbox":[330,294,382,54]}
+{"kind":"textbox","id":"sh/5w7qpo3m","slide":4,"text":"ORM mappings keep queries isolated while migrations make database changes reviewable.","textPreview":"ORM mappings keep queries isolated while migrations make database changes reviewable.","textChars":85,"textLines":1,"bbox":[744,294,442,62]}
+{"kind":"shape","id":"sh/itg7ut4v","slide":4,"bbox":[54,390,1172,104]}
+{"kind":"textbox","id":"sh/jup8nylg","slide":4,"text":"iSportsAPI adapter","textPreview":"iSportsAPI adapter","textChars":18,"textLines":1,"bbox":[80,410,244,30]}
+{"kind":"textbox","id":"sh/szip03mx","slide":4,"text":"Provider data normalized behind a stable SportsHub contract","textPreview":"Provider data normalized behind a stable SportsHub contract","textChars":59,"textLines":1,"bbox":[330,406,382,54]}
+{"kind":"textbox","id":"sh/tkrqt83i","slide":4,"text":"The adapter isolates vendor fields, applies caching, and can be replaced without rewriting endpoints.","textPreview":"The adapter isolates vendor fields, applies caching, and can be replaced without rewriting endpoints.","textChars":101,"textLines":1,"bbox":[744,406,442,62]}
+{"kind":"shape","id":"sh/6xg7yt47","slide":4,"bbox":[54,502,1172,104]}
+{"kind":"textbox","id":"sh/ryp8rylc","slide":4,"text":"Pytest + Vitest + Playwright","textPreview":"Pytest + Vitest + Playwright","textChars":28,"textLines":1,"bbox":[80,522,244,30]}
+{"kind":"textbox","id":"sh/83epozmt","slide":4,"text":"Evidence from business rules through browser journeys","textPreview":"Evidence from business rules through browser journeys","textChars":53,"textLines":1,"bbox":[330,518,382,54]}
+{"kind":"textbox","id":"sh/9on6h43e","slide":4,"text":"Layered tests cover normal, boundary, error, persistence, desktop, and mobile behavior.","textPreview":"Layered tests cover normal, boundary, error, persistence, desktop, and mobile behavior.","textChars":87,"textLines":1,"bbox":[744,518,442,62]}
+{"kind":"textbox","id":"sh/9kf6l0f2","slide":4,"text":"The current release uses a persistent file cache for provider responses; Redis and background workers are planned target-architecture components.","textPreview":"The current release uses a persistent file cache for provider responses; Redis and background workers are planned target-architecture com...","textChars":145,"textLines":1,"bbox":[54,628,1172,34]}
+{"kind":"notes","id":"nt/qrsx31","slide":4,"text":"Use this slide to connect technology selection to requirements: relational persistence, provider replaceability, quota-conscious caching, and test evidence.\nRedis and workers belong to the documented next architecture, not the current Docker stack.\n\n[Sources]\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-backend/app/repositories\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-backend/app/integrations/isports.py\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-backend/alembic\n- /Users/samsonkitigo/Documents/Codex/sportshub/docs/TEST_PLAN.md\n[/Sources]"}
+{"kind":"slide","id":"sl/w11frf","slide":5,"title":"SPORTSHUB · CS425 PROJECT","textShapes":28}
+{"kind":"textbox","id":"sh/g3elknad","slide":5,"text":"SPORTSHUB · CS425 PROJECT","textPreview":"SPORTSHUB · CS425 PROJECT","textChars":25,"textLines":1,"bbox":[54,34,620,24]}
+{"kind":"textbox","id":"sh/kbeh876d","slide":5,"text":"Six use cases define the product and its next iterations","textPreview":"Six use cases define the product and its next iterations","textChars":56,"textLines":1,"bbox":[54,69,1160,76]}
+{"kind":"textbox","id":"sh/5cnyhcny","slide":5,"text":"05","textPreview":"05","textChars":2,"textLines":1,"bbox":[1176,671,50,22]}
+{"kind":"shape","id":"sh/6dwzahoj","slide":5,"bbox":[54,160,560,126]}
+{"kind":"shape","id":"sh/7e5gjm5o","slide":5,"bbox":[72,178,42,42]}
+{"kind":"textbox","id":"sh/sfehcr69","slide":5,"text":"01","textPreview":"01","textChars":2,"textLines":1,"bbox":[72,187,42,22]}
+{"kind":"textbox","id":"sh/tgnylwnu","slide":5,"text":"User account management","textPreview":"User account management","textChars":23,"textLines":1,"bbox":[130,178,300,30]}
+{"kind":"shape","id":"sh/mhsfexoz","slide":5,"bbox":[442,176,150,32]}
+{"kind":"textbox","id":"sh/ni1g7i5k","slide":5,"text":"PARTIAL","textPreview":"PARTIAL","textChars":7,"textLines":1,"bbox":[452,183,130,20]}
+{"kind":"textbox","id":"sh/fixw3q5g","slide":5,"text":"Registration and sign-in work now; full profile update and account deletion remain planned.","textPreview":"Registration and sign-in work now; full profile update and account deletion remain planned.","textChars":91,"textLines":1,"bbox":[130,219,462,52]}
+{"kind":"shape","id":"sh/ehovul4v","slide":5,"bbox":[666,160,560,126]}
+{"kind":"shape","id":"sh/1kfe50n6","slide":5,"bbox":[684,178,42,42]}
+{"kind":"textbox","id":"sh/0j6dwvm1","slide":5,"text":"02","textPreview":"02","textChars":2,"textLines":1,"bbox":[684,187,42,22]}
+{"kind":"textbox","id":"sh/redcz654","slide":5,"text":"Manage favorite teams","textPreview":"Manage favorite teams","textChars":21,"textLines":1,"bbox":[742,178,300,30]}
+{"kind":"shape","id":"sh/qd4vql4j","slide":5,"bbox":[1054,176,150,32]}
+{"kind":"textbox","id":"sh/dgfu1gna","slide":5,"text":"IMPLEMENTED","textPreview":"IMPLEMENTED","textChars":11,"textLines":1,"bbox":[1064,183,130,20]}
+{"kind":"textbox","id":"sh/sf6dsbmp","slide":5,"text":"Search, follow, list, and remove teams through authenticated user-scoped operations.","textPreview":"Search, follow, list, and remove teams through authenticated user-scoped operations.","textChars":84,"textLines":1,"bbox":[742,219,462,52]}
+{"kind":"shape","id":"sh/3qdcv658","slide":5,"bbox":[54,298,560,126]}
+{"kind":"shape","id":"sh/ip4vm14n","slide":5,"bbox":[72,316,42,42]}
+{"kind":"textbox","id":"sh/6lkvy1of","slide":5,"text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[72,325,42,22]}
+{"kind":"textbox","id":"sh/7mtw76p0","slide":5,"text":"View live matches","textPreview":"View live matches","textChars":17,"textLines":1,"bbox":[130,316,300,30]}
+{"kind":"shape","id":"sh/8n2d0b6l","slide":5,"bbox":[442,314,150,32]}
+{"kind":"textbox","id":"sh/tove9w76","slide":5,"text":"PARTIAL","textPreview":"PARTIAL","textChars":7,"textLines":1,"bbox":[452,321,130,20]}
+{"kind":"textbox","id":"sh/up4f21or","slide":5,"text":"Date and status browsing work now; independent polling and SSE updates are planned.","textPreview":"Date and status browsing work now; independent polling and SSE updates are planned.","textChars":83,"textLines":1,"bbox":[130,357,462,52]}
+{"kind":"shape","id":"sh/vadwb6pw","slide":5,"bbox":[666,298,560,126]}
+{"kind":"shape","id":"sh/gbmx4b6h","slide":5,"bbox":[684,316,42,42]}
+{"kind":"textbox","id":"sh/hcvedg72","slide":5,"text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[684,325,42,22]}
+{"kind":"textbox","id":"sh/id4f6lon","slide":5,"text":"View match details","textPreview":"View match details","textChars":18,"textLines":1,"bbox":[742,316,300,30]}
+{"kind":"shape","id":"sh/3edwfqp8","slide":5,"bbox":[1054,314,150,32]}
+{"kind":"textbox","id":"sh/d8zy5kra","slide":5,"text":"IMPLEMENTED","textPreview":"IMPLEMENTED","textChars":11,"textLines":1,"bbox":[1064,321,130,20]}
+{"kind":"textbox","id":"sh/s7qhcfqp","slide":5,"text":"Overview, statistics, lineups, and timeline are available when provider data exists.","textPreview":"Overview, statistics, lineups, and timeline are available when provider data exists.","textChars":84,"textLines":1,"bbox":[742,357,462,52]}
+{"kind":"shape","id":"sh/r6xg3a94","slide":5,"bbox":[54,436,560,126]}
+{"kind":"shape","id":"sh/q5oza58z","slide":5,"bbox":[72,454,42,42]}
+{"kind":"textbox","id":"sh/1czi9krm","slide":5,"text":"05","textPreview":"05","textChars":2,"textLines":1,"bbox":[72,463,42,22]}
+{"kind":"textbox","id":"sh/0bqhgzq1","slide":5,"text":"Search official tickets","textPreview":"Search official tickets","textChars":23,"textLines":1,"bbox":[130,454,300,30]}
+{"kind":"shape","id":"sh/zahg7u9g","slide":5,"bbox":[442,452,150,32]}
+{"kind":"textbox","id":"sh/e98zep8v","slide":5,"text":"PLANNED","textPreview":"PLANNED","textChars":7,"textLines":1,"bbox":[452,459,130,20]}
+{"kind":"textbox","id":"sh/90jid4ri","slide":5,"text":"Resolve fixture context, search an official provider, and redirect purchase externally.","textPreview":"Resolve fixture context, search an official provider, and redirect purchase externally.","textChars":87,"textLines":1,"bbox":[130,495,462,52]}
+{"kind":"shape","id":"sh/ofahkzqx","slide":5,"bbox":[666,436,560,126]}
+{"kind":"shape","id":"sh/kvu1c3a5","slide":5,"bbox":[684,454,42,42]}
+{"kind":"textbox","id":"sh/lw3258bq","slide":5,"text":"06","textPreview":"06","textChars":2,"textLines":1,"bbox":[684,463,42,22]}
+{"kind":"textbox","id":"sh/ytcjatsz","slide":5,"text":"Feature tournaments","textPreview":"Feature tournaments","textChars":19,"textLines":1,"bbox":[742,454,300,30]}
+{"kind":"shape","id":"sh/julk3ytk","slide":5,"bbox":[1054,452,150,32]}
+{"kind":"textbox","id":"sh/w7u18ja9","slide":5,"text":"PLANNED","textPreview":"PLANNED","textChars":7,"textLines":1,"bbox":[1064,459,130,20]}
+{"kind":"textbox","id":"sh/x8321obu","slide":5,"text":"Administrators select, order, and remove featured competitions without deleting fixtures.","textPreview":"Administrators select, order, and remove featured competitions without deleting fixtures.","textChars":89,"textLines":1,"bbox":[742,495,462,52]}
+{"kind":"shape","id":"sh/a5sj6ts3","slide":5,"bbox":[54,590,1172,64]}
+{"kind":"textbox","id":"sh/b6lkzyto","slide":5,"text":"The use-case descriptions record actors, preconditions, normal flows, postconditions, and business rules—not just feature names.","textPreview":"The use-case descriptions record actors, preconditions, normal flows, postconditions, and business rules—not just feature names.","textChars":128,"textLines":1,"bbox":[80,610,1120,30]}
+{"kind":"notes","id":"nt/w11frf","slide":5,"text":"Walk through status deliberately. The documents define the whole intended product; the labels show what the current executable release supports.\nTicket purchasing remains outside SportsHub, and removing a featured tournament never deletes the competition or its fixtures.\n\n[Sources]\n- /Users/samsonkitigo/Documents/Codex/sportshub/docs/sportshub_usecase.pdf\n- /Users/samsonkitigo/Documents/Codex/sportshub/README.md\n[/Sources]"}
+{"kind":"slide","id":"sl/3ihdq1","slide":6,"title":"SPORTSHUB · CS425 PROJECT","textShapes":16}
+{"kind":"textbox","id":"sh/e54r6ps7","slide":6,"text":"SPORTSHUB · CS425 PROJECT","textPreview":"SPORTSHUB · CS425 PROJECT","textChars":25,"textLines":1,"bbox":[54,34,620,24]}
+{"kind":"textbox","id":"sh/369wzed8","slide":6,"text":"Persistence and integrations can evolve independently","textPreview":"Persistence and integrations can evolve independently","textChars":53,"textLines":1,"bbox":[54,69,1160,76]}
+{"kind":"textbox","id":"sh/i50f69cn","slide":6,"text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[1176,671,50,22]}
+{"kind":"shape","id":"sh/h4rex4v2","slide":6,"bbox":[54,166,1172,104]}
+{"kind":"textbox","id":"sh/g3id4zeh","slide":6,"text":"PostgreSQL","textPreview":"PostgreSQL","textChars":10,"textLines":1,"bbox":[80,186,244,30]}
+{"kind":"textbox","id":"sh/v29wvudw","slide":6,"text":"Relational integrity for users, teams, preferences, and alerts","textPreview":"Relational integrity for users, teams, preferences, and alerts","textChars":62,"textLines":1,"bbox":[330,182,382,54]}
+{"kind":"textbox","id":"sh/u1gv29wr","slide":6,"text":"Transactions and constraints fit account-to-team associations and user-scoped records.","textPreview":"Transactions and constraints fit account-to-team associations and user-scoped records.","textChars":86,"textLines":1,"bbox":[744,182,442,62]}
+{"kind":"shape","id":"sh/t07et4v6","slide":6,"bbox":[54,278,1172,104]}
+{"kind":"textbox","id":"sh/8zyd0zel","slide":6,"text":"SQLAlchemy + Alembic","textPreview":"SQLAlchemy + Alembic","textChars":20,"textLines":1,"bbox":[80,298,244,30]}
+{"kind":"textbox","id":"sh/mtsb6dcn","slide":6,"text":"Explicit repositories plus repeatable schema evolution","textPreview":"Explicit repositories plus repeatable schema evolution","textChars":54,"textLines":1,"bbox":[330,294,382,54]}
+{"kind":"textbox","id":"sh/7u1cfid8","slide":6,"text":"ORM mappings keep queries isolated while migrations make database changes reviewable.","textPreview":"ORM mappings keep queries isolated while migrations make database changes reviewable.","textChars":85,"textLines":1,"bbox":[744,294,442,62]}
+{"kind":"shape","id":"sh/8vad83ut","slide":6,"bbox":[54,390,1172,104]}
+{"kind":"textbox","id":"sh/9wjuh8ve","slide":6,"text":"iSportsAPI adapter","textPreview":"iSportsAPI adapter","textChars":18,"textLines":1,"bbox":[80,410,244,30]}
+{"kind":"textbox","id":"sh/yp8b2tcr","slide":6,"text":"Provider data normalized behind a stable SportsHub contract","textPreview":"Provider data normalized behind a stable SportsHub contract","textChars":59,"textLines":1,"bbox":[330,406,382,54]}
+{"kind":"textbox","id":"sh/zqhcbydw","slide":6,"text":"The adapter isolates vendor fields, applies caching, and can be replaced without rewriting endpoints.","textPreview":"The adapter isolates vendor fields, applies caching, and can be replaced without rewriting endpoints.","textChars":101,"textLines":1,"bbox":[744,406,442,62]}
+{"kind":"shape","id":"sh/krat43uh","slide":6,"bbox":[54,502,1172,104]}
+{"kind":"textbox","id":"sh/lsjud8v2","slide":6,"text":"Pytest + Vitest + Playwright","textPreview":"Pytest + Vitest + Playwright","textChars":28,"textLines":1,"bbox":[80,522,244,30]}
+{"kind":"textbox","id":"sh/a18bytwf","slide":6,"text":"Evidence from business rules through browser journeys","textPreview":"Evidence from business rules through browser journeys","textChars":53,"textLines":1,"bbox":[330,518,382,54]}
+{"kind":"textbox","id":"sh/b2hc7yd0","slide":6,"text":"Layered tests cover normal, boundary, error, persistence, desktop, and mobile behavior.","textPreview":"Layered tests cover normal, boundary, error, persistence, desktop, and mobile behavior.","textChars":87,"textLines":1,"bbox":[744,518,442,62]}
+{"kind":"textbox","id":"sh/f6d8futs","slide":6,"text":"The current release uses a persistent file cache for provider responses; Redis and background workers are planned target-architecture components.","textPreview":"The current release uses a persistent file cache for provider responses; Redis and background workers are planned target-architecture com...","textChars":145,"textLines":1,"bbox":[54,628,1172,34]}
+{"kind":"notes","id":"nt/3ihdq1","slide":6,"text":"Use this slide to connect technology selection to requirements: relational persistence, provider replaceability, quota-conscious caching, and test evidence.\nRedis and workers belong to the documented next architecture, not the current Docker stack.\n\n[Sources]\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-backend/app/repositories\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-backend/app/integrations/isports.py\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-backend/alembic\n- /Users/samsonkitigo/Documents/Codex/sportshub/docs/TEST_PLAN.md\n[/Sources]"}
+{"kind":"slide","id":"sl/r9hbt4","slide":7,"title":"SPORTSHUB · CS425 PROJECT","textShapes":16}
+{"kind":"textbox","id":"sh/zi1wr6tg","slide":7,"text":"SPORTSHUB · CS425 PROJECT","textPreview":"SPORTSHUB · CS425 PROJECT","textChars":25,"textLines":1,"bbox":[54,34,620,24]}
+{"kind":"textbox","id":"sh/orepkr29","slide":7,"text":"Persistence and integrations can evolve independently","textPreview":"Persistence and integrations can evolve independently","textChars":53,"textLines":1,"bbox":[54,69,1160,76]}
+{"kind":"textbox","id":"sh/9sn6dw3u","slide":7,"text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[1176,671,50,22]}
+{"kind":"shape","id":"sh/atw7m1kz","slide":7,"bbox":[54,166,1172,104]}
+{"kind":"textbox","id":"sh/bu5ofmlk","slide":7,"text":"PostgreSQL","textPreview":"PostgreSQL","textChars":10,"textLines":1,"bbox":[80,186,244,30]}
+{"kind":"textbox","id":"sh/wvepor25","slide":7,"text":"Relational integrity for users, teams, preferences, and alerts","textPreview":"Relational integrity for users, teams, preferences, and alerts","textChars":62,"textLines":1,"bbox":[330,182,382,54]}
+{"kind":"textbox","id":"sh/xgn6hw3q","slide":7,"text":"Transactions and constraints fit account-to-team associations and user-scoped records.","textPreview":"Transactions and constraints fit account-to-team associations and user-scoped records.","textChars":86,"textLines":1,"bbox":[744,182,442,62]}
+{"kind":"shape","id":"sh/qxsnaxkv","slide":7,"bbox":[54,278,1172,104]}
+{"kind":"textbox","id":"sh/ry1o32lg","slide":7,"text":"SQLAlchemy + Alembic","textPreview":"SQLAlchemy + Alembic","textChars":20,"textLines":1,"bbox":[80,298,244,30]}
+{"kind":"textbox","id":"sh/7u5wna9g","slide":7,"text":"Explicit repositories plus repeatable schema evolution","textPreview":"Explicit repositories plus repeatable schema evolution","textChars":54,"textLines":1,"bbox":[330,294,382,54]}
+{"kind":"textbox","id":"sh/6tcve58v","slide":7,"text":"ORM mappings keep queries isolated while migrations make database changes reviewable.","textPreview":"ORM mappings keep queries isolated while migrations make database changes reviewable.","textChars":85,"textLines":1,"bbox":[744,294,442,62]}
+{"kind":"shape","id":"sh/tgnep0rm","slide":7,"bbox":[54,390,1172,104]}
+{"kind":"textbox","id":"sh/svedgvq1","slide":7,"text":"iSportsAPI adapter","textPreview":"iSportsAPI adapter","textChars":18,"textLines":1,"bbox":[80,410,244,30]}
+{"kind":"textbox","id":"sh/jqlwjq9k","slide":7,"text":"Provider data normalized behind a stable SportsHub contract","textPreview":"Provider data normalized behind a stable SportsHub contract","textChars":59,"textLines":1,"bbox":[330,406,382,54]}
+{"kind":"textbox","id":"sh/ipcval8z","slide":7,"text":"The adapter isolates vendor fields, applies caching, and can be replaced without rewriting endpoints.","textPreview":"The adapter isolates vendor fields, applies caching, and can be replaced without rewriting endpoints.","textChars":101,"textLines":1,"bbox":[744,406,442,62]}
+{"kind":"shape","id":"sh/5s3el0ra","slide":7,"bbox":[54,502,1172,104]}
+{"kind":"textbox","id":"sh/krudcvq5","slide":7,"text":"Pytest + Vitest + Playwright","textPreview":"Pytest + Vitest + Playwright","textChars":28,"textLines":1,"bbox":[80,522,244,30]}
+{"kind":"textbox","id":"sh/vmlcfq98","slide":7,"text":"Evidence from business rules through browser journeys","textPreview":"Evidence from business rules through browser journeys","textChars":53,"textLines":1,"bbox":[330,518,382,54]}
+{"kind":"textbox","id":"sh/alsv6l8n","slide":7,"text":"Layered tests cover normal, boundary, error, persistence, desktop, and mobile behavior.","textPreview":"Layered tests cover normal, boundary, error, persistence, desktop, and mobile behavior.","textChars":87,"textLines":1,"bbox":[744,518,442,62]}
+{"kind":"textbox","id":"sh/yxsfi1cv","slide":7,"text":"The current release uses a persistent file cache for provider responses; Redis and background workers are planned target-architecture components.","textPreview":"The current release uses a persistent file cache for provider responses; Redis and background workers are planned target-architecture com...","textChars":145,"textLines":1,"bbox":[54,628,1172,34]}
+{"kind":"notes","id":"nt/r9hbt4","slide":7,"text":"Use this slide to connect technology selection to requirements: relational persistence, provider replaceability, quota-conscious caching, and test evidence.\nRedis and workers belong to the documented next architecture, not the current Docker stack.\n\n[Sources]\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-backend/app/repositories\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-backend/app/integrations/isports.py\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-backend/alembic\n- /Users/samsonkitigo/Documents/Codex/sportshub/docs/TEST_PLAN.md\n[/Sources]"}
+{"kind":"slide","id":"sl/x1rayp","slide":8,"title":"SPORTSHUB · CS425 PROJECT","textShapes":16}
+{"kind":"textbox","id":"sh/ve907m5g","slide":8,"text":"SPORTSHUB · CS425 PROJECT","textPreview":"SPORTSHUB · CS425 PROJECT","textChars":25,"textLines":1,"bbox":[54,34,620,24]}
+{"kind":"textbox","id":"sh/kjepsn21","slide":8,"text":"Persistence and integrations can evolve independently","textPreview":"Persistence and integrations can evolve independently","textChars":53,"textLines":1,"bbox":[54,69,1160,76]}
+{"kind":"textbox","id":"sh/5kn61sjm","slide":8,"text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[1176,671,50,22]}
+{"kind":"shape","id":"sh/6lg7uxk7","slide":8,"bbox":[54,166,1172,104]}
+{"kind":"textbox","id":"sh/7mpo321s","slide":8,"text":"PostgreSQL","textPreview":"PostgreSQL","textChars":10,"textLines":1,"bbox":[80,186,244,30]}
+{"kind":"textbox","id":"sh/snypwn2x","slide":8,"text":"Relational integrity for users, teams, preferences, and alerts","textPreview":"Relational integrity for users, teams, preferences, and alerts","textChars":62,"textLines":1,"bbox":[330,182,382,54]}
+{"kind":"textbox","id":"sh/to765sji","slide":8,"text":"Transactions and constraints fit account-to-team associations and user-scoped records.","textPreview":"Transactions and constraints fit account-to-team associations and user-scoped records.","textChars":86,"textLines":1,"bbox":[744,182,442,62]}
+{"kind":"shape","id":"sh/upg7yxk3","slide":8,"bbox":[54,278,1172,104]}
+{"kind":"textbox","id":"sh/fqpo721o","slide":8,"text":"SQLAlchemy + Alembic","textPreview":"SQLAlchemy + Alembic","textChars":20,"textLines":1,"bbox":[80,298,244,30]}
+{"kind":"textbox","id":"sh/nqlw7yl0","slide":8,"text":"Explicit repositories plus repeatable schema evolution","textPreview":"Explicit repositories plus repeatable schema evolution","textChars":54,"textLines":1,"bbox":[330,294,382,54]}
+{"kind":"textbox","id":"sh/2pcfetkf","slide":8,"text":"ORM mappings keep queries isolated while migrations make database changes reviewable.","textPreview":"ORM mappings keep queries isolated while migrations make database changes reviewable.","textChars":85,"textLines":1,"bbox":[744,294,442,62]}
+{"kind":"shape","id":"sh/psne9836","slide":8,"bbox":[54,390,1172,104]}
+{"kind":"textbox","id":"sh/orexg32l","slide":8,"text":"iSportsAPI adapter","textPreview":"iSportsAPI adapter","textChars":18,"textLines":1,"bbox":[80,410,244,30]}
+{"kind":"textbox","id":"sh/fmlw3el4","slide":8,"text":"Provider data normalized behind a stable SportsHub contract","textPreview":"Provider data normalized behind a stable SportsHub contract","textChars":59,"textLines":1,"bbox":[330,406,382,54]}
+{"kind":"textbox","id":"sh/elcfa94j","slide":8,"text":"The adapter isolates vendor fields, applies caching, and can be replaced without rewriting endpoints.","textPreview":"The adapter isolates vendor fields, applies caching, and can be replaced without rewriting endpoints.","textChars":101,"textLines":1,"bbox":[744,406,442,62]}
+{"kind":"shape","id":"sh/1o3e5o3u","slide":8,"bbox":[54,502,1172,104]}
+{"kind":"textbox","id":"sh/0nuxcj2p","slide":8,"text":"Pytest + Vitest + Playwright","textPreview":"Pytest + Vitest + Playwright","textChars":28,"textLines":1,"bbox":[80,522,244,30]}
+{"kind":"textbox","id":"sh/zi5gfil8","slide":8,"text":"Evidence from business rules through browser journeys","textPreview":"Evidence from business rules through browser journeys","textChars":53,"textLines":1,"bbox":[330,518,382,54]}
+{"kind":"textbox","id":"sh/yhwf6dkn","slide":8,"text":"Layered tests cover normal, boundary, error, persistence, desktop, and mobile behavior.","textPreview":"Layered tests cover normal, boundary, error, persistence, desktop, and mobile behavior.","textChars":87,"textLines":1,"bbox":[744,518,442,62]}
+{"kind":"textbox","id":"sh/ud0zeh4v","slide":8,"text":"The current release uses a persistent file cache for provider responses; Redis and background workers are planned target-architecture components.","textPreview":"The current release uses a persistent file cache for provider responses; Redis and background workers are planned target-architecture com...","textChars":145,"textLines":1,"bbox":[54,628,1172,34]}
+{"kind":"notes","id":"nt/x1rayp","slide":8,"text":"Use this slide to connect technology selection to requirements: relational persistence, provider replaceability, quota-conscious caching, and test evidence.\nRedis and workers belong to the documented next architecture, not the current Docker stack.\n\n[Sources]\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-backend/app/repositories\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-backend/app/integrations/isports.py\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-backend/alembic\n- /Users/samsonkitigo/Documents/Codex/sportshub/docs/TEST_PLAN.md\n[/Sources]"}
+{"kind":"slide","id":"sl/56m2kq","slide":9,"title":"SPORTSHUB · CS425 PROJECT","textShapes":16}
+{"kind":"textbox","id":"sh/or6147ut","slide":9,"text":"SPORTSHUB · CS425 PROJECT","textPreview":"SPORTSHUB · CS425 PROJECT","textChars":25,"textLines":1,"bbox":[54,34,620,24]}
+{"kind":"textbox","id":"sh/h4jatsjq","slide":9,"text":"Persistence and integrations can evolve independently","textPreview":"Persistence and integrations can evolve independently","textChars":53,"textLines":1,"bbox":[54,69,1160,76]}
+{"kind":"textbox","id":"sh/g3a9kni5","slide":9,"text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[1176,671,50,22]}
+{"kind":"shape","id":"sh/361sv21w","slide":9,"bbox":[54,166,1172,104]}
+{"kind":"textbox","id":"sh/i5srmx0b","slide":9,"text":"PostgreSQL","textPreview":"PostgreSQL","textChars":10,"textLines":1,"bbox":[80,186,244,30]}
+{"kind":"textbox","id":"sh/583axcjm","slide":9,"text":"Relational integrity for users, teams, preferences, and alerts","textPreview":"Relational integrity for users, teams, preferences, and alerts","textChars":62,"textLines":1,"bbox":[330,182,382,54]}
+{"kind":"textbox","id":"sh/47uto7i1","slide":9,"text":"Transactions and constraints fit account-to-team associations and user-scoped records.","textPreview":"Transactions and constraints fit account-to-team associations and user-scoped records.","textChars":86,"textLines":1,"bbox":[744,182,442,62]}
+{"kind":"shape","id":"sh/ralszm1s","slide":9,"bbox":[54,278,1172,104]}
+{"kind":"textbox","id":"sh/q9cbqh07","slide":9,"text":"SQLAlchemy + Alembic","textPreview":"SQLAlchemy + Alembic","textChars":20,"textLines":1,"bbox":[80,298,244,30]}
+{"kind":"textbox","id":"sh/kj61cn2h","slide":9,"text":"Explicit repositories plus repeatable schema evolution","textPreview":"Explicit repositories plus repeatable schema evolution","textChars":54,"textLines":1,"bbox":[330,294,382,54]}
+{"kind":"textbox","id":"sh/5kzils32","slide":9,"text":"ORM mappings keep queries isolated while migrations make database changes reviewable.","textPreview":"ORM mappings keep queries isolated while migrations make database changes reviewable.","textChars":85,"textLines":1,"bbox":[744,294,442,62]}
+{"kind":"shape","id":"sh/ihojaxkb","slide":9,"bbox":[54,390,1172,104]}
+{"kind":"textbox","id":"sh/jix0jilw","slide":9,"text":"iSportsAPI adapter","textPreview":"iSportsAPI adapter","textChars":18,"textLines":1,"bbox":[80,410,244,30]}
+{"kind":"textbox","id":"sh/s7q1g72d","slide":9,"text":"Provider data normalized behind a stable SportsHub contract","textPreview":"Provider data normalized behind a stable SportsHub contract","textChars":59,"textLines":1,"bbox":[330,406,382,54]}
+{"kind":"textbox","id":"sh/t8z2pc3y","slide":9,"text":"The adapter isolates vendor fields, applies caching, and can be replaced without rewriting endpoints.","textPreview":"The adapter isolates vendor fields, applies caching, and can be replaced without rewriting endpoints.","textChars":101,"textLines":1,"bbox":[744,406,442,62]}
+{"kind":"shape","id":"sh/6l8jexk7","slide":9,"bbox":[54,502,1172,104]}
+{"kind":"textbox","id":"sh/76h0n2ls","slide":9,"text":"Pytest + Vitest + Playwright","textPreview":"Pytest + Vitest + Playwright","textChars":28,"textLines":1,"bbox":[80,522,244,30]}
+{"kind":"textbox","id":"sh/gba1k72p","slide":9,"text":"Evidence from business rules through browser journeys","textPreview":"Evidence from business rules through browser journeys","textChars":53,"textLines":1,"bbox":[330,518,382,54]}
+{"kind":"textbox","id":"sh/hcj2tc3u","slide":9,"text":"Layered tests cover normal, boundary, error, persistence, desktop, and mobile behavior.","textPreview":"Layered tests cover normal, boundary, error, persistence, desktop, and mobile behavior.","textChars":87,"textLines":1,"bbox":[744,518,442,62]}
+{"kind":"textbox","id":"sh/psfidcve","slide":9,"text":"The current release uses a persistent file cache for provider responses; Redis and background workers are planned target-architecture components.","textPreview":"The current release uses a persistent file cache for provider responses; Redis and background workers are planned target-architecture com...","textChars":145,"textLines":1,"bbox":[54,628,1172,34]}
+{"kind":"notes","id":"nt/56m2kq","slide":9,"text":"Use this slide to connect technology selection to requirements: relational persistence, provider replaceability, quota-conscious caching, and test evidence.\nRedis and workers belong to the documented next architecture, not the current Docker stack.\n\n[Sources]\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-backend/app/repositories\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-backend/app/integrations/isports.py\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-backend/alembic\n- /Users/samsonkitigo/Documents/Codex/sportshub/docs/TEST_PLAN.md\n[/Sources]"}
+{"kind":"slide","id":"sl/hgdjmw","slide":10,"title":"SPORTSHUB · CS425 PROJECT","textShapes":16}
+{"kind":"textbox","id":"sh/n218fqx8","slide":10,"text":"SPORTSHUB · CS425 PROJECT","textPreview":"SPORTSHUB · CS425 PROJECT","textChars":25,"textLines":1,"bbox":[54,34,620,24]}
+{"kind":"textbox","id":"sh/svmpojq1","slide":10,"text":"Persistence and integrations can evolve independently","textPreview":"Persistence and integrations can evolve independently","textChars":53,"textLines":1,"bbox":[54,69,1160,76]}
+{"kind":"textbox","id":"sh/twvqxorm","slide":10,"text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[1176,671,50,22]}
+{"kind":"shape","id":"sh/ux4rqt87","slide":10,"bbox":[54,166,1172,104]}
+{"kind":"textbox","id":"sh/fyx8zy9s","slide":10,"text":"PostgreSQL","textPreview":"PostgreSQL","textChars":10,"textLines":1,"bbox":[80,186,244,30]}
+{"kind":"textbox","id":"sh/gz69sjqd","slide":10,"text":"Relational integrity for users, teams, preferences, and alerts","textPreview":"Relational integrity for users, teams, preferences, and alerts","textChars":62,"textLines":1,"bbox":[330,182,382,54]}
+{"kind":"textbox","id":"sh/h0fq1ori","slide":10,"text":"Transactions and constraints fit account-to-team associations and user-scoped records.","textPreview":"Transactions and constraints fit account-to-team associations and user-scoped records.","textChars":86,"textLines":1,"bbox":[744,182,442,62]}
+{"kind":"shape","id":"sh/a1k7ep8n","slide":10,"bbox":[54,278,1172,104]}
+{"kind":"textbox","id":"sh/v2t8nu98","slide":10,"text":"SQLAlchemy + Alembic","textPreview":"SQLAlchemy + Alembic","textChars":20,"textLines":1,"bbox":[80,298,244,30]}
+{"kind":"textbox","id":"sh/vylobat8","slide":10,"text":"Explicit repositories plus repeatable schema evolution","textPreview":"Explicit repositories plus repeatable schema evolution","textChars":54,"textLines":1,"bbox":[330,294,382,54]}
+{"kind":"textbox","id":"sh/uxc725c3","slide":10,"text":"ORM mappings keep queries isolated while migrations make database changes reviewable.","textPreview":"ORM mappings keep queries isolated while migrations make database changes reviewable.","textChars":85,"textLines":1,"bbox":[744,294,442,62]}
+{"kind":"shape","id":"sh/h0nqdkbe","slide":10,"bbox":[54,390,1172,104]}
+{"kind":"textbox","id":"sh/gzep4fut","slide":10,"text":"iSportsAPI adapter","textPreview":"iSportsAPI adapter","textChars":18,"textLines":1,"bbox":[80,410,244,30]}
+{"kind":"textbox","id":"sh/7ulo7adc","slide":10,"text":"Provider data normalized behind a stable SportsHub contract","textPreview":"Provider data normalized behind a stable SportsHub contract","textChars":59,"textLines":1,"bbox":[330,406,382,54]}
+{"kind":"textbox","id":"sh/69c7y5cr","slide":10,"text":"The adapter isolates vendor fields, applies caching, and can be replaced without rewriting endpoints.","textPreview":"The adapter isolates vendor fields, applies caching, and can be replaced without rewriting endpoints.","textChars":101,"textLines":1,"bbox":[744,406,442,62]}
+{"kind":"shape","id":"sh/tw369kbi","slide":10,"bbox":[54,502,1172,104]}
+{"kind":"textbox","id":"sh/8vup0fux","slide":10,"text":"Pytest + Vitest + Playwright","textPreview":"Pytest + Vitest + Playwright","textChars":28,"textLines":1,"bbox":[80,522,244,30]}
+{"kind":"textbox","id":"sh/j61o3qdg","slide":10,"text":"Evidence from business rules through browser journeys","textPreview":"Evidence from business rules through browser journeys","textChars":53,"textLines":1,"bbox":[330,518,382,54]}
+{"kind":"textbox","id":"sh/y5s7ulcv","slide":10,"text":"Layered tests cover normal, boundary, error, persistence, desktop, and mobile behavior.","textPreview":"Layered tests cover normal, boundary, error, persistence, desktop, and mobile behavior.","textChars":87,"textLines":1,"bbox":[744,518,442,62]}
+{"kind":"textbox","id":"sh/m1s76lwn","slide":10,"text":"The current release uses a persistent file cache for provider responses; Redis and background workers are planned target-architecture components.","textPreview":"The current release uses a persistent file cache for provider responses; Redis and background workers are planned target-architecture com...","textChars":145,"textLines":1,"bbox":[54,628,1172,34]}
+{"kind":"notes","id":"nt/hgdjmw","slide":10,"text":"Use this slide to connect technology selection to requirements: relational persistence, provider replaceability, quota-conscious caching, and test evidence.\nRedis and workers belong to the documented next architecture, not the current Docker stack.\n\n[Sources]\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-backend/app/repositories\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-backend/app/integrations/isports.py\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-backend/alembic\n- /Users/samsonkitigo/Documents/Codex/sportshub/docs/TEST_PLAN.md\n[/Sources]"}
+{"kind":"slide","id":"sl/b9qdzj","slide":11,"title":"SPORTSHUB · CS425 PROJECT","textShapes":16}
+{"kind":"textbox","id":"sh/w3690zyh","slide":11,"text":"SPORTSHUB · CS425 PROJECT","textPreview":"SPORTSHUB · CS425 PROJECT","textChars":25,"textLines":1,"bbox":[54,34,620,24]}
+{"kind":"textbox","id":"sh/xsjexs7u","slide":11,"text":"Persistence and integrations can evolve independently","textPreview":"Persistence and integrations can evolve independently","textChars":53,"textLines":1,"bbox":[54,69,1160,76]}
+{"kind":"textbox","id":"sh/wrad4n6p","slide":11,"text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[1176,671,50,22]}
+{"kind":"shape","id":"sh/n2hwrips","slide":11,"bbox":[54,166,1172,104]}
+{"kind":"textbox","id":"sh/m18vydo7","slide":11,"text":"PostgreSQL","textPreview":"PostgreSQL","textChars":10,"textLines":1,"bbox":[80,186,244,30]}
+{"kind":"textbox","id":"sh/94jet87y","slide":11,"text":"Relational integrity for users, teams, preferences, and alerts","textPreview":"Relational integrity for users, teams, preferences, and alerts","textChars":62,"textLines":1,"bbox":[330,182,382,54]}
+{"kind":"textbox","id":"sh/83ad036d","slide":11,"text":"Transactions and constraints fit account-to-team associations and user-scoped records.","textPreview":"Transactions and constraints fit account-to-team associations and user-scoped records.","textChars":86,"textLines":1,"bbox":[744,182,442,62]}
+{"kind":"shape","id":"sh/7ylw32pc","slide":11,"bbox":[54,278,1172,104]}
+{"kind":"textbox","id":"sh/6xcvaxor","slide":11,"text":"SQLAlchemy + Alembic","textPreview":"SQLAlchemy + Alembic","textChars":20,"textLines":1,"bbox":[80,298,244,30]}
+{"kind":"textbox","id":"sh/czyd4761","slide":11,"text":"Explicit repositories plus repeatable schema evolution","textPreview":"Explicit repositories plus repeatable schema evolution","textChars":54,"textLines":1,"bbox":[330,294,382,54]}
+{"kind":"textbox","id":"sh/d0rudsn6","slide":11,"text":"ORM mappings keep queries isolated while migrations make database changes reviewable.","textPreview":"ORM mappings keep queries isolated while migrations make database changes reviewable.","textChars":85,"textLines":1,"bbox":[744,294,442,62]}
+{"kind":"shape","id":"sh/qdgv2xov","slide":11,"bbox":[54,390,1172,104]}
+{"kind":"textbox","id":"sh/bepcb25g","slide":11,"text":"iSportsAPI adapter","textPreview":"iSportsAPI adapter","textChars":18,"textLines":1,"bbox":[80,410,244,30]}
+{"kind":"textbox","id":"sh/obyt0n6p","slide":11,"text":"Provider data normalized behind a stable SportsHub contract","textPreview":"Provider data normalized behind a stable SportsHub contract","textChars":59,"textLines":1,"bbox":[330,406,382,54]}
+{"kind":"textbox","id":"sh/pc7u9sna","slide":11,"text":"The adapter isolates vendor fields, applies caching, and can be replaced without rewriting endpoints.","textPreview":"The adapter isolates vendor fields, applies caching, and can be replaced without rewriting endpoints.","textChars":101,"textLines":1,"bbox":[744,406,442,62]}
+{"kind":"shape","id":"sh/29gbydoj","slide":11,"bbox":[54,502,1172,104]}
+{"kind":"textbox","id":"sh/3apc7i54","slide":11,"text":"Pytest + Vitest + Playwright","textPreview":"Pytest + Vitest + Playwright","textChars":28,"textLines":1,"bbox":[80,522,244,30]}
+{"kind":"textbox","id":"sh/g7etw36t","slide":11,"text":"Evidence from business rules through browser journeys","textPreview":"Evidence from business rules through browser journeys","textChars":53,"textLines":1,"bbox":[330,518,382,54]}
+{"kind":"textbox","id":"sh/18nu58ny","slide":11,"text":"Layered tests cover normal, boundary, error, persistence, desktop, and mobile behavior.","textPreview":"Layered tests cover normal, boundary, error, persistence, desktop, and mobile behavior.","textChars":87,"textLines":1,"bbox":[744,518,442,62]}
+{"kind":"textbox","id":"sh/h4fa94f2","slide":11,"text":"The current release uses a persistent file cache for provider responses; Redis and background workers are planned target-architecture components.","textPreview":"The current release uses a persistent file cache for provider responses; Redis and background workers are planned target-architecture com...","textChars":145,"textLines":1,"bbox":[54,628,1172,34]}
+{"kind":"notes","id":"nt/b9qdzj","slide":11,"text":"Use this slide to connect technology selection to requirements: relational persistence, provider replaceability, quota-conscious caching, and test evidence.\nRedis and workers belong to the documented next architecture, not the current Docker stack.\n\n[Sources]\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-backend/app/repositories\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-backend/app/integrations/isports.py\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-backend/alembic\n- /Users/samsonkitigo/Documents/Codex/sportshub/docs/TEST_PLAN.md\n[/Sources]"}
+{"kind":"slide","id":"sl/ca2s90","slide":12,"title":"SPORTSHUB · CS425 PROJECT","textShapes":16}
+{"kind":"textbox","id":"sh/2lk7ih0v","slide":12,"text":"SPORTSHUB · CS425 PROJECT","textPreview":"SPORTSHUB · CS425 PROJECT","textChars":25,"textLines":1,"bbox":[54,34,620,24]}
+{"kind":"textbox","id":"sh/vqtsra90","slide":12,"text":"Persistence and integrations can evolve independently","textPreview":"Persistence and integrations can evolve independently","textChars":53,"textLines":1,"bbox":[54,69,1160,76]}
+{"kind":"textbox","id":"sh/up0ry58v","slide":12,"text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[1176,671,50,22]}
+{"kind":"shape","id":"sh/pwbaxk7i","slide":12,"bbox":[54,166,1172,104]}
+{"kind":"textbox","id":"sh/4v29ofqx","slide":12,"text":"PostgreSQL","textPreview":"PostgreSQL","textChars":10,"textLines":1,"bbox":[80,186,244,30]}
+{"kind":"textbox","id":"sh/3utsva9c","slide":12,"text":"Relational integrity for users, teams, preferences, and alerts","textPreview":"Relational integrity for users, teams, preferences, and alerts","textChars":62,"textLines":1,"bbox":[330,182,382,54]}
+{"kind":"textbox","id":"sh/2tkrmp8r","slide":12,"text":"Transactions and constraints fit account-to-team associations and user-scoped records.","textPreview":"Transactions and constraints fit account-to-team associations and user-scoped records.","textChars":86,"textLines":1,"bbox":[744,182,442,62]}
+{"kind":"shape","id":"sh/dkva147e","slide":12,"bbox":[54,278,1172,104]}
+{"kind":"textbox","id":"sh/czmtszqt","slide":12,"text":"SQLAlchemy + Alembic","textPreview":"SQLAlchemy + Alembic","textChars":20,"textLines":1,"bbox":[80,298,244,30]}
+{"kind":"textbox","id":"sh/al8jypon","slide":12,"text":"Explicit repositories plus repeatable schema evolution","textPreview":"Explicit repositories plus repeatable schema evolution","textChars":54,"textLines":1,"bbox":[330,294,382,54]}
+{"kind":"textbox","id":"sh/vmhk7up8","slide":12,"text":"ORM mappings keep queries isolated while migrations make database changes reviewable.","textPreview":"ORM mappings keep queries isolated while migrations make database changes reviewable.","textChars":85,"textLines":1,"bbox":[744,294,442,62]}
+{"kind":"shape","id":"sh/w7a10z6t","slide":12,"bbox":[54,390,1172,104]}
+{"kind":"textbox","id":"sh/x8j2947e","slide":12,"text":"iSportsAPI adapter","textPreview":"iSportsAPI adapter","textChars":18,"textLines":1,"bbox":[80,410,244,30]}
+{"kind":"textbox","id":"sh/i9sj29oj","slide":12,"text":"Provider data normalized behind a stable SportsHub contract","textPreview":"Provider data normalized behind a stable SportsHub contract","textChars":59,"textLines":1,"bbox":[330,406,382,54]}
+{"kind":"textbox","id":"sh/ja1kbep4","slide":12,"text":"The adapter isolates vendor fields, applies caching, and can be replaced without rewriting endpoints.","textPreview":"The adapter isolates vendor fields, applies caching, and can be replaced without rewriting endpoints.","textChars":101,"textLines":1,"bbox":[744,406,442,62]}
+{"kind":"shape","id":"sh/kbal4j6p","slide":12,"bbox":[54,502,1172,104]}
+{"kind":"textbox","id":"sh/5cj2do7a","slide":12,"text":"Pytest + Vitest + Playwright","textPreview":"Pytest + Vitest + Playwright","textChars":28,"textLines":1,"bbox":[80,522,244,30]}
+{"kind":"textbox","id":"sh/ydojq58f","slide":12,"text":"Evidence from business rules through browser journeys","textPreview":"Evidence from business rules through browser journeys","textChars":53,"textLines":1,"bbox":[330,518,382,54]}
+{"kind":"textbox","id":"sh/zexkzap0","slide":12,"text":"Layered tests cover normal, boundary, error, persistence, desktop, and mobile behavior.","textPreview":"Layered tests cover normal, boundary, error, persistence, desktop, and mobile behavior.","textChars":87,"textLines":1,"bbox":[744,518,442,62]}
+{"kind":"textbox","id":"sh/36t8bm1g","slide":12,"text":"The current release uses a persistent file cache for provider responses; Redis and background workers are planned target-architecture components.","textPreview":"The current release uses a persistent file cache for provider responses; Redis and background workers are planned target-architecture com...","textChars":145,"textLines":1,"bbox":[54,628,1172,34]}
+{"kind":"notes","id":"nt/ca2s90","slide":12,"text":"Use this slide to connect technology selection to requirements: relational persistence, provider replaceability, quota-conscious caching, and test evidence.\nRedis and workers belong to the documented next architecture, not the current Docker stack.\n\n[Sources]\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-backend/app/repositories\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-backend/app/integrations/isports.py\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-backend/alembic\n- /Users/samsonkitigo/Documents/Codex/sportshub/docs/TEST_PLAN.md\n[/Sources]"}
+{"kind":"slide","id":"sl/3xe86z","slide":13,"title":"SPORTSHUB · CS425 PROJECT","textShapes":17}
+{"kind":"textbox","id":"sh/nidojupg","slide":13,"text":"SPORTSHUB · CS425 PROJECT","textPreview":"SPORTSHUB · CS425 PROJECT","textChars":25,"textLines":1,"bbox":[54,34,620,24]}
+{"kind":"textbox","id":"sh/fm14rado","slide":13,"text":"Security and persistence are enforced behind the UI","textPreview":"Security and persistence are enforced behind the UI","textChars":51,"textLines":1,"bbox":[54,69,1160,76]}
+{"kind":"textbox","id":"sh/uls3i5c3","slide":13,"text":"10","textPreview":"10","textChars":2,"textLines":1,"bbox":[1176,671,50,22]}
+{"kind":"shape","id":"sh/ps3mxkvq","slide":13,"bbox":[54,156,278,32]}
+{"kind":"textbox","id":"sh/4rulozu5","slide":13,"text":"SECURITY + DATA DESIGN","textPreview":"SECURITY + DATA DESIGN","textChars":22,"textLines":1,"bbox":[64,162,258,20]}
+{"kind":"shape","id":"sh/3ql4vudk","slide":13,"bbox":[54,210,556,66]}
+{"kind":"textbox","id":"sh/2ps3mpcz","slide":13,"text":"Passwords","textPreview":"Passwords","textChars":9,"textLines":1,"bbox":[76,224,146,30]}
+{"kind":"textbox","id":"sh/5wzml0v6","slide":13,"text":"BCrypt hashes are stored instead of plaintext credentials.","textPreview":"BCrypt hashes are stored instead of plaintext credentials.","textChars":58,"textLines":1,"bbox":[224,222,360,42]}
+{"kind":"shape","id":"sh/kvqlcvu1","slide":13,"bbox":[54,284,556,66]}
+{"kind":"textbox","id":"sh/qd472psn","slide":13,"text":"Bearer tokens","textPreview":"Bearer tokens","textChars":13,"textLines":1,"bbox":[76,298,146,30]}
+{"kind":"textbox","id":"sh/bed8vut8","slide":13,"text":"Signed, expiring JWTs are validated for protected requests.","textPreview":"Signed, expiring JWTs are validated for protected requests.","textChars":59,"textLines":1,"bbox":[224,296,360,42]}
+{"kind":"shape","id":"sh/cfmp4zat","slide":13,"bbox":[54,358,556,66]}
+{"kind":"textbox","id":"sh/dgvqxkbe","slide":13,"text":"Current user","textPreview":"Current user","textChars":12,"textLines":1,"bbox":[76,372,146,30]}
+{"kind":"textbox","id":"sh/yh476psj","slide":13,"text":"The API derives identity from the token; the browser never supplies userId.","textPreview":"The API derives identity from the token; the browser never supplies userId.","textChars":75,"textLines":1,"bbox":[224,370,360,42]}
+{"kind":"shape","id":"sh/zid8zut4","slide":13,"bbox":[54,432,556,66]}
+{"kind":"textbox","id":"sh/0jmp8zap","slide":13,"text":"Repositories","textPreview":"Repositories","textChars":12,"textLines":1,"bbox":[76,446,146,30]}
+{"kind":"textbox","id":"sh/l4fq14ba","slide":13,"text":"SQLAlchemy persistence operations stay outside endpoint and service code.","textPreview":"SQLAlchemy persistence operations stay outside endpoint and service code.","textChars":73,"textLines":1,"bbox":[224,444,360,42]}
+{"kind":"shape","id":"sh/m5o7a9sv","slide":13,"bbox":[54,506,556,66]}
+{"kind":"textbox","id":"sh/n6x83etg","slide":13,"text":"Migrations","textPreview":"Migrations","textChars":10,"textLines":1,"bbox":[76,520,146,30]}
+{"kind":"textbox","id":"sh/jaxorepo","slide":13,"text":"Alembic creates repeatable, reviewable PostgreSQL schema changes.","textPreview":"Alembic creates repeatable, reviewable PostgreSQL schema changes.","textChars":65,"textLines":1,"bbox":[224,518,360,42]}
+{"kind":"shape","id":"sh/i9o7i983","slide":13,"bbox":[54,580,556,66]}
+{"kind":"textbox","id":"sh/5cz6to7e","slide":13,"text":"Secrets","textPreview":"Secrets","textChars":7,"textLines":1,"bbox":[76,594,146,30]}
+{"kind":"textbox","id":"sh/4bqpkjqt","slide":13,"text":"Provider keys and signing secrets remain in ignored runtime configuration.","textPreview":"Provider keys and signing secrets remain in ignored runtime configuration.","textChars":74,"textLines":1,"bbox":[224,592,360,42]}
+{"kind":"shape","id":"sh/v6xonupc","slide":13,"bbox":[649,151,572,452]}
+{"kind":"shape","id":"sh/h8f6p47i","slide":13,"bbox":[654,610,562,46]}
+{"kind":"textbox","id":"sh/w76pgzqx","slide":13,"text":"Security is enforced by the API—not by hiding links.","textPreview":"Security is enforced by the API—not by hiding links.","textChars":52,"textLines":1,"bbox":[672,622,526,22]}
+{"kind":"image","id":"im/5kji5o3y","slide":13,"name":"","geometry":"roundRect","bbox":[654,156,562,442]}
+{"kind":"notes","id":"nt/3xe86z","slide":13,"text":"Connect the UI to backend enforcement: route protection improves experience, but authentication, authorization, validation, and user scoping are verified by the API.\nPoint out the controller-service-repository separation in the real package structure.\n\n[Sources]\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-backend/app/services/auth.py\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-backend/app/api/dependencies.py\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-backend/app/repositories\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-backend/alembic\n- /Users/samsonkitigo/Documents/Codex/sportshub/.tmp/submission-review/screenshots/sign-in-desktop.png\n[/Sources]"}
+{"kind":"slide","id":"sl/05dyk9","slide":14,"title":"SPORTSHUB · CS425 PROJECT","textShapes":24}
+{"kind":"textbox","id":"sh/l4byp0je","slide":14,"text":"SPORTSHUB · CS425 PROJECT","textPreview":"SPORTSHUB · CS425 PROJECT","textChars":25,"textLines":1,"bbox":[54,34,620,24]}
+{"kind":"textbox","id":"sh/p8ju1c7y","slide":14,"text":"Automated evidence covers behavior at every layer","textPreview":"Automated evidence covers behavior at every layer","textChars":49,"textLines":1,"bbox":[54,69,1160,76]}
+{"kind":"textbox","id":"sh/o7ad87qd","slide":14,"text":"11","textPreview":"11","textChars":2,"textLines":1,"bbox":[1176,671,50,22]}
+{"kind":"shape","id":"sh/bu1c32po","slide":14,"bbox":[54,168,270,170]}
+{"kind":"textbox","id":"sh/q9svah83","slide":14,"text":"46","textPreview":"46","textChars":2,"textLines":1,"bbox":[76,193,226,64]}
+{"kind":"textbox","id":"sh/dwje5c7u","slide":14,"text":"backend tests","textPreview":"backend tests","textChars":13,"textLines":1,"bbox":[76,258,226,28]}
+{"kind":"textbox","id":"sh/cvadc7q9","slide":14,"text":"pytest","textPreview":"pytest","textChars":6,"textLines":1,"bbox":[76,301,226,22]}
+{"kind":"shape","id":"sh/ryxcripk","slide":14,"bbox":[350,168,270,170]}
+{"kind":"textbox","id":"sh/6dovyd8z","slide":14,"text":"8","textPreview":"8","textChars":1,"textLines":1,"bbox":[372,193,226,64]}
+{"kind":"textbox","id":"sh/kbitcryt","slide":14,"text":"frontend tests","textPreview":"frontend tests","textChars":14,"textLines":1,"bbox":[372,258,226,28]}
+{"kind":"textbox","id":"sh/lcru5wfe","slide":14,"text":"Vitest","textPreview":"Vitest","textChars":6,"textLines":1,"bbox":[372,301,226,22]}
+{"kind":"shape","id":"sh/y90ba1gn","slide":14,"bbox":[646,168,270,170]}
+{"kind":"textbox","id":"sh/za9c3mx8","slide":14,"text":"2","textPreview":"2","textChars":1,"textLines":1,"bbox":[668,193,226,64]}
+{"kind":"textbox","id":"sh/8f2tgbyp","slide":14,"text":"browser projects","textPreview":"browser projects","textChars":16,"textLines":1,"bbox":[668,258,226,28]}
+{"kind":"textbox","id":"sh/tgbu9gfa","slide":14,"text":"Playwright","textPreview":"Playwright","textChars":10,"textLines":1,"bbox":[668,301,226,22]}
+{"kind":"shape","id":"sh/6d0be1gj","slide":14,"bbox":[942,168,270,170]}
+{"kind":"textbox","id":"sh/7etc76x4","slide":14,"text":"46","textPreview":"46","textChars":2,"textLines":1,"bbox":[964,193,226,64]}
+{"kind":"textbox","id":"sh/ojyt47yl","slide":14,"text":"PostgreSQL tests","textPreview":"PostgreSQL tests","textChars":16,"textLines":1,"bbox":[964,258,226,28]}
+{"kind":"textbox","id":"sh/pk7axcf6","slide":14,"text":"Docker profile","textPreview":"Docker profile","textChars":14,"textLines":1,"bbox":[964,301,226,22]}
+{"kind":"shape","id":"sh/54fil43i","slide":14,"bbox":[54,374,1172,244]}
+{"kind":"textbox","id":"sh/436hcjmx","slide":14,"text":"Controller and API","textPreview":"Controller and API","textChars":18,"textLines":1,"bbox":[80,399,250,26]}
+{"kind":"textbox","id":"sh/32x0jels","slide":14,"text":"Authentication, validation, status codes, matchday filtering, and fixture details","textPreview":"Authentication, validation, status codes, matchday filtering, and fixture details","textChars":81,"textLines":1,"bbox":[340,399,836,26]}
+{"kind":"shape","id":"sh/i1oza947","slide":14,"bbox":[80,437,1096,1]}
+{"kind":"textbox","id":"sh/dszipo3u","slide":14,"text":"Service and repository","textPreview":"Service and repository","textChars":22,"textLines":1,"bbox":[80,451,250,26]}
+{"kind":"textbox","id":"sh/srq1gjm9","slide":14,"text":"Preference rules, alert state, database queries, transactions, and error cases","textPreview":"Preference rules, alert state, database queries, transactions, and error cases","textChars":78,"textLines":1,"bbox":[340,451,836,26]}
+{"kind":"shape","id":"sh/rqh0nelo","slide":14,"bbox":[80,489,1096,1]}
+{"kind":"textbox","id":"sh/qp8je943","slide":14,"text":"Provider boundary","textPreview":"Provider boundary","textChars":17,"textLines":1,"bbox":[80,503,250,26]}
+{"kind":"textbox","id":"sh/1wzito3q","slide":14,"text":"iSportsAPI normalization, caching, fallback host, optional detail data, and failures","textPreview":"iSportsAPI normalization, caching, fallback host, optional detail data, and failures","textChars":84,"textLines":1,"bbox":[340,503,836,26]}
+{"kind":"shape","id":"sh/0vq1k3m5","slide":14,"bbox":[80,541,1096,1]}
+{"kind":"textbox","id":"sh/y1kfelkn","slide":14,"text":"Browser","textPreview":"Browser","textChars":7,"textLines":1,"bbox":[80,555,250,26]}
+{"kind":"textbox","id":"sh/j2tgnql8","slide":14,"text":"Desktop and mobile journeys through matchday, fixture tabs, and team exploration","textPreview":"Desktop and mobile journeys through matchday, fixture tabs, and team exploration","textChars":80,"textLines":1,"bbox":[340,555,836,26]}
+{"kind":"textbox","id":"sh/k32xgv2t","slide":14,"text":"Last verified locally · August 25, 2026","textPreview":"Last verified locally · August 25, 2026","textChars":39,"textLines":1,"bbox":[54,640,500,22]}
+{"kind":"notes","id":"nt/05dyk9","slide":14,"text":"Testing is not a single count. Explain what each layer proves and show terminal output if time allows.\nThe PostgreSQL profile confirms migrations and repository behavior against the production database type.\n\n[Sources]\n- /Users/samsonkitigo/Documents/Codex/sportshub/docs/TEST_PLAN.md\n- /Users/samsonkitigo/Documents/Codex/sportshub/Makefile\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-backend/tests\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-frontend/src/test/App.test.tsx\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-frontend/e2e/smoke.spec.ts\n[/Sources]"}
+{"kind":"slide","id":"sl/65pll2","slide":15,"title":"SPORTSHUB · CS425 PROJECT","textShapes":19}
+{"kind":"textbox","id":"sh/m1ov6pgr","slide":15,"text":"SPORTSHUB · CS425 PROJECT","textPreview":"SPORTSHUB · CS425 PROJECT","textChars":25,"textLines":1,"bbox":[54,34,620,24]}
+{"kind":"textbox","id":"sh/svuxg7mt","slide":15,"text":"The demo follows one fan from discovery to personalization","textPreview":"The demo follows one fan from discovery to personalization","textChars":58,"textLines":1,"bbox":[54,69,1160,76]}
+{"kind":"textbox","id":"sh/tw3e9c3e","slide":15,"text":"12","textPreview":"12","textChars":2,"textLines":1,"bbox":[1176,671,50,22]}
+{"kind":"shape","id":"sh/uxcfih4z","slide":15,"bbox":[98,184,4,426]}
+{"kind":"shape","id":"sh/fylwb2lk","slide":15,"bbox":[82,176,38,38]}
+{"kind":"textbox","id":"sh/gzuxk7m5","slide":15,"text":"1","textPreview":"1","textChars":1,"textLines":1,"bbox":[82,183,38,22]}
+{"kind":"textbox","id":"sh/h0nedc3q","slide":15,"text":"Browse the matchday","textPreview":"Browse the matchday","textChars":19,"textLines":1,"bbox":[140,175,310,28]}
+{"kind":"textbox","id":"sh/a18v6d4v","slide":15,"text":"Choose a date and open a fixture.","textPreview":"Choose a date and open a fixture.","textChars":33,"textLines":1,"bbox":[140,205,348,40]}
+{"kind":"shape","id":"sh/v21wzilg","slide":15,"bbox":[82,264,38,38]}
+{"kind":"textbox","id":"sh/jqxsnudk","slide":15,"text":"2","textPreview":"2","textChars":1,"textLines":1,"bbox":[82,271,38,22]}
+{"kind":"textbox","id":"sh/i5obupcz","slide":15,"text":"Inspect the fixture","textPreview":"Inspect the fixture","textChars":19,"textLines":1,"bbox":[140,263,310,28]}
+{"kind":"textbox","id":"sh/5szupkvq","slide":15,"text":"Show statistics, lineups, timeline, and the chat boundary.","textPreview":"Show statistics, lineups, timeline, and the chat boundary.","textChars":58,"textLines":1,"bbox":[140,293,348,40]}
+{"kind":"shape","id":"sh/4rqtwzu5","slide":15,"bbox":[82,352,38,38]}
+{"kind":"textbox","id":"sh/v2xsjado","slide":15,"text":"3","textPreview":"3","textChars":1,"textLines":1,"bbox":[82,359,38,22]}
+{"kind":"textbox","id":"sh/u1obq5c3","slide":15,"text":"Explore a team","textPreview":"Explore a team","textChars":14,"textLines":1,"bbox":[140,351,310,28]}
+{"kind":"textbox","id":"sh/h4falkve","slide":15,"text":"Search, open a profile, and revisit a recent search.","textPreview":"Search, open a profile, and revisit a recent search.","textChars":52,"textLines":1,"bbox":[140,381,348,40]}
+{"kind":"shape","id":"sh/w36tsfut","slide":15,"bbox":[82,440,38,38]}
+{"kind":"textbox","id":"sh/7ydsfadc","slide":15,"text":"4","textPreview":"4","textChars":1,"textLines":1,"bbox":[82,447,38,22]}
+{"kind":"textbox","id":"sh/mx4bm5cr","slide":15,"text":"Build My Hub","textPreview":"Build My Hub","textChars":12,"textLines":1,"bbox":[140,439,310,28]}
+{"kind":"textbox","id":"sh/qt4by5gz","slide":15,"text":"Register, follow the team, then remove it.","textPreview":"Register, follow the team, then remove it.","textChars":42,"textLines":1,"bbox":[140,469,348,40]}
+{"kind":"shape","id":"sh/budcrqx4","slide":15,"bbox":[82,528,38,38]}
+{"kind":"textbox","id":"sh/cvmt0vyp","slide":15,"text":"5","textPreview":"5","textChars":1,"textLines":1,"bbox":[82,535,38,22]}
+{"kind":"textbox","id":"sh/dwvut0fa","slide":15,"text":"Clear the alerts","textPreview":"Clear the alerts","textChars":16,"textLines":1,"bbox":[140,527,310,28]}
+{"kind":"textbox","id":"sh/yx4b25gv","slide":15,"text":"Read one item and mark the rest as read.","textPreview":"Read one item and mark the rest as read.","textChars":40,"textLines":1,"bbox":[140,557,348,40]}
+{"kind":"shape","id":"sh/zydcvaxg","slide":15,"bbox":[535,171,686,454]}
+{"kind":"textbox","id":"sh/l0fuxkfm","slide":15,"text":"If live provider data is unavailable, continue with the sample provider and local account, hub, and alert flows.","textPreview":"If live provider data is unavailable, continue with the sample provider and local account, hub, and alert flows.","textChars":112,"textLines":1,"bbox":[540,642,676,34]}
+{"kind":"image","id":"im/4zit0nm1","slide":15,"name":"","geometry":"roundRect","bbox":[540,176,676,444]}
+{"kind":"notes","id":"nt/65pll2","slide":15,"text":"Use this as the live browser checklist. The route proves the major current-release use cases in one coherent story.\nKeep the provider contingency ready so an external outage cannot stop the presentation.\n\n[Sources]\n- /Users/samsonkitigo/Documents/Codex/sportshub/README.md\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-frontend/README.md\n- /Users/samsonkitigo/Documents/Codex/sportshub/.tmp/submission-review/screenshots/team-explorer-desktop.png\n[/Sources]"}
+{"kind":"slide","id":"sl/7ebo6b","slide":16,"title":"SPORTSHUB · CS425 PROJECT","textShapes":17}
+{"kind":"textbox","id":"sh/hgb29oj6","slide":16,"text":"SPORTSHUB · CS425 PROJECT","textPreview":"SPORTSHUB · CS425 PROJECT","textChars":25,"textLines":1,"bbox":[54,34,620,24]}
+{"kind":"textbox","id":"sh/0bidkze1","slide":16,"text":"The working release completes four connected fan journeys","textPreview":"The working release completes four connected fan journeys","textChars":57,"textLines":1,"bbox":[54,69,1160,76]}
+{"kind":"textbox","id":"sh/1cbed4fm","slide":16,"text":"06","textPreview":"06","textChars":2,"textLines":1,"bbox":[1176,671,50,22]}
+{"kind":"shape","id":"sh/mdkvm9w7","slide":16,"bbox":[54,168,577,188]}
+{"kind":"shape","id":"sh/netwfexs","slide":16,"bbox":[74,188,42,42]}
+{"kind":"textbox","id":"sh/of2dojed","slide":16,"text":"01","textPreview":"01","textChars":2,"textLines":1,"bbox":[74,197,42,22]}
+{"kind":"textbox","id":"sh/9gbehovy","slide":16,"text":"Matchday","textPreview":"Matchday","textChars":8,"textLines":1,"bbox":[132,187,479,38]}
+{"kind":"textbox","id":"sh/a1kvqtwj","slide":16,"text":"Browse a selected local date, filter live/half-time/full-time/scheduled games, and paginate results.","textPreview":"Browse a selected local date, filter live/half-time/full-time/scheduled games, and paginate results.","textChars":100,"textLines":1,"bbox":[76,244,533,94]}
+{"kind":"shape","id":"sh/b2twjydo","slide":16,"bbox":[649,168,577,188]}
+{"kind":"shape","id":"sh/zm5g3qho","slide":16,"bbox":[669,188,42,42]}
+{"kind":"textbox","id":"sh/elwzal03","slide":16,"text":"02","textPreview":"02","textChars":2,"textLines":1,"bbox":[669,197,42,22]}
+{"kind":"textbox","id":"sh/1oni50zu","slide":16,"text":"Fixture detail","textPreview":"Fixture detail","textChars":14,"textLines":1,"bbox":[727,187,479,38]}
+{"kind":"textbox","id":"sh/0nehcvi9","slide":16,"text":"Open overview, statistics, lineups, timeline, and a clearly labeled chat placeholder.","textPreview":"Open overview, statistics, lineups, timeline, and a clearly labeled chat placeholder.","textChars":85,"textLines":1,"bbox":[671,244,533,94]}
+{"kind":"shape","id":"sh/rilgz6hs","slide":16,"bbox":[54,392,577,188]}
+{"kind":"shape","id":"sh/qhcz6107","slide":16,"bbox":[74,412,42,42]}
+{"kind":"textbox","id":"sh/dkny1gzi","slide":16,"text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[74,421,42,22]}
+{"kind":"textbox","id":"sh/cjeh8bix","slide":16,"text":"Team hub","textPreview":"Team hub","textChars":8,"textLines":1,"bbox":[132,411,479,38]}
+{"kind":"textbox","id":"sh/vep0bahw","slide":16,"text":"Search teams, view useful profiles and recent searches, then follow or remove a team.","textPreview":"Search teams, view useful profiles and recent searches, then follow or remove a team.","textChars":85,"textLines":1,"bbox":[76,468,533,94]}
+{"kind":"shape","id":"sh/adgzi50b","slide":16,"bbox":[649,392,577,188]}
+{"kind":"shape","id":"sh/690ja9kj","slide":16,"bbox":[669,412,42,42]}
+{"kind":"textbox","id":"sh/7atk3e14","slide":16,"text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[669,421,42,22]}
+{"kind":"textbox","id":"sh/sb2lcj2p","slide":16,"text":"Alert inbox","textPreview":"Alert inbox","textChars":11,"textLines":1,"bbox":[727,411,479,38]}
+{"kind":"textbox","id":"sh/tcb25oja","slide":16,"text":"Review persisted summaries, unread counts, preferences, individual read state, and mark-all-read.","textPreview":"Review persisted summaries, unread counts, preferences, individual read state, and mark-all-read.","textChars":97,"textLines":1,"bbox":[671,468,533,94]}
+{"kind":"shape","id":"sh/udk3e9kf","slide":16,"bbox":[54,610,1172,48]}
+{"kind":"textbox","id":"sh/fetk7e10","slide":16,"text":"Release boundary","textPreview":"Release boundary","textChars":16,"textLines":1,"bbox":[76,623,170,22]}
+{"kind":"textbox","id":"sh/gf2lgjil","slide":16,"text":"Live SSE, automated match alerts, ticketing, Redis, admin workflows, and cloud hosting are planned.","textPreview":"Live SSE, automated match alerts, ticketing, Redis, admin workflows, and cloud hosting are planned.","textChars":99,"textLines":1,"bbox":[248,622,920,24]}
+{"kind":"notes","id":"nt/7ebo6b","slide":16,"text":"This is the executable scope checkpoint. Everything in the four cards is demonstrable in the current application.\nThe release-boundary strip prevents later design diagrams from being mistaken for completed behavior.\n\n[Sources]\n- /Users/samsonkitigo/Documents/Codex/sportshub/README.md\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-frontend/src/pages/HomePage.tsx\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-frontend/src/pages/FixtureDetailPage.tsx\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-frontend/src/pages/TeamsPage.tsx\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-backend/app/api/notifications.py\n[/Sources]"}
+{"kind":"slide","id":"sl/nkdokk","slide":17,"title":"SPORTSHUB · CS425 PROJECT","textShapes":17}
+{"kind":"textbox","id":"sh/21wb2pon","slide":17,"text":"SPORTSHUB · CS425 PROJECT","textPreview":"SPORTSHUB · CS425 PROJECT","textChars":25,"textLines":1,"bbox":[54,34,620,24]}
+{"kind":"textbox","id":"sh/psjahk7y","slide":17,"text":"The working release completes four connected fan journeys","textPreview":"The working release completes four connected fan journeys","textChars":57,"textLines":1,"bbox":[54,69,1160,76]}
+{"kind":"textbox","id":"sh/4ra98f6d","slide":17,"text":"06","textPreview":"06","textChars":2,"textLines":1,"bbox":[1176,671,50,22]}
+{"kind":"shape","id":"sh/vmhsbapw","slide":17,"bbox":[54,168,577,188]}
+{"kind":"shape","id":"sh/ul8r25ob","slide":17,"bbox":[74,188,42,42]}
+{"kind":"textbox","id":"sh/hozadk7m","slide":17,"text":"01","textPreview":"01","textChars":2,"textLines":1,"bbox":[74,197,42,22]}
+{"kind":"textbox","id":"sh/gnq94f6h","slide":17,"text":"Matchday","textPreview":"Matchday","textChars":8,"textLines":1,"bbox":[132,187,479,38]}
+{"kind":"textbox","id":"sh/zilsnup0","slide":17,"text":"Browse a selected local date, filter live/half-time/full-time/scheduled games, and paginate results.","textPreview":"Browse a selected local date, filter live/half-time/full-time/scheduled games, and paginate results.","textChars":100,"textLines":1,"bbox":[76,244,533,94]}
+{"kind":"shape","id":"sh/ehsbe9of","slide":17,"bbox":[649,168,577,188]}
+{"kind":"shape","id":"sh/sfa5sryl","slide":17,"bbox":[669,188,42,42]}
+{"kind":"textbox","id":"sh/tgj61wz6","slide":17,"text":"02","textPreview":"02","textChars":2,"textLines":1,"bbox":[669,197,42,22]}
+{"kind":"textbox","id":"sh/6tsnqhgf","slide":17,"text":"Fixture detail","textPreview":"Fixture detail","textChars":14,"textLines":1,"bbox":[727,187,479,38]}
+{"kind":"textbox","id":"sh/re1ozmh0","slide":17,"text":"Open overview, statistics, lineups, timeline, and a clearly labeled chat placeholder.","textPreview":"Open overview, statistics, lineups, timeline, and a clearly labeled chat placeholder.","textChars":85,"textLines":1,"bbox":[671,244,533,94]}
+{"kind":"shape","id":"sh/4rq5o7y9","slide":17,"bbox":[54,392,577,188]}
+{"kind":"shape","id":"sh/5sj6xczu","slide":17,"bbox":[74,412,42,42]}
+{"kind":"textbox","id":"sh/ip8nmxgj","slide":17,"text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[74,421,42,22]}
+{"kind":"textbox","id":"sh/jqhov2ho","slide":17,"text":"Team hub","textPreview":"Team hub","textChars":8,"textLines":1,"bbox":[132,411,479,38]}
+{"kind":"textbox","id":"sh/wnq5k7yd","slide":17,"text":"Search teams, view useful profiles and recent searches, then follow or remove a team.","textPreview":"Search teams, view useful profiles and recent searches, then follow or remove a team.","textChars":85,"textLines":1,"bbox":[76,468,533,94]}
+{"kind":"shape","id":"sh/hozmtczy","slide":17,"bbox":[649,392,577,188]}
+{"kind":"shape","id":"sh/x87u14na","slide":17,"bbox":[669,412,42,42]}
+{"kind":"textbox","id":"sh/c7yd8z6p","slide":17,"text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[669,421,42,22]}
+{"kind":"textbox","id":"sh/b6pczu5k","slide":17,"text":"Alert inbox","textPreview":"Alert inbox","textChars":11,"textLines":1,"bbox":[727,411,479,38]}
+{"kind":"textbox","id":"sh/a5gb6poz","slide":17,"text":"Review persisted summaries, unread counts, preferences, individual read state, and mark-all-read.","textPreview":"Review persisted summaries, unread counts, preferences, individual read state, and mark-all-read.","textChars":97,"textLines":1,"bbox":[671,468,533,94]}
+{"kind":"shape","id":"sh/p47uxkne","slide":17,"bbox":[54,610,1172,48]}
+{"kind":"textbox","id":"sh/o3yt4f6t","slide":17,"text":"Release boundary","textPreview":"Release boundary","textChars":16,"textLines":1,"bbox":[76,623,170,22]}
+{"kind":"textbox","id":"sh/n25cvu58","slide":17,"text":"Live SSE, automated match alerts, ticketing, Redis, admin workflows, and cloud hosting are planned.","textPreview":"Live SSE, automated match alerts, ticketing, Redis, admin workflows, and cloud hosting are planned.","textChars":99,"textLines":1,"bbox":[248,622,920,24]}
+{"kind":"notes","id":"nt/nkdokk","slide":17,"text":"This is the executable scope checkpoint. Everything in the four cards is demonstrable in the current application.\nThe release-boundary strip prevents later design diagrams from being mistaken for completed behavior.\n\n[Sources]\n- /Users/samsonkitigo/Documents/Codex/sportshub/README.md\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-frontend/src/pages/HomePage.tsx\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-frontend/src/pages/FixtureDetailPage.tsx\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-frontend/src/pages/TeamsPage.tsx\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-backend/app/api/notifications.py\n[/Sources]"}
+{"kind":"slide","id":"sl/l7dzpo","slide":18,"title":"SPORTSHUB · CS425 PROJECT","textShapes":13}
+{"kind":"textbox","id":"sh/nydsnmx0","slide":18,"text":"SPORTSHUB · CS425 PROJECT","textPreview":"SPORTSHUB · CS425 PROJECT","textChars":25,"textLines":1,"bbox":[54,34,620,24]}
+{"kind":"textbox","id":"sh/jmhs7294","slide":18,"text":"The core stack favors speed, clarity, and strong boundaries","textPreview":"The core stack favors speed, clarity, and strong boundaries","textChars":59,"textLines":1,"bbox":[54,69,1160,76]}
+{"kind":"textbox","id":"sh/il8rexsz","slide":18,"text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[1176,671,50,22]}
+{"kind":"shape","id":"sh/tcjadwrm","slide":18,"bbox":[54,180,362,414]}
+{"kind":"shape","id":"sh/sratkra1","slide":18,"bbox":[54,180,362,8]}
+{"kind":"textbox","id":"sh/rq1sbm9g","slide":18,"text":"React + TypeScript","textPreview":"React + TypeScript","textChars":18,"textLines":1,"bbox":[78,214,314,38]}
+{"kind":"textbox","id":"sh/6psbihsv","slide":18,"text":"Responsive client and explicit contracts","textPreview":"Responsive client and explicit contracts","textChars":40,"textLines":1,"bbox":[78,260,314,54]}
+{"kind":"textbox","id":"sh/1g3ahwri","slide":18,"text":"•  Reusable page and form components\n•  Client-side routing for clear fan journeys\n•  Type checking catches API-shape mistakes early\n•  Vite keeps local development and builds fast","textPreview":"•  Reusable page and form components | •  Client-side routing for clear fan journeys | •  Type checking catches API-shape mistakes early ...","textChars":180,"textLines":4,"bbox":[78,332,314,220]}
+{"kind":"shape","id":"sh/gfutorqx","slide":18,"bbox":[459,180,362,414]}
+{"kind":"shape","id":"sh/u18vu50v","slide":18,"bbox":[459,180,362,8]}
+{"kind":"textbox","id":"sh/f2hcnahg","slide":18,"text":"FastAPI + Pydantic","textPreview":"FastAPI + Pydantic","textChars":18,"textLines":1,"bbox":[483,214,314,38]}
+{"kind":"textbox","id":"sh/gnadwfi1","slide":18,"text":"Small API surface with built-in validation","textPreview":"Small API surface with built-in validation","textChars":42,"textLines":1,"bbox":[483,260,314,54]}
+{"kind":"textbox","id":"sh/hojupkzm","slide":18,"text":"•  Versioned REST endpoints and OpenAPI documentation\n•  Typed request and response schemas\n•  Dependency-based authentication and authorization\n•  Straightforward unit and API testing","textPreview":"•  Versioned REST endpoints and OpenAPI documentation | •  Typed request and response schemas | •  Dependency-based authentication and au...","textChars":184,"textLines":4,"bbox":[483,332,314,220]}
+{"kind":"shape","id":"sh/2psvypg7","slide":18,"bbox":[864,180,362,414]}
+{"kind":"shape","id":"sh/3q1cruhs","slide":18,"bbox":[864,180,362,8]}
+{"kind":"textbox","id":"sh/4rad0zyx","slide":18,"text":"Docker Compose","textPreview":"Docker Compose","textChars":14,"textLines":1,"bbox":[888,214,314,38]}
+{"kind":"textbox","id":"sh/psjut4zi","slide":18,"text":"One repeatable environment for the full stack","textPreview":"One repeatable environment for the full stack","textChars":45,"textLines":1,"bbox":[888,260,314,54]}
+{"kind":"textbox","id":"sh/itobml0n","slide":18,"text":"•  Starts PostgreSQL, migrations, API, and web client\n•  Reduces machine-specific setup differences\n•  Preserves service boundaries without microservices\n•  Supports a separate PostgreSQL test profile","textPreview":"•  Starts PostgreSQL, migrations, API, and web client | •  Reduces machine-specific setup differences | •  Preserves service boundaries w...","textChars":200,"textLines":4,"bbox":[888,332,314,220]}
+{"kind":"textbox","id":"sh/juxcfqh8","slide":18,"text":"Selection principle: use mature tools that make the architecture visible without adding unnecessary operational complexity.","textPreview":"Selection principle: use mature tools that make the architecture visible without adding unnecessary operational complexity.","textChars":123,"textLines":1,"bbox":[54,626,1172,34]}
+{"kind":"notes","id":"nt/l7dzpo","slide":18,"text":"Describe why each technology was selected, not only what it is.\nReact and FastAPI create a clean browser-to-API boundary; TypeScript and Pydantic validate both sides; Docker makes the demonstration reproducible.\n\n[Sources]\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-frontend/package.json\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-backend/requirements.txt\n- /Users/samsonkitigo/Documents/Codex/sportshub/compose.yaml\n[/Sources]"}
+{"kind":"slide","id":"sl/orqrhy","slide":19,"title":"SPORTSHUB · CS425 PROJECT","textShapes":13}
+{"kind":"textbox","id":"sh/onaxgvyp","slide":19,"text":"SPORTSHUB · CS425 PROJECT","textPreview":"SPORTSHUB · CS425 PROJECT","textChars":25,"textLines":1,"bbox":[54,34,620,24]}
+{"kind":"textbox","id":"sh/i9sjy10j","slide":19,"text":"The core stack favors speed, clarity, and strong boundaries","textPreview":"The core stack favors speed, clarity, and strong boundaries","textChars":59,"textLines":1,"bbox":[54,69,1160,76]}
+{"kind":"textbox","id":"sh/3a1kr6h4","slide":19,"text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[1176,671,50,22]}
+{"kind":"shape","id":"sh/sfu14bil","slide":19,"bbox":[54,180,362,414]}
+{"kind":"shape","id":"sh/dg32xgz6","slide":19,"bbox":[54,180,362,8]}
+{"kind":"textbox","id":"sh/qdcj2l0f","slide":19,"text":"React + TypeScript","textPreview":"React + TypeScript","textChars":18,"textLines":1,"bbox":[78,214,314,38]}
+{"kind":"textbox","id":"sh/relkv6h0","slide":19,"text":"Responsive client and explicit contracts","textPreview":"Responsive client and explicit contracts","textChars":40,"textLines":1,"bbox":[78,260,314,54]}
+{"kind":"textbox","id":"sh/8jq1srih","slide":19,"text":"•  Reusable page and form components\n•  Client-side routing for clear fan journeys\n•  Type checking catches API-shape mistakes early\n•  Vite keeps local development and builds fast","textPreview":"•  Reusable page and form components | •  Client-side routing for clear fan journeys | •  Type checking catches API-shape mistakes early ...","textChars":180,"textLines":4,"bbox":[78,332,314,220]}
+{"kind":"shape","id":"sh/tkjilwz2","slide":19,"bbox":[459,180,362,414]}
+{"kind":"shape","id":"sh/tcru5c7q","slide":19,"bbox":[459,180,362,8]}
+{"kind":"textbox","id":"sh/8bidc7q5","slide":19,"text":"FastAPI + Pydantic","textPreview":"FastAPI + Pydantic","textChars":18,"textLines":1,"bbox":[483,214,314,38]}
+{"kind":"textbox","id":"sh/7apc329k","slide":19,"text":"Small API surface with built-in validation","textPreview":"Small API surface with built-in validation","textChars":42,"textLines":1,"bbox":[483,260,314,54]}
+{"kind":"textbox","id":"sh/69gbax8z","slide":19,"text":"•  Versioned REST endpoints and OpenAPI documentation\n•  Typed request and response schemas\n•  Dependency-based authentication and authorization\n•  Straightforward unit and API testing","textPreview":"•  Versioned REST endpoints and OpenAPI documentation | •  Typed request and response schemas | •  Dependency-based authentication and au...","textChars":184,"textLines":4,"bbox":[483,332,314,220]}
+{"kind":"shape","id":"sh/hgru9c72","slide":19,"bbox":[864,180,362,414]}
+{"kind":"shape","id":"sh/gfidg7qh","slide":19,"bbox":[864,180,362,8]}
+{"kind":"textbox","id":"sh/ve9c7mpw","slide":19,"text":"Docker Compose","textPreview":"Docker Compose","textChars":14,"textLines":1,"bbox":[888,214,314,38]}
+{"kind":"textbox","id":"sh/ud0veh8b","slide":19,"text":"One repeatable environment for the full stack","textPreview":"One repeatable environment for the full stack","textChars":45,"textLines":1,"bbox":[888,260,314,54]}
+{"kind":"textbox","id":"sh/54budw7y","slide":19,"text":"•  Starts PostgreSQL, migrations, API, and web client\n•  Reduces machine-specific setup differences\n•  Preserves service boundaries without microservices\n•  Supports a separate PostgreSQL test profile","textPreview":"•  Starts PostgreSQL, migrations, API, and web client | •  Reduces machine-specific setup differences | •  Preserves service boundaries w...","textChars":200,"textLines":4,"bbox":[888,332,314,220]}
+{"kind":"textbox","id":"sh/432dkrqd","slide":19,"text":"Selection principle: use mature tools that make the architecture visible without adding unnecessary operational complexity.","textPreview":"Selection principle: use mature tools that make the architecture visible without adding unnecessary operational complexity.","textChars":123,"textLines":1,"bbox":[54,626,1172,34]}
+{"kind":"notes","id":"nt/orqrhy","slide":19,"text":"Describe why each technology was selected, not only what it is.\nReact and FastAPI create a clean browser-to-API boundary; TypeScript and Pydantic validate both sides; Docker makes the demonstration reproducible.\n\n[Sources]\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-frontend/package.json\n- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-backend/requirements.txt\n- /Users/samsonkitigo/Documents/Codex/sportshub/compose.yaml\n[/Sources]"}
+{"kind":"slide","id":"sl/4k2v4j","slide":20,"title":"SPORTSHUB · CS425 PROJECT","textShapes":9}
+{"kind":"textbox","id":"sh/507il47q","slide":20,"text":"SPORTSHUB · CS425 PROJECT","textPreview":"SPORTSHUB · CS425 PROJECT","textChars":25,"textLines":1,"bbox":[54,42,500,24]}
+{"kind":"textbox","id":"sh/0rmlojy5","slide":20,"text":"A working foundation for a broader sports platform","textPreview":"A working foundation for a broader sports platform","textChars":50,"textLines":1,"bbox":[54,104,650,116]}
+{"kind":"textbox","id":"sh/lsvmx4fa","slide":20,"text":"Working now","textPreview":"Working now","textChars":11,"textLines":1,"bbox":[54,276,250,30]}
+{"kind":"textbox","id":"sh/mt43q9gv","slide":20,"text":"A tested football workflow for matchdays, fixture detail, team personalization, authentication, and alerts.","textPreview":"A tested football workflow for matchdays, fixture detail, team personalization, authentication, and alerts.","textChars":107,"textLines":1,"bbox":[54,316,488,98]}
+{"kind":"textbox","id":"sh/nud4zexg","slide":20,"text":"Designed next","textPreview":"Designed next","textChars":13,"textLines":1,"bbox":[54,456,250,30]}
+{"kind":"textbox","id":"sh/8vmlsjy1","slide":20,"text":"Realtime updates, automated notifications, official tickets, featured tournaments, and scalable infrastructure.","textPreview":"Realtime updates, automated notifications, official tickets, featured tournaments, and scalable infrastructure.","textChars":111,"textLines":1,"bbox":[54,496,488,92]}
+{"kind":"textbox","id":"sh/9wvm1ofm","slide":20,"text":"The constant","textPreview":"The constant","textChars":12,"textLines":1,"bbox":[54,614,180,28]}
+{"kind":"textbox","id":"sh/ax43utg7","slide":20,"text":"Stable boundaries keep the product understandable as it grows.","textPreview":"Stable boundaries keep the product understandable as it grows.","textChars":62,"textLines":1,"bbox":[230,612,520,30]}
+{"kind":"shape","id":"sh/vyd43yxs","slide":20,"bbox":[765,65,456,558]}
+{"kind":"textbox","id":"sh/ixgja9oz","slide":20,"text":"Questions","textPreview":"Questions","textChars":9,"textLines":1,"bbox":[1060,652,156,24]}
+{"kind":"image","id":"im/jy107u1o","slide":20,"name":"","geometry":"roundRect","bbox":[770,70,446,548]}
+{"kind":"notes","id":"nt/4k2v4j","slide":20,"text":"Close by returning to the opening promise: SportsHub already demonstrates a coherent matchday experience and the design work shows how it grows responsibly.\nInvite technical questions about architecture, authentication, persistence, provider normalization, caching, migrations, or the test strategy.\n\n[Sources]\n- /Users/samsonkitigo/Documents/Codex/sportshub/README.md\n- /Users/samsonkitigo/Documents/Codex/sportshub/docs/sportshub_usecase.pdf\n- /Users/samsonkitigo/Documents/Codex/sportshub/docs/sportshub_architecture.pdf\n- /Users/samsonkitigo/Documents/Codex/sportshub/.tmp/submission-review/screenshots/home-hero.png\n[/Sources]"}

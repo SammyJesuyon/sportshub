@@ -47,10 +47,22 @@ class Team(Base):
 
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
     api_team_id: Mapped[Optional[int]] = mapped_column(Integer, unique=True, index=True)
+    league_provider_id: Mapped[Optional[int]] = mapped_column(Integer, index=True)
     third_party_id: Mapped[Optional[str]] = mapped_column(String(100), unique=True, index=True)
     name: Mapped[str] = mapped_column(String(120), index=True)
     country: Mapped[Optional[str]] = mapped_column(String(80))
     logo_url: Mapped[Optional[str]] = mapped_column(String(500))
+    code: Mapped[Optional[str]] = mapped_column(String(20))
+    founded: Mapped[Optional[int]] = mapped_column(Integer)
+    national: Mapped[Optional[bool]] = mapped_column(Boolean)
+    venue_name: Mapped[Optional[str]] = mapped_column(String(160))
+    venue_address: Mapped[Optional[str]] = mapped_column(String(240))
+    venue_city: Mapped[Optional[str]] = mapped_column(String(120))
+    venue_capacity: Mapped[Optional[int]] = mapped_column(Integer)
+    venue_surface: Mapped[Optional[str]] = mapped_column(String(80))
+    venue_image_url: Mapped[Optional[str]] = mapped_column(String(500))
+    details_loaded: Mapped[bool] = mapped_column(Boolean, default=False)
+    details_checked_at: Mapped[Optional[datetime]] = mapped_column(DateTime)
     provider: Mapped[str] = mapped_column(String(30), default="api-sports")
     updated_at: Mapped[datetime] = mapped_column(
         DateTime, default=utc_now, onupdate=utc_now

@@ -14,10 +14,14 @@ class Settings(BaseSettings):
     database_url: str = "postgresql+psycopg2://sportshub:sportshub_dev_password@localhost:5432/sportshub"
     secret_key: str = "development-only-change-me"
     access_token_expire_minutes: int = 30
-    sports_provider: Literal["sample", "api-sports"] = "sample"
+    sports_provider: Literal["sample", "api-sports", "isports"] = "sample"
     api_sports_key: str = ""
     api_sports_base_url: str = "https://v3.football.api-sports.io"
     api_sports_cache_path: str = ".cache/api_sports_cache.json"
+    isports_api_key: str = ""
+    isports_base_url: str = "https://api.isportsapi.com"
+    isports_fallback_base_url: str = "https://api2.isportsapi.com"
+    isports_cache_path: str = ".cache/isports_cache.json"
     cors_origins: str = "http://localhost:3000,http://localhost:5173"
 
     @property

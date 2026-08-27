@@ -1,0 +1,14 @@
+Authoritative project sources used for content
+- /Users/samsonkitigo/Documents/Codex/sportshub/README.md
+- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-backend/README.md
+- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-frontend/README.md
+- /Users/samsonkitigo/Documents/Codex/sportshub/docs/WEB_PLAN.md
+- /Users/samsonkitigo/Documents/Codex/sportshub/docs/TEST_PLAN.md
+- /Users/samsonkitigo/Documents/Codex/sportshub/docs/sportshub_usecase.pdf
+- /Users/samsonkitigo/Documents/Codex/sportshub/docs/SportsHub Lab 3 Architecture - Scope Aligned.pdf
+- /Users/samsonkitigo/Documents/Codex/sportshub/docs/lab4_sequence_diagram.pdf
+- /Users/samsonkitigo/Documents/Codex/sportshub/docs/SportsHub_Lab5.pdf
+- /Users/samsonkitigo/Documents/cs425/CS425.pdf
+
+Implementation was cross-checked in the API endpoints, services, repositories, provider adapter, database models, React pages, tests, and browser journeys. Code behavior is authoritative when an earlier course document describes a target capability that is not yet executable.
+

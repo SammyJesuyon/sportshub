@@ -14,10 +14,26 @@ export interface TokenResponse {
 export interface Team {
   id: string
   api_team_id: number | null
+  league_provider_id: number | null
   third_party_id: string | null
   name: string
   country: string | null
   logo_url: string | null
+  code: string | null
+  founded: number | null
+  national: boolean | null
+  venue_name: string | null
+  venue_address: string | null
+  venue_city: string | null
+  venue_capacity: number | null
+  venue_surface: string | null
+  venue_image_url: string | null
+}
+
+export interface TeamSchedule {
+  current_fixture: Fixture | null
+  next_fixture: Fixture | null
+  recent_fixture: Fixture | null
 }
 
 export interface TeamPreferenceResult {

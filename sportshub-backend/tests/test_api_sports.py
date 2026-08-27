@@ -25,9 +25,20 @@ def test_api_sports_team_search_uses_expected_url_and_secret_header(monkeypatch)
                         "team": {
                             "id": 42,
                             "name": "Arsenal",
+                            "code": "ARS",
                             "country": "England",
+                            "founded": 1886,
+                            "national": False,
                             "logo": "https://media.api-sports.io/football/teams/42.png",
-                        }
+                        },
+                        "venue": {
+                            "name": "Emirates Stadium",
+                            "address": "Hornsey Road",
+                            "city": "London",
+                            "capacity": 60260,
+                            "surface": "grass",
+                            "image": "emirates.jpg",
+                        },
                     }
                 ],
             },
@@ -47,6 +58,46 @@ def test_api_sports_team_search_uses_expected_url_and_secret_header(monkeypatch)
     assert [(team.provider_id, team.name, team.country) for team in teams] == [
         (42, "Arsenal", "England")
     ]
+    assert teams[0].founded == 1886
+    assert teams[0].venue_name == "Emirates Stadium"
+    assert teams[0].venue_capacity == 60260
+
+
+def test_api_sports_team_detail_uses_stable_provider_id(monkeypatch):
+    observed = {}
+
+    def fake_get(client, url, *, params, headers):
+        observed.update(url=url, params=params, headers=headers)
+        request = httpx.Request("GET", url, params=params, headers=headers)
+        return httpx.Response(
+            200,
+            request=request,
+            json={
+                "errors": [],
+                "response": [
+                    {
+                        "team": {
+                            "id": 42,
+                            "name": "Arsenal",
+                            "country": "England",
+                            "founded": 1886,
+                            "national": False,
+                        },
+                        "venue": {"name": "Emirates Stadium", "city": "London"},
+                    }
+                ],
+            },
+        )
+
+    monkeypatch.setattr(httpx.Client, "get", fake_get)
+    team = ApiSportsAdapter(
+        "secret-key", "https://v3.football.api-sports.io/"
+    ).get_team(42)
+
+    assert observed["params"] == {"id": 42}
+    assert team is not None
+    assert team.name == "Arsenal"
+    assert team.venue_city == "London"
 
 
 def test_api_sports_error_envelope_is_not_treated_as_empty_results(monkeypatch):

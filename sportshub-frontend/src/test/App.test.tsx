@@ -97,17 +97,33 @@ describe('SportsHub web foundation', () => {
     expect(await screen.findByRole('heading', { name: /welcome back/i })).toBeInTheDocument()
   })
 
-  it('keeps team exploration public and does not expose follow actions', async () => {
+  it('keeps team exploration read-only and opens useful team details', async () => {
+    localStorage.removeItem('sportshub.recent_team_searches.v1')
     vi.spyOn(globalThis, 'fetch').mockImplementation((input) => {
-      if (String(input).includes('/teams/?search=')) return jsonResponse([{ id: 'team-1', api_team_id: 42, third_party_id: '42', name: 'Arsenal', country: 'England', logo_url: null }])
+      const url = String(input)
+      if (url.includes('/teams/?search=')) return jsonResponse([{ id: 'team-1', api_team_id: 42, third_party_id: '42', name: 'Arsenal', country: 'England', logo_url: null }])
+      if (url.includes('/teams/team-1/schedule')) return jsonResponse({
+        current_fixture: null,
+        next_fixture: { fixture_id: 9001, kickoff: '2026-08-29T15:00:00-05:00', timezone: 'America/Chicago', league_id: 39, league_name: 'Premier League', league_logo_url: null, status_short: 'NS', status_long: 'Not Started', elapsed: null, bucket: 'scheduled', home: { provider_id: 42, name: 'Arsenal', logo_url: null, goals: null }, away: { provider_id: 49, name: 'Chelsea', logo_url: null, goals: null } },
+        recent_fixture: null,
+      })
+      if (url.endsWith('/teams/team-1')) return jsonResponse({ id: 'team-1', api_team_id: 42, third_party_id: '42', name: 'Arsenal', country: 'England', logo_url: null, code: 'ARS', founded: 1886, national: false, venue_name: 'Emirates Stadium', venue_address: 'Hornsey Road', venue_city: 'London', venue_capacity: 60260, venue_surface: 'grass', venue_image_url: null })
       return jsonResponse({}, 404)
     })
     const user = userEvent.setup()
     renderApp('/explore/teams')
     await user.type(screen.getByLabelText(/team name/i), 'Arsenal')
     await user.click(screen.getByRole('button', { name: /^search$/i }))
-    expect(await screen.findByRole('heading', { name: /explore teams/i })).toBeInTheDocument()
-    expect(await screen.findByRole('link', { name: /sign in to follow/i })).toHaveAttribute('href', '/login')
+    expect(await screen.findByRole('heading', { name: /explore a team/i })).toBeInTheDocument()
+    await user.click(await screen.findByRole('button', { name: /view details/i }))
+    expect(await screen.findAllByText(/emirates stadium/i)).not.toHaveLength(0)
+    expect(screen.getByText('60,260')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /140 years of football identity/i })).toBeInTheDocument()
+    expect(await screen.findByRole('link', { name: /arsenal.*vs.*chelsea/i })).toBeInTheDocument()
+    expect(screen.getByText(/next match.*premier league/i)).toBeInTheDocument()
+    expect(screen.getByText(/pick up where you left off/i)).toBeInTheDocument()
+    expect(localStorage.getItem('sportshub.recent_team_searches.v1')).toContain('Arsenal')
+    expect(screen.queryByRole('link', { name: /sign in to follow/i })).not.toBeInTheDocument()
     expect(screen.queryByRole('button', { name: /^follow$/i })).not.toBeInTheDocument()
   })
 

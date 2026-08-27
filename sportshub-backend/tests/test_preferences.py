@@ -1,3 +1,16 @@
+import httpx
+from dataclasses import replace
+from datetime import datetime, timedelta, timezone
+from sqlalchemy import select
+
+from app.db.models import Team
+from app.integrations.api_sports import (
+    ProviderFixture,
+    ProviderFixtureTeam,
+    SampleSportsAdapter,
+)
+
+
 def search_team(client, query):
     response = client.get("/api/v1/teams/", params={"search": query})
     assert response.status_code == 200
@@ -30,6 +43,115 @@ def test_search_warms_stable_team_ids(client):
     assert first["id"] == second["id"]
     assert first["api_team_id"] == 42
     assert first["name"] == "Arsenal"
+
+
+def test_team_detail_returns_cached_provider_and_venue_facts(client):
+    arsenal = search_team(client, "Arsenal")
+
+    response = client.get(f"/api/v1/teams/{arsenal['id']}")
+
+    assert response.status_code == 200
+    assert response.json() == {
+        **arsenal,
+        "code": "ARS",
+        "founded": 1886,
+        "national": False,
+        "venue_name": "Emirates Stadium",
+        "venue_address": "Hornsey Road",
+        "venue_city": "London",
+        "venue_capacity": 60260,
+        "venue_surface": "grass",
+        "venue_image_url": None,
+    }
+
+
+def test_team_detail_returns_not_found_for_unknown_team(client):
+    response = client.get("/api/v1/teams/unknown-team")
+
+    assert response.status_code == 404
+    assert response.json()["detail"] == "Team not found"
+
+
+def test_team_schedule_returns_next_and_latest_matches_in_requested_timezone(client):
+    class TeamScheduleProvider(SampleSportsAdapter):
+        def search_teams(self, query):
+            return [
+                replace(team, league_provider_id=39)
+                for team in super().search_teams(query)
+            ]
+
+        def team_schedule(self, provider_id, league_provider_id=None):
+            assert provider_id == 42
+            assert league_provider_id == 39
+            now = datetime.now(timezone.utc)
+
+            def scheduled(fixture_id, kickoff, status, home_goals, away_goals):
+                return ProviderFixture(
+                    fixture_id=fixture_id,
+                    kickoff=kickoff.isoformat(),
+                    timezone="UTC",
+                    league_id=39,
+                    league_name="Premier League",
+                    league_logo_url=None,
+                    status_short=status,
+                    status_long="Not Started" if status == "NS" else "Match Finished",
+                    elapsed=None if status == "NS" else 90,
+                    home=ProviderFixtureTeam(42, "Arsenal", None, home_goals),
+                    away=ProviderFixtureTeam(49, "Chelsea", None, away_goals),
+                )
+
+            return [
+                scheduled(9000, now - timedelta(days=2), "FT", 2, 1),
+                scheduled(9001, now + timedelta(days=2), "NS", None, None),
+            ]
+
+    original = client.app.state.sports_provider
+    client.app.state.sports_provider = TeamScheduleProvider()
+    try:
+        arsenal = search_team(client, "Arsenal")
+        response = client.get(
+            f"/api/v1/teams/{arsenal['id']}/schedule",
+            params={"timezone": "America/Chicago"},
+        )
+    finally:
+        client.app.state.sports_provider = original
+
+    assert response.status_code == 200
+    assert response.json()["next_fixture"]["fixture_id"] == 9001
+    assert response.json()["recent_fixture"]["fixture_id"] == 9000
+    assert response.json()["next_fixture"]["timezone"] == "America/Chicago"
+
+
+def test_team_detail_falls_back_to_cached_identity_after_provider_failure(client):
+    arsenal = search_team(client, "Arsenal")
+    with client.app.state.session_factory() as db:
+        team = db.scalar(select(Team).where(Team.id == arsenal["id"]))
+        team.details_loaded = False
+        team.details_checked_at = None
+        db.commit()
+
+    class FailingDetailProvider(SampleSportsAdapter):
+        def __init__(self):
+            self.detail_calls = 0
+
+        def get_team(self, provider_id):
+            self.detail_calls += 1
+            raise httpx.ConnectError("provider unavailable")
+
+    original = client.app.state.sports_provider
+    failing_provider = FailingDetailProvider()
+    client.app.state.sports_provider = failing_provider
+    try:
+        first = client.get(f"/api/v1/teams/{arsenal['id']}")
+        second = client.get(f"/api/v1/teams/{arsenal['id']}")
+    finally:
+        client.app.state.sports_provider = original
+
+    assert first.status_code == 200
+    assert first.json()["name"] == "Arsenal"
+    assert first.json()["founded"] == 1886
+    assert second.status_code == 200
+    assert failing_provider.detail_calls == 1
 
 
 def test_follow_team_derives_current_user_and_tracks_duplicates(client, fan):

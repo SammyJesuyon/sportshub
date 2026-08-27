@@ -1,0 +1,10 @@
+Intentional departures from the source presentation
+
+1. Source slides 7-9 are omitted because the user will present architecture/UML material from the original course documents.
+2. The source technology slide is retained but Docker Compose is replaced with PostgreSQL as the third core technology choice.
+3. The source use-case status slide is converted into a current-release feature map so that every card describes executable behavior.
+4. Source slide 4 is reused for seven detailed capability slides. Its row geometry is preserved while text is rewritten for one feature per slide.
+5. The single source roadmap slide is replaced by four clearly separated roadmap slides: realtime and alerts, ticket/admin product work, release engineering, and later product expansion.
+6. Source images on the cover, security, demo, and closing slides are preserved. No diagram image is retained.
+7. Speaker notes are updated to distinguish current behavior, next-release commitments, and long-term ideas.
+

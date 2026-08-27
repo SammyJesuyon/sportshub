@@ -53,7 +53,7 @@ Definition of done: resolver, fallback, and external-redirect tests pass; no `Ti
 ### 5. Small administration surface
 
 - Add role-protected integration status and the limited content/user operations required by the course scope.
-- Record auditable administrative changes without importing LeagueBook community or commerce administration.
+- Record auditable administrative changes without expanding into community or commerce administration.
 
 Definition of done: every route has positive and negative role tests, and secrets never reach client responses or logs.
 

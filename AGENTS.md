@@ -1,12 +1,11 @@
 # SportsHub Monorepo Engineering Rules
 
-SportsHub is the miniature CS425 project derived from LeagueBook. It is an independent project, not a rename or full fork.
+SportsHub is a self-contained miniature CS425 project with its own product identity, scope, and implementation.
 
 ## Sources of truth
 
 1. `/Users/samsonkitigo/Documents/cs425/CS425.pdf` controls school-project scope and terminology.
 2. SportsHub Lab 3-5 artifacts under `/Users/samsonkitigo/Documents/Codex/2026-07-18/google-drive-plugin-google-drive-openai/outputs/` guide architecture and analyzed use cases.
-3. `/Users/samsonkitigo/Documents/leaguebook-backend` supplies implementation patterns only and must not be modified for SportsHub work unless explicitly requested.
 
 ## Repository structure
 
@@ -18,7 +17,7 @@ Do not introduce an `apps/` wrapper. Keep backend and frontend as sibling folder
 
 ## Scope boundary
 
-Initial scope includes accounts, roles, favorites/preferences, football content, live SSE, notifications, official ticket discovery, and a small admin surface. Do not add LeagueBook chat, communities, gamification, predictions, wallets, merchandise, subscriptions, native applications, AI recommendations, payment processing, or fulfillment without an explicit scope change.
+Initial scope includes accounts, roles, favorites/preferences, football content, live SSE, notifications, official ticket discovery, and a small admin surface. Do not add chat, communities, gamification, predictions, wallets, merchandise, subscriptions, native applications, AI recommendations, payment processing, or fulfillment without an explicit scope change.
 
 ## Architecture invariants
 
@@ -37,4 +36,3 @@ Initial scope includes accounts, roles, favorites/preferences, football content,
 - Frontend: `cd sportshub-frontend && npm test -- --run && npm run build`.
 - Full PostgreSQL integration: `docker compose --profile test run --rm api-test`.
 - Compose validation: `docker compose config --quiet`.
-

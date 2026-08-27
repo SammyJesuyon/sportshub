@@ -1,0 +1,29 @@
+Source presentation: docs/SportsHub_Project_Presentation.pptx
+Slide size: 1280 x 720 (16:9)
+Source inventory: 14 slides
+
+Reusable patterns
+- Slide 1: cover with cream background, left-aligned title stack, technology pills, and a rounded product screenshot.
+- Slide 2: problem/purpose statement with one dark feature panel and four stakeholder cards.
+- Slide 3: three technology/rationale columns with colored top rules.
+- Slide 4: four horizontal rationale rows; each row contains a technology/feature label, a bold explanation, and a supporting consequence.
+- Slide 5: six status cards in a two-column grid, plus a closing release note.
+- Slide 6: four numbered capability cards and a bottom release-boundary strip.
+- Slide 10: six security/data rows plus a product screenshot.
+- Slide 11: four evidence metrics and a dark coverage-detail panel.
+- Slide 12: five-step live-demo route plus a product screenshot.
+- Slide 14: dark closing slide with working-now, designed-next, and constant-boundary statements.
+
+Brand and typography
+- Palette: cream #F6F3E8, white #FFFFFF, ink #10211B, forest #103D2F, green #176247, lime #D9F35B, muted #5D6A64, orange #D47A34.
+- Typeface: Aptos, with large bold headlines, green eyebrows, lime highlight pills, and small right-aligned slide numbers.
+- Spacing: 54 px left margin, 69 px headline top, 166-180 px body start, 32-54 px internal card padding.
+- Images use rounded white frames with thin gray borders and a subtle shadow.
+
+Insertion contract
+- Every output slide duplicates one source slide.
+- Existing text and card regions are rewritten in place; source component geometry and the cover/security/demo/closing image frames are preserved.
+- No source UML, sequence, collaboration, VOPC, or architecture-diagram slide is carried into the revised presentation.
+- Docker is removed from the technology rationale slide because it is a local development and test convenience, not a product technology decision.
+- Slide numbers are rewritten to match the new 20-slide sequence.
+

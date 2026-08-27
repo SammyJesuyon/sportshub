@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, Query, status
-from sqlalchemy.orm import Session
 
-from app.api.dependencies import get_current_user, get_db
+from app.api.dependencies import get_current_user, get_notification_repository
 from app.db.models import User
+from app.repositories.notifications import NotificationRepository
 from app.schemas.notification import (
     NotificationPreferenceResponse,
     NotificationPreferenceUpdate,
@@ -22,9 +22,9 @@ router = APIRouter(prefix="/notifications", tags=["notifications"])
 def get_inbox(
     limit: int = Query(default=50, ge=1, le=100),
     current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    notifications: NotificationRepository = Depends(get_notification_repository),
 ):
-    alerts, unread_count, total_items = NotificationService(db).inbox(
+    alerts, unread_count, total_items = NotificationService(notifications).inbox(
         current_user, limit
     )
     return AlertInboxResponse(
@@ -38,9 +38,9 @@ def get_inbox(
 def mark_alert_read(
     alert_id: str,
     current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    notifications: NotificationRepository = Depends(get_notification_repository),
 ):
-    alert = NotificationService(db).mark_read(current_user, alert_id)
+    alert = NotificationService(notifications).mark_read(current_user, alert_id)
     if alert is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Alert not found")
     return alert
@@ -49,27 +49,28 @@ def mark_alert_read(
 @router.put("/inbox/read-all", response_model=AlertReadAllResponse)
 def mark_all_alerts_read(
     current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    notifications: NotificationRepository = Depends(get_notification_repository),
 ):
     return AlertReadAllResponse(
-        updated_count=NotificationService(db).mark_all_read(current_user)
+        updated_count=NotificationService(notifications).mark_all_read(current_user)
     )
 
 
 @router.get("/preferences", response_model=NotificationPreferenceResponse)
 def get_preferences(
-    current_user: User = Depends(get_current_user), db: Session = Depends(get_db)
+    current_user: User = Depends(get_current_user),
+    notifications: NotificationRepository = Depends(get_notification_repository),
 ):
-    return NotificationService(db).get_or_create_preferences(current_user)
+    return NotificationService(notifications).get_or_create_preferences(current_user)
 
 
 @router.put("/preferences", response_model=NotificationPreferenceResponse)
 def update_preferences(
     body: NotificationPreferenceUpdate,
     current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    notifications: NotificationRepository = Depends(get_notification_repository),
 ):
-    return NotificationService(db).update_preferences(current_user, body)
+    return NotificationService(notifications).update_preferences(current_user, body)
 
 
 @router.post(
@@ -78,9 +79,11 @@ def update_preferences(
 def register_device(
     body: PushDeviceRequest,
     current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    notifications: NotificationRepository = Depends(get_notification_repository),
 ):
-    device = NotificationService(db).upsert_device(current_user, body.expo_push_token)
+    device = NotificationService(notifications).upsert_device(
+        current_user, body.expo_push_token
+    )
     return PushDeviceResponse(
         id=device.id,
         expo_push_token=device.expo_push_token,

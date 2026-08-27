@@ -154,6 +154,36 @@ def test_matchday_paginates_without_exposing_operational_metadata(client):
     assert [item["bucket"] for item in live.json()["fixtures"]] == ["live"]
 
 
+def test_live_matches_are_sorted_by_latest_kickoff_first(client):
+    class LiveOrderingProvider(MatchdayProvider):
+        def matchday_snapshot(self, fixture_date):
+            earlier = ProviderFixture(
+                **{
+                    **fixture(201, "2H", 70).__dict__,
+                    "kickoff": "2026-08-13T18:00:00+00:00",
+                }
+            )
+            latest = ProviderFixture(
+                **{
+                    **fixture(202, "1H", 10).__dict__,
+                    "kickoff": "2026-08-13T20:00:00+00:00",
+                }
+            )
+            return snapshot([earlier, latest])
+
+    original = client.app.state.sports_provider
+    client.app.state.sports_provider = LiveOrderingProvider()
+    try:
+        response = client.get(
+            "/api/v1/fixtures/matchday?date=2026-08-13&timezone=UTC&bucket=live"
+        )
+    finally:
+        client.app.state.sports_provider = original
+
+    assert response.status_code == 200
+    assert [item["fixture_id"] for item in response.json()["fixtures"]] == [202, 201]
+
+
 def test_fixture_detail_returns_timeline_statistics_and_lineups(client):
     original = client.app.state.sports_provider
     client.app.state.sports_provider = MatchdayProvider()

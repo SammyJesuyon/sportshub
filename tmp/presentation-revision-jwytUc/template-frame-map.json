@@ -1,0 +1,31 @@
+{
+  "outputSlides": [
+    {"outputSlide":1,"sourceSlide":1,"narrativeRole":"opening thesis","reuseMode":"duplicate-slide","editTargets":[{"action":"rewrite","sourceElementId":"sh/547294r6","reason":"Update the inherited cover title; remaining slot-level rewrites are recorded in edit-plan.txt."}]},
+    {"outputSlide":2,"sourceSlide":2,"narrativeRole":"problem and purpose","reuseMode":"duplicate-slide","editTargets":[{"action":"rewrite","sourceElementId":"sh/9072xkry","reason":"Clarify stakeholder roles and working-release scope."}]},
+    {"outputSlide":3,"sourceSlide":3,"narrativeRole":"technology rationale","reuseMode":"duplicate-slide","editTargets":[{"action":"rewrite","sourceElementId":"sh/cza94vmx","reason":"Replace Docker with PostgreSQL and strengthen selection rationale."}]},
+    {"outputSlide":4,"sourceSlide":4,"narrativeRole":"engineering foundation","reuseMode":"duplicate-slide","editTargets":[{"action":"rewrite","sourceElementId":"sh/1cj2d8b6","reason":"Explain implementation boundaries and provider isolation."}]},
+    {"outputSlide":5,"sourceSlide":5,"narrativeRole":"current feature map","reuseMode":"duplicate-slide","editTargets":[{"action":"rewrite","sourceElementId":"sh/dgbulwnm","reason":"Show only implemented release capabilities."}]},
+    {"outputSlide":6,"sourceSlide":4,"narrativeRole":"implemented feature detail","reuseMode":"duplicate-slide","editTargets":[{"action":"rewrite","sourceElementId":"sh/1cj2d8b6","reason":"Explain accounts and protected access."}]},
+    {"outputSlide":7,"sourceSlide":4,"narrativeRole":"implemented feature detail","reuseMode":"duplicate-slide","editTargets":[{"action":"rewrite","sourceElementId":"sh/1cj2d8b6","reason":"Explain the matchday center."}]},
+    {"outputSlide":8,"sourceSlide":4,"narrativeRole":"implemented feature detail","reuseMode":"duplicate-slide","editTargets":[{"action":"rewrite","sourceElementId":"sh/1cj2d8b6","reason":"Explain fixture detail behavior."}]},
+    {"outputSlide":9,"sourceSlide":4,"narrativeRole":"implemented feature detail","reuseMode":"duplicate-slide","editTargets":[{"action":"rewrite","sourceElementId":"sh/1cj2d8b6","reason":"Explain public team exploration."}]},
+    {"outputSlide":10,"sourceSlide":4,"narrativeRole":"implemented feature detail","reuseMode":"duplicate-slide","editTargets":[{"action":"rewrite","sourceElementId":"sh/1cj2d8b6","reason":"Explain authenticated My Hub behavior."}]},
+    {"outputSlide":11,"sourceSlide":4,"narrativeRole":"implemented feature detail","reuseMode":"duplicate-slide","editTargets":[{"action":"rewrite","sourceElementId":"sh/1cj2d8b6","reason":"Explain in-app alerts and preference storage."}]},
+    {"outputSlide":12,"sourceSlide":4,"narrativeRole":"implemented engineering feature","reuseMode":"duplicate-slide","editTargets":[{"action":"rewrite","sourceElementId":"sh/1cj2d8b6","reason":"Explain provider normalization, caching, quota discipline, and graceful failure."}]},
+    {"outputSlide":13,"sourceSlide":10,"narrativeRole":"security and data evidence","reuseMode":"duplicate-slide","editTargets":[{"action":"rewrite","sourceElementId":"sh/xc3mho32","reason":"Sharpen security language while preserving the inherited screenshot."}]},
+    {"outputSlide":14,"sourceSlide":11,"narrativeRole":"test evidence","reuseMode":"duplicate-slide","editTargets":[{"action":"rewrite","sourceElementId":"sh/xcryxg7y","reason":"Correct test counts and articulate coverage evidence."}]},
+    {"outputSlide":15,"sourceSlide":12,"narrativeRole":"demo route","reuseMode":"duplicate-slide","editTargets":[{"action":"rewrite","sourceElementId":"sh/1gbm9s3a","reason":"Update the live-demo route while preserving the inherited screenshot."}]},
+    {"outputSlide":16,"sourceSlide":6,"narrativeRole":"next release product feature","reuseMode":"duplicate-slide","editTargets":[{"action":"rewrite","sourceElementId":"sh/yhg7epsj","reason":"Create a dedicated realtime and event-alert release slide."}]},
+    {"outputSlide":17,"sourceSlide":6,"narrativeRole":"next release product feature","reuseMode":"duplicate-slide","editTargets":[{"action":"rewrite","sourceElementId":"sh/yhg7epsj","reason":"Create a dedicated ticket, standings, and administration release slide."}]},
+    {"outputSlide":18,"sourceSlide":3,"narrativeRole":"next release engineering work","reuseMode":"duplicate-slide","editTargets":[{"action":"rewrite","sourceElementId":"sh/cza94vmx","reason":"Separate platform hardening from product feature work."}]},
+    {"outputSlide":19,"sourceSlide":3,"narrativeRole":"later product horizon","reuseMode":"duplicate-slide","editTargets":[{"action":"rewrite","sourceElementId":"sh/cza94vmx","reason":"Separate long-term ideas from committed next-release features."}]},
+    {"outputSlide":20,"sourceSlide":14,"narrativeRole":"closing synthesis","reuseMode":"duplicate-slide","editTargets":[{"action":"rewrite","sourceElementId":"sh/xc7eds76","reason":"Close on current value, next release, and stable boundaries while preserving the inherited screenshot."}]}
+  ],
+  "omittedSourceSlides": [
+    {"sourceSlide":7,"reason":"Contains the architecture diagram; the user will present the original document instead."},
+    {"sourceSlide":8,"reason":"Contains sequence-diagram content; the user will present the original document instead."},
+    {"sourceSlide":9,"reason":"Contains collaboration and VOPC content; the user will present the original document instead."},
+    {"sourceSlide":13,"reason":"The combined roadmap is replaced by four clearly separated roadmap slides."}
+  ]
+}
+

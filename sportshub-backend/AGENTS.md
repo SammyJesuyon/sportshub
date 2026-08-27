@@ -2,7 +2,7 @@
 
 ## Product identity
 
-SportsHub is the miniature CS425 project derived from LeagueBook. It is an independent project, not a rename or fork of the full LeagueBook product.
+SportsHub is a self-contained miniature CS425 project with its own product identity, scope, and implementation.
 
 ## Sources of truth
 
@@ -10,10 +10,6 @@ Use these sources in this order:
 
 1. The root `../AGENTS.md` and `/Users/samsonkitigo/Documents/cs425/CS425.pdf` control SportsHub structure, scope, and terminology.
 2. SportsHub Lab 3-5 documents under `/Users/samsonkitigo/Documents/Codex/2026-07-18/google-drive-plugin-google-drive-openai/outputs/` guide the planned architecture and analyzed use cases.
-3. `/Users/samsonkitigo/Documents/leaguebook-backend` supplies implementation patterns and provider behavior only. Its extra features do not expand SportsHub scope.
-
-Do not modify LeagueBook while implementing SportsHub unless the user explicitly requests a LeagueBook change.
-
 ## Initial SportsHub scope
 
 - Responsive web API and a small admin surface.
@@ -23,7 +19,7 @@ Do not modify LeagueBook while implementing SportsHub unless the user explicitly
 - Independent fixture polling and browser SSE updates.
 - Official ticket discovery and safe external purchase redirects.
 
-## Excluded LeagueBook capabilities
+## Excluded capabilities
 
 Do not add chat, communities, social moderation, gamification, predictions, points, credits, wallets, cosmetics, boosts, referrals, leaderboards, merchandise, subscriptions, native applications, AI recommendations, payment processing, or ticket fulfillment unless the user explicitly changes SportsHub scope.
 

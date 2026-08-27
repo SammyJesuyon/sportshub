@@ -1,0 +1,8 @@
+Slot-level editing plan
+
+- For every mapped slide, keep the source background, theme, card geometry, spacing, and visual furniture.
+- Rewrite every inherited text-bearing slide element used for titles, page numbers, labels, explanations, metrics, and release notes.
+- Preserve inherited screenshots and their surrounding image-frame shapes on output slides 1, 13, 15, and 20.
+- Preserve decorative card backgrounds, top rules, number circles, and separators unless their fill color is explicitly repurposed to distinguish current versus future scope.
+- No UML, VOPC, sequence, collaboration, or architecture image is copied into an output slide.
+- No default PowerPoint placeholder may remain empty.

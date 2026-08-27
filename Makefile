@@ -27,6 +27,7 @@ test-e2e:
 	cd sportshub-frontend && npm run test:e2e
 
 test-integration:
+	docker compose --profile test build test-migrate api-test
 	docker compose --profile test run --rm api-test
 
 build:
