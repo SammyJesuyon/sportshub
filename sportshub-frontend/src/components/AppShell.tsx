@@ -31,7 +31,7 @@ export function AppShell() {
     <header className="topbar">
       <NavLink to="/" className="brand" aria-label="SportsHub home"><span className="brand-mark" aria-hidden="true">S</span><span>SportsHub</span></NavLink>
       <nav aria-label="Primary navigation"><NavLink to="/">Home</NavLink><NavLink to="/explore/teams">Explore</NavLink>{user && <NavLink to="/my/teams">My teams</NavLink>}<NavLink to="/alerts" className="alert-nav-link" aria-label={user && unreadCount ? `Alerts, ${unreadCount} unread` : 'Alerts'}><svg className="alert-nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" /></svg><span className="alert-nav-label">Alerts</span>{user && unreadCount > 0 && <span className="nav-alert-badge" aria-hidden="true">{unreadCount > 99 ? '99+' : unreadCount}</span>}</NavLink></nav>
-      <div className="account-actions">{user ? <><span className="user-chip">@{user.username}</span><button className="button ghost" onClick={logout}>Sign out</button></> : <NavLink className="button primary small" to="/login">Sign in</NavLink>}</div>
+      <div className="account-actions">{user ? <><NavLink className="user-chip" to="/profile" aria-label={`Open profile for @${user.username}`}>@{user.username}</NavLink><button className="button ghost" onClick={logout}>Sign out</button></> : <NavLink className="button primary small" to="/login">Sign in</NavLink>}</div>
     </header>
     <main><Outlet /></main>
     <footer><span>SportsHub Enterprise</span><span>One place. Every match that matters.</span></footer>

@@ -23,6 +23,12 @@ class Settings(BaseSettings):
     isports_fallback_base_url: str = "https://api2.isportsapi.com"
     isports_cache_path: str = ".cache/isports_cache.json"
     cors_origins: str = "http://localhost:3000,http://localhost:5173"
+    mail_enabled: bool = False
+    smtp_host: str = "localhost"
+    smtp_port: int = 1025
+    mail_from: str = "SportsHub <no-reply@sportshub.local>"
+    web_base_url: str = "http://localhost:5173"
+    email_token_expire_minutes: int = 60
 
     @property
     def cors_origin_list(self) -> List[str]:

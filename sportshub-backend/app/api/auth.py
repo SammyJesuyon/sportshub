@@ -3,7 +3,13 @@ from fastapi import APIRouter, Depends, Request, status
 from app.api.dependencies import get_current_user, get_user_repository
 from app.db.models import User
 from app.repositories.users import UserRepository
-from app.schemas.auth import LoginRequest, RegisterRequest, TokenResponse, UserResponse
+from app.schemas.auth import (
+    EmailVerificationRequest,
+    LoginRequest,
+    RegisterRequest,
+    TokenResponse,
+    UserResponse,
+)
 from app.services.auth import AuthService
 
 
@@ -15,7 +21,7 @@ def get_auth_service(
     users: UserRepository = Depends(get_user_repository),
 ) -> AuthService:
     settings = request.app.state.settings
-    return AuthService(users, settings.secret_key, settings.access_token_expire_minutes)
+    return AuthService(users, settings, request.app.state.email_sender)
 
 
 @router.post("/register", response_model=TokenResponse, status_code=status.HTTP_201_CREATED)
@@ -31,3 +37,11 @@ def login(body: LoginRequest, service: AuthService = Depends(get_auth_service)):
 @router.get("/me", response_model=UserResponse)
 def get_me(current_user: User = Depends(get_current_user)):
     return current_user
+
+
+@router.post("/verify-email", response_model=UserResponse)
+def verify_email(
+    body: EmailVerificationRequest,
+    service: AuthService = Depends(get_auth_service),
+):
+    return service.verify_email(body.token)

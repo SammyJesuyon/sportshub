@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 from app.core.security import decode_access_token
 from app.db.models import User
 from app.integrations.api_sports import SportsProvider
+from app.integrations.email import EmailSender
 from app.repositories.health import HealthRepository
 from app.repositories.notifications import NotificationRepository
 from app.repositories.team_preferences import TeamPreferenceRepository
@@ -27,6 +28,10 @@ def get_db(request: Request) -> Generator[Session, None, None]:
 
 def get_sports_provider(request: Request) -> SportsProvider:
     return request.app.state.sports_provider
+
+
+def get_email_sender(request: Request) -> EmailSender:
+    return request.app.state.email_sender
 
 
 def get_user_repository(db: Session = Depends(get_db)) -> UserRepository:

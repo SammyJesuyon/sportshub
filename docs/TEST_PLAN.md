@@ -16,6 +16,8 @@ This plan verifies the CS425-sized SportsHub product. Tests should prove the sch
 ## Current acceptance coverage
 
 - Register and log in with a bearer token; reject duplicate identities and incorrect credentials.
+- Capture registration mail, verify signed email links, keep replacement addresses pending until confirmation, and support verification resend.
+- Require the current password for password changes and account deletion; reject incorrect or unchanged passwords.
 - Protect `/teams` and `/alerts` in the browser.
 - Search teams and return stable internal IDs even when the provider uses external IDs.
 - Append missing user-team associations without duplicating an existing follow.

@@ -1,6 +1,6 @@
 # SportsHub API
 
-The SportsHub API is a FastAPI service for football fixtures, team discovery, authentication, user team preferences, and the in-app alert inbox. PostgreSQL is the system of record, SQLAlchemy handles persistence, and Alembic owns schema changes.
+The SportsHub API is a FastAPI service for football fixtures, team discovery, authentication, account management, user team preferences, and the in-app alert inbox. PostgreSQL is the system of record, SQLAlchemy handles persistence, and Alembic owns schema changes.
 
 ## Start the API
 
@@ -39,6 +39,11 @@ All application routes are versioned under `/api/v1`.
 | Authentication | `POST /auth/register` | Create an account and issue a bearer token |
 | Authentication | `POST /auth/login` | Authenticate and issue a bearer token |
 | Authentication | `GET /auth/me` | Return the authenticated user |
+| Authentication | `POST /auth/verify-email` | Verify a registration email or promote a pending email change |
+| Account | `PATCH /users/me` | Update the authenticated user's email or username |
+| Account | `POST /users/me/email-verification` | Resend the required verification message |
+| Account | `PUT /users/me/password` | Change the password after confirming the current password |
+| Account | `DELETE /users/me` | Permanently delete the authenticated account after password confirmation |
 | Fixtures | `GET /fixtures/matchday` | Return a paginated date-scoped matchday |
 | Fixtures | `GET /fixtures/{fixture_id}` | Return fixture overview, statistics, lineups, and timeline |
 | Teams | `GET /teams/?search={query}` | Search cached or provider-backed teams |
@@ -78,7 +83,15 @@ alembic revision --autogenerate -m "describe the change"
 alembic upgrade head
 ```
 
-With Docker, migrations run automatically before the API starts. The current model includes users, teams, user-team associations, global notification preferences, push-device records, alert records, and provider-backed team detail fields.
+With Docker, migrations run automatically before the API starts. The current model includes users and email-verification state, teams, user-team associations, global notification preferences, push-device records, alert records, and provider-backed team detail fields.
+
+## Local email
+
+Docker Compose starts Mailpit as the development SMTP server. The API sends mail
+to `mailpit:1025`, and the captured inbox is available at
+<http://localhost:8025>. Registration and pending-email verification links are
+signed with `SECRET_KEY` and expire after 60 minutes. Password changes produce a
+security notice but never include a password or token in the message.
 
 ## Tests
 

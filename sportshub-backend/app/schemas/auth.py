@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator
 
 
@@ -34,6 +36,8 @@ class UserResponse(BaseModel):
 
     id: str
     email: EmailStr
+    pending_email: Optional[EmailStr]
+    email_verified: bool
     username: str
     role: str
 
@@ -42,3 +46,7 @@ class TokenResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"
     user: UserResponse
+
+
+class EmailVerificationRequest(BaseModel):
+    token: str = Field(min_length=20, max_length=2000)

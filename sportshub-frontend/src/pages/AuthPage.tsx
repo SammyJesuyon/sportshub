@@ -11,7 +11,7 @@ export function AuthPage({ mode }: { mode: 'login' | 'register' }) {
   const [submitting, setSubmitting] = useState(false)
   const location = useLocation()
   const navigate = useNavigate()
-  if (token) return <Navigate to="/my/teams" replace />
+  if (token) return <Navigate to={mode === 'register' ? '/profile' : '/my/teams'} replace />
 
   const submit = async (event: FormEvent) => {
     event.preventDefault(); setSubmitting(true); setError('')
@@ -19,7 +19,7 @@ export function AuthPage({ mode }: { mode: 'login' | 'register' }) {
       if (mode === 'register') await register(email, username, password)
       else await login(email, password)
       const destination = (location.state as { from?: { pathname?: string } } | null)?.from?.pathname
-      navigate(destination ?? '/my/teams', { replace: true })
+      navigate(destination ?? (mode === 'register' ? '/profile' : '/my/teams'), { replace: true })
     } catch (reason) { setError(reason instanceof Error ? reason.message : 'Unable to continue.') }
     finally { setSubmitting(false) }
   }

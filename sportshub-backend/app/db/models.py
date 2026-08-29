@@ -22,6 +22,8 @@ class User(Base):
 
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
     email: Mapped[str] = mapped_column(String(320), unique=True, index=True)
+    pending_email: Mapped[Optional[str]] = mapped_column(String(320), unique=True, index=True)
+    email_verified_at: Mapped[Optional[datetime]] = mapped_column(DateTime)
     username: Mapped[str] = mapped_column(String(50), unique=True, index=True)
     password_hash: Mapped[str] = mapped_column(String(255))
     role: Mapped[str] = mapped_column(String(20), default="fan")
@@ -40,6 +42,10 @@ class User(Base):
     alerts: Mapped[List["UserAlert"]] = relationship(
         back_populates="user", cascade="all, delete-orphan"
     )
+
+    @property
+    def email_verified(self) -> bool:
+        return self.email_verified_at is not None
 
 
 class Team(Base):

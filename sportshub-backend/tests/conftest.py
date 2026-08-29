@@ -6,6 +6,7 @@ from fastapi.testclient import TestClient
 from app.core.config import Settings
 from app.db.base import Base
 from app.integrations.api_sports import SampleSportsAdapter
+from app.integrations.email import RecordingEmailSender
 from app.main import create_app
 
 
@@ -20,7 +21,11 @@ def client(tmp_path):
         sports_provider="sample",
         cors_origins="http://testserver",
     )
-    app = create_app(settings=settings, sports_provider=SampleSportsAdapter())
+    app = create_app(
+        settings=settings,
+        sports_provider=SampleSportsAdapter(),
+        email_sender=RecordingEmailSender(),
+    )
     engine = app.state.session_factory.kw["bind"]
     if integration_database_url:
         with engine.begin() as connection:

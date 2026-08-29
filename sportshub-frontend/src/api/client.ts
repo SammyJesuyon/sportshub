@@ -1,4 +1,4 @@
-import type { AlertInbox, AlertItem, FixtureBucket, FixtureDetail, Matchday, NotificationPreferences, Team, TeamPreferenceResult, TeamSchedule, TokenResponse } from './types'
+import type { AlertInbox, AlertItem, FixtureBucket, FixtureDetail, Matchday, NotificationPreferences, Team, TeamPreferenceResult, TeamSchedule, TokenResponse, User } from './types'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8010/api/v1'
 
@@ -40,6 +40,30 @@ export const api = {
   login: (body: { email: string; password: string }) =>
     request<TokenResponse>('/auth/login', { method: 'POST', body: JSON.stringify(body) }),
   me: (token: string) => request<TokenResponse['user']>('/auth/me', {}, token),
+  verifyEmail: (verificationToken: string) => request<User>(
+    '/auth/verify-email',
+    { method: 'POST', body: JSON.stringify({ token: verificationToken }) },
+  ),
+  resendEmailVerification: (token: string) => request<{ message: string }>(
+    '/users/me/email-verification',
+    { method: 'POST' },
+    token,
+  ),
+  updateProfile: (token: string, body: Pick<User, 'email' | 'username'>) => request<User>(
+    '/users/me',
+    { method: 'PATCH', body: JSON.stringify(body) },
+    token,
+  ),
+  deleteAccount: (token: string, password: string) => request<void>(
+    '/users/me',
+    { method: 'DELETE', body: JSON.stringify({ password }) },
+    token,
+  ),
+  changePassword: (token: string, currentPassword: string, newPassword: string) => request<void>(
+    '/users/me/password',
+    { method: 'PUT', body: JSON.stringify({ current_password: currentPassword, new_password: newPassword }) },
+    token,
+  ),
   matchday: (bucket: FixtureBucket, page = 1, pageSize = 12, date?: string, timezone?: string) => request<Matchday>(
     `/fixtures/matchday?bucket=${bucket}&page=${page}&page_size=${pageSize}${date ? `&date=${encodeURIComponent(date)}` : ''}${timezone ? `&timezone=${encodeURIComponent(timezone)}` : ''}`,
   ),

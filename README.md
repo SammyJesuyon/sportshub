@@ -9,7 +9,7 @@ The repository is a Docker-ready monorepo with a React frontend, a FastAPI backe
 - Browse fixtures for today or another selected date, with pagination and local kickoff times.
 - Open a fixture and move through overview, statistics, lineups, timeline, and chat tabs.
 - Search for a team, review its profile and recent searches, then follow or remove it from My Hub.
-- Register, sign in, and use protected team and alert pages.
+- Register, sign in, update the signed-in profile, and securely delete an account.
 - Review welcome and team-follow confirmations in a persistent inbox, including unread state and mark-all-read behavior.
 - See a clear “more sports coming soon” boundary around the football-first release.
 
@@ -18,7 +18,7 @@ The repository is a Docker-ready monorepo with a React frontend, a FastAPI backe
 ### Prerequisites
 
 - Docker Desktop with Docker Compose
-- Ports `5173`, `8010`, and `5433` available
+- Ports `5173`, `8010`, `5433`, and `8025` available
 
 From the repository root:
 
@@ -29,11 +29,17 @@ docker compose up --build
 PostgreSQL is available to local database tools at `localhost:5433`. Set
 `POSTGRES_PORT` before starting Compose if a different host port is required.
 
+Mailpit captures every development email locally. Registration, email changes,
+and password-change security notices appear at <http://localhost:8025>; no
+message is delivered to the public internet. Verification links point back to
+the SportsHub web application.
+
 Once the health checks pass, open:
 
 - Web application: <http://localhost:5173>
 - API documentation: <http://localhost:8010/docs>
 - API readiness check: <http://localhost:8010/health/ready>
+- Local email inbox: <http://localhost:8025>
 
 The default configuration uses the built-in sample provider. To use live iSportsAPI data, create `sportshub-backend/.env` with your own values:
 
@@ -61,7 +67,9 @@ docker compose down
 2. Open a fixture and walk through the detail tabs. Point out that Chat is deliberately marked as coming soon.
 3. Search for a club in Explore Teams and open its profile.
 4. Register or sign in, follow the club, view it in My Hub, and remove it again.
-5. Open Alerts to show the unread badge, alert summary, individual read state, and mark-all-read action.
+5. Select the username in the header, update the profile, verify an email through Mailpit, and change the password.
+6. Explain the password-confirmed account deletion flow.
+7. Open Alerts to show the unread badge, alert summary, individual read state, and mark-all-read action.
 
 If the live provider is unavailable, the application keeps its shell usable and displays a provider status message instead of exposing credentials or quota details.
 
@@ -104,7 +112,7 @@ make test-integration  # migrations and backend tests against PostgreSQL
 docker compose config --quiet
 ```
 
-Current local verification covers 46 backend tests, 8 frontend tests, two browser projects, and the same 46 backend tests against containerized PostgreSQL.
+Current local verification covers 53 backend tests, 10 frontend tests, two browser projects, and the same 53 backend tests against containerized PostgreSQL.
 
 Detailed coverage and browser scenarios are recorded in [TEST_PLAN.md](docs/TEST_PLAN.md) and [WEB_PLAN.md](docs/WEB_PLAN.md).
 
@@ -133,5 +141,9 @@ The diagrams describe both the implemented foundation and the intended product d
 
 - Passwords are hashed before storage.
 - Protected endpoints derive the current user from an expiring bearer token.
+- New accounts receive signed, expiring email-verification links through the configured mail adapter.
+- Email changes remain pending until the new address is verified; the existing address continues to be used for sign-in until confirmation.
+- Password changes require the current password and send a security notice.
+- Account deletion requires the authenticated user's current password and cascades to their saved preferences, devices, and alerts.
 - Administrative provider diagnostics require an administrator account.
 - API keys, passwords, tokens, and local `.env` files are excluded from source control.

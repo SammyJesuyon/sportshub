@@ -1,6 +1,8 @@
 export interface User {
   id: string
   email: string
+  pending_email: string | null
+  email_verified: boolean
   username: string
   role: string
 }

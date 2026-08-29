@@ -16,7 +16,10 @@ function renderApp(path = '/') {
   return render(<MemoryRouter initialEntries={[path]}><AuthProvider><App /></AuthProvider></MemoryRouter>)
 }
 
-afterEach(() => vi.restoreAllMocks())
+afterEach(() => {
+  vi.restoreAllMocks()
+  localStorage.clear()
+})
 
 describe('SportsHub web foundation', () => {
   it('renders locale-aware matchday navigation and distinct team journeys', async () => {
@@ -127,10 +130,10 @@ describe('SportsHub web foundation', () => {
     expect(screen.queryByRole('button', { name: /^follow$/i })).not.toBeInTheDocument()
   })
 
-  it('registers a fan and navigates to team selection', async () => {
+  it('registers a fan and opens email verification status', async () => {
     vi.spyOn(globalThis, 'fetch').mockImplementation(() => jsonResponse({
       access_token: 'token-1', token_type: 'bearer',
-      user: { id: 'user-1', email: 'fan@example.com', username: 'sportsfan', role: 'fan' },
+      user: { id: 'user-1', email: 'fan@example.com', pending_email: null, email_verified: false, username: 'sportsfan', role: 'fan' },
     }))
     const user = userEvent.setup()
     renderApp('/register')
@@ -138,8 +141,78 @@ describe('SportsHub web foundation', () => {
     await user.type(screen.getByLabelText(/username/i), 'sportsfan')
     await user.type(screen.getByLabelText(/password/i), 'SecurePass123!')
     await user.click(screen.getByRole('button', { name: /create fan profile/i }))
-    expect(await screen.findByRole('heading', { name: /choose your teams/i })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: /your profile/i })).toBeInTheDocument()
+    expect(screen.getByText(/email verification required/i)).toBeInTheDocument()
     expect(localStorage.getItem('sportshub.access_token')).toBe('token-1')
+  })
+
+  it('opens the clickable username and manages the user profile', async () => {
+    localStorage.setItem('sportshub.access_token', 'token-1')
+    const fetchMock = vi.spyOn(globalThis, 'fetch').mockImplementation((input, init) => {
+      const url = String(input)
+      if (url.endsWith('/auth/me')) return jsonResponse({ id: 'user-1', email: 'fan@example.com', pending_email: null, email_verified: true, username: 'sportsfan', role: 'fan' })
+      if (url.endsWith('/notifications/inbox')) return jsonResponse({ unread_count: 0, total_items: 0, items: [] })
+      if (url.includes('/fixtures/matchday?')) return jsonResponse({
+        date: '2026-08-28', timezone: 'America/Chicago', bucket: 'live', page: 1, page_size: 12, total_items: 0, total_pages: 0,
+        counts: { live: 0, half_time: 0, full_time: 0, scheduled: 0 }, fixtures: [],
+      })
+      if (url.endsWith('/users/me') && init?.method === 'PATCH') return jsonResponse({ id: 'user-1', email: 'fan@example.com', pending_email: 'updated@example.com', email_verified: true, username: 'updated_fan', role: 'fan' })
+      if (url.endsWith('/users/me/email-verification') && init?.method === 'POST') return jsonResponse({ message: 'Verification email sent' }, 202)
+      if (url.endsWith('/users/me/password') && init?.method === 'PUT') return Promise.resolve(new Response(null, { status: 204 }))
+      if (url.endsWith('/users/me') && init?.method === 'DELETE') return Promise.resolve(new Response(null, { status: 204 }))
+      return jsonResponse({}, 404)
+    })
+    const browserUser = userEvent.setup()
+    renderApp()
+
+    const profileLink = await screen.findByRole('link', { name: /open profile for @sportsfan/i })
+    expect(profileLink).toHaveAttribute('href', '/profile')
+    await browserUser.click(profileLink)
+    expect(await screen.findByRole('heading', { name: /your profile/i })).toBeInTheDocument()
+
+    const email = screen.getByLabelText(/email address/i)
+    const username = screen.getByLabelText(/^username$/i)
+    await browserUser.clear(email)
+    await browserUser.type(email, 'updated@example.com')
+    await browserUser.clear(username)
+    await browserUser.type(username, 'updated_fan')
+    await browserUser.click(screen.getByRole('button', { name: /save profile/i }))
+    expect(await screen.findByText(/verification email sent to updated@example.com/i)).toBeInTheDocument()
+    expect(screen.getByText(/email change pending/i)).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /open profile for @updated_fan/i })).toBeInTheDocument()
+
+    await browserUser.type(screen.getByLabelText(/^current password$/i), 'SecurePass123!')
+    await browserUser.type(screen.getByLabelText(/^new password$/i), 'NewSecurePass123!')
+    await browserUser.type(screen.getByLabelText(/confirm new password/i), 'NewSecurePass123!')
+    await browserUser.click(screen.getByRole('button', { name: /^change password$/i }))
+    expect(await screen.findByText(/password has been changed/i)).toBeInTheDocument()
+
+    await browserUser.click(screen.getByRole('button', { name: /delete user account/i }))
+    await browserUser.type(screen.getByLabelText(/enter your current password/i), 'NewSecurePass123!')
+    await browserUser.click(screen.getByRole('button', { name: /permanently delete account/i }))
+    await waitFor(() => expect(localStorage.getItem('sportshub.access_token')).toBeNull())
+    expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining('/users/me'), expect.objectContaining({
+      method: 'PATCH',
+      headers: expect.objectContaining({ Authorization: 'Bearer token-1' }),
+    }))
+    expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining('/users/me'), expect.objectContaining({
+      method: 'DELETE',
+      headers: expect.objectContaining({ Authorization: 'Bearer token-1' }),
+    }))
+  })
+
+  it('verifies an email from the local mailbox link', async () => {
+    const fetchMock = vi.spyOn(globalThis, 'fetch').mockImplementation((input, init) => {
+      if (String(input).endsWith('/auth/verify-email') && init?.method === 'POST') return jsonResponse({
+        id: 'user-1', email: 'fan@example.com', pending_email: null, email_verified: true, username: 'sportsfan', role: 'fan',
+      })
+      return jsonResponse({}, 404)
+    })
+    renderApp('/verify-email?token=signed-email-token')
+    expect(await screen.findByRole('heading', { name: /email verified/i })).toBeInTheDocument()
+    expect(screen.getByText(/verified for fan@example.com/i)).toBeInTheDocument()
+    expect(screen.getAllByRole('link', { name: /sign in/i }).some((link) => link.getAttribute('href') === '/login')).toBe(true)
+    expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining('/auth/verify-email'), expect.objectContaining({ method: 'POST' }))
   })
 
   it('searches for and follows a team with the authenticated token', async () => {

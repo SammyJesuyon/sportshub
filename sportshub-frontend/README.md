@@ -29,6 +29,8 @@ VITE_API_BASE_URL=http://localhost:8010/api/v1 npm run dev
 | `/explore/teams` | Team search, recent searches, and a selected team profile |
 | `/register` | Account creation and automatic sign-in |
 | `/login` | Existing-user sign-in |
+| `/verify-email` | Consume a signed registration or email-change verification link |
+| `/profile` | Update the signed-in email or username and securely delete the account |
 | `/my/teams` | Followed teams and the remove-from-hub action |
 | `/alerts` | Alert summaries, unread count, individual read state, and mark all read |
 
@@ -53,8 +55,10 @@ e2e/              Playwright browser journeys
 2. Move through the detail tabs and call out the explicit Chat “coming soon” state.
 3. Search for a team in Explore Teams and revisit it from recent searches.
 4. Register or sign in, then add and remove the team in My Hub.
-5. Open Alerts, read one item, and clear the remaining unread count.
-6. Resize to a narrow viewport to show that the same flow remains usable on mobile.
+5. Select the username in the header, request an email update, and open the verification message in Mailpit at <http://localhost:8025>.
+6. Change the password and show the security notice in Mailpit; show that deletion also requires the current password.
+7. Open Alerts, read one item, and clear the remaining unread count.
+8. Resize to a narrow viewport to show that the same flow remains usable on mobile.
 
 ## Quality checks
 
@@ -65,7 +69,7 @@ npm run build
 npm run test:e2e
 ```
 
-The component suite covers route rendering, date handling, fixture detail states, team discovery, and authenticated navigation. Playwright runs the main journey in desktop and mobile projects.
+The component suite covers route rendering, date handling, fixture detail states, team discovery, authenticated navigation, profile updates, verification links, password changes, and account deletion. Playwright runs the main journey in desktop and mobile projects.
 
 ## UX boundaries
 

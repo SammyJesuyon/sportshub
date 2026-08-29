@@ -8,6 +8,7 @@ from app.api.router import router as api_router
 from app.core.config import Settings, get_settings
 from app.db.session import create_session_factory
 from app.integrations.api_sports import ApiSportsAdapter, SampleSportsAdapter, SportsProvider
+from app.integrations.email import DisabledEmailSender, EmailSender, SmtpEmailSender
 from app.integrations.isports import ISportsAdapter
 from app.repositories.health import HealthRepository
 
@@ -29,9 +30,16 @@ def select_sports_provider(settings: Settings) -> SportsProvider:
     return SampleSportsAdapter()
 
 
+def select_email_sender(settings: Settings) -> EmailSender:
+    if not settings.mail_enabled:
+        return DisabledEmailSender()
+    return SmtpEmailSender(settings.smtp_host, settings.smtp_port, settings.mail_from)
+
+
 def create_app(
     settings: Optional[Settings] = None,
     sports_provider: Optional[SportsProvider] = None,
+    email_sender: Optional[EmailSender] = None,
 ) -> FastAPI:
     settings = settings or get_settings()
     settings.validate_runtime_safety()
@@ -45,6 +53,7 @@ def create_app(
     app.state.settings = settings
     app.state.session_factory = session_factory
     app.state.sports_provider = sports_provider or select_sports_provider(settings)
+    app.state.email_sender = email_sender or select_email_sender(settings)
     app.add_middleware(
         CORSMiddleware,
         allow_origins=settings.cors_origin_list,
