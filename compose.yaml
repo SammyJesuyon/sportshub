@@ -8,7 +8,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-sportshub}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-sportshub_dev_password}
     ports:
-      - "5432:5432"
+      - "127.0.0.1:${POSTGRES_PORT:-5433}:5432"
     volumes:
       - sportshub_postgres_data:/var/lib/postgresql/data
     healthcheck:

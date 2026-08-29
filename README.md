@@ -18,13 +18,16 @@ The repository is a Docker-ready monorepo with a React frontend, a FastAPI backe
 ### Prerequisites
 
 - Docker Desktop with Docker Compose
-- Ports `5173`, `8010`, and `5432` available
+- Ports `5173`, `8010`, and `5433` available
 
 From the repository root:
 
 ```bash
 docker compose up --build
 ```
+
+PostgreSQL is available to local database tools at `localhost:5433`. Set
+`POSTGRES_PORT` before starting Compose if a different host port is required.
 
 Once the health checks pass, open:
 
