@@ -1,0 +1,1 @@
+Slide 6: rewrote the title, all four row labels/statements/explanations, and the bottom result line so the slide accurately presents the implemented registration and email-verification flow. No geometry, styling, cards, master/layout content, or other slides were changed.

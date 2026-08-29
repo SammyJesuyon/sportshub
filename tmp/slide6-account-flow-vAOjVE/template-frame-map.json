@@ -1,0 +1,37 @@
+{
+  "outputSlides": [
+    { "outputSlide": 1, "sourceSlide": 1, "narrativeRole": "opening", "reuseMode": "duplicate-slide", "editTargets": [] },
+    { "outputSlide": 2, "sourceSlide": 2, "narrativeRole": "project context", "reuseMode": "duplicate-slide", "editTargets": [] },
+    { "outputSlide": 3, "sourceSlide": 3, "narrativeRole": "technology stack", "reuseMode": "duplicate-slide", "editTargets": [] },
+    { "outputSlide": 4, "sourceSlide": 4, "narrativeRole": "application layers", "reuseMode": "duplicate-slide", "editTargets": [] },
+    { "outputSlide": 5, "sourceSlide": 5, "narrativeRole": "implemented feature overview", "reuseMode": "duplicate-slide", "editTargets": [] },
+    {
+      "outputSlide": 6,
+      "sourceSlide": 6,
+      "narrativeRole": "implemented user creation and email verification flow",
+      "reuseMode": "duplicate-slide",
+      "editTargets": [
+        {
+          "action": "rewrite",
+          "shapeIds": ["2", "5", "6", "7", "9", "10", "11", "13", "14", "15", "17", "18", "19", "20"],
+          "reason": "Replace the outdated account summary with the implemented registration and verification sequence while preserving the inherited row layout."
+        }
+      ]
+    },
+    { "outputSlide": 7, "sourceSlide": 7, "narrativeRole": "matchday feature", "reuseMode": "duplicate-slide", "editTargets": [] },
+    { "outputSlide": 8, "sourceSlide": 8, "narrativeRole": "fixture detail feature", "reuseMode": "duplicate-slide", "editTargets": [] },
+    { "outputSlide": 9, "sourceSlide": 9, "narrativeRole": "team exploration feature", "reuseMode": "duplicate-slide", "editTargets": [] },
+    { "outputSlide": 10, "sourceSlide": 10, "narrativeRole": "team hub feature", "reuseMode": "duplicate-slide", "editTargets": [] },
+    { "outputSlide": 11, "sourceSlide": 11, "narrativeRole": "alert inbox feature", "reuseMode": "duplicate-slide", "editTargets": [] },
+    { "outputSlide": 12, "sourceSlide": 12, "narrativeRole": "provider integration", "reuseMode": "duplicate-slide", "editTargets": [] },
+    { "outputSlide": 13, "sourceSlide": 13, "narrativeRole": "security and data design", "reuseMode": "duplicate-slide", "editTargets": [] },
+    { "outputSlide": 14, "sourceSlide": 14, "narrativeRole": "testing evidence", "reuseMode": "duplicate-slide", "editTargets": [] },
+    { "outputSlide": 15, "sourceSlide": 15, "narrativeRole": "demonstration flow", "reuseMode": "duplicate-slide", "editTargets": [] },
+    { "outputSlide": 16, "sourceSlide": 16, "narrativeRole": "next release realtime work", "reuseMode": "duplicate-slide", "editTargets": [] },
+    { "outputSlide": 17, "sourceSlide": 17, "narrativeRole": "next release product work", "reuseMode": "duplicate-slide", "editTargets": [] },
+    { "outputSlide": 18, "sourceSlide": 18, "narrativeRole": "next release engineering work", "reuseMode": "duplicate-slide", "editTargets": [] },
+    { "outputSlide": 19, "sourceSlide": 19, "narrativeRole": "long-term expansion", "reuseMode": "duplicate-slide", "editTargets": [] },
+    { "outputSlide": 20, "sourceSlide": 20, "narrativeRole": "closing synthesis", "reuseMode": "duplicate-slide", "editTargets": [] }
+  ],
+  "omittedSourceSlides": []
+}

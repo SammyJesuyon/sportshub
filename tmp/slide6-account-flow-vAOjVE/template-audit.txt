@@ -1,0 +1,9 @@
+Communication job: by the end of slide 6, the CS425 evaluator should understand that SportsHub registration creates an authenticated account immediately while a separate signed-email flow proves ownership and updates the account's verification state.
+
+Source structure: 20-slide, 1280 x 720 presentation using a warm cream background, Aptos typography, dark forest-green headings, white rounded content rows, muted gray explanatory copy, and two-digit page markers.
+
+Reusable pattern for slide 6: four stacked white rows. Each row uses a green stage label, a bold implementation statement, and a muted explanation. The title and bottom-centered result line are editable slide-local text shapes. The slide inherits an empty title-slide layout and an empty master; all visible content is slide-local.
+
+Typography and spacing contract: preserve every source text box's position, Aptos font family, size, weight, color, alignment, insets, and vertical anchor. Shorten copy to fit the inherited frames. Preserve the four card backgrounds, eyebrow, page marker, and all other slides.
+
+Insertion contract: rewrite only the existing slide-6 text shapes identified in template-frame-map.json. Do not add overlays, new shapes, or modify masters/layouts.

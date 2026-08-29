@@ -1,0 +1,15 @@
+The slide 6 revision is grounded in the implemented local codebase, not external research.
+
+Primary implementation sources:
+- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-backend/app/services/auth.py
+- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-backend/app/services/account_email.py
+- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-backend/app/core/security.py
+- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-frontend/src/pages/AuthPage.tsx
+- /Users/samsonkitigo/Documents/Codex/sportshub/sportshub-frontend/src/pages/VerifyEmailPage.tsx
+- /Users/samsonkitigo/Documents/Codex/sportshub/compose.yaml
+
+Implemented behavior summarized on slide 6:
+- Registration accepts email, username, and password; validates identity; hashes the password with bcrypt; persists the user and welcome alert; returns an access token; and leaves email verification pending.
+- The account-email service creates a signed verification token that expires after 60 minutes and sends the link over SMTP to Mailpit in local development.
+- The frontend verification route submits the token to the API, which validates purpose and expiry and records email_verified_at.
+- Registration does not block the user from signing in while email verification is pending.

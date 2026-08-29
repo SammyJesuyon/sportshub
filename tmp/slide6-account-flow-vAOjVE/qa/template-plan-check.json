@@ -1,0 +1,445 @@
+{
+  "status": "fail",
+  "checkedAt": "2026-08-29T01:57:56.482Z",
+  "workspace": "/Users/samsonkitigo/Documents/Codex/sportshub/tmp/slide6-account-flow-vAOjVE",
+  "mapPath": "/Users/samsonkitigo/Documents/Codex/sportshub/tmp/slide6-account-flow-vAOjVE/template-frame-map.json",
+  "inspectPath": "/Users/samsonkitigo/Documents/Codex/sportshub/tmp/slide6-account-flow-vAOjVE/template-inspect/template-inspect.ndjson",
+  "sourceSlideCount": 20,
+  "issueCount": 18,
+  "issues": [
+    {
+      "severity": "fail",
+      "id": "preserve-only-content-role",
+      "message": "editTargets: [] means preserve-only, but narrativeRole \"technology stack\" appears content-bearing.",
+      "outputSlide": 3,
+      "sourceSlide": 3
+    },
+    {
+      "severity": "fail",
+      "id": "unknown-shape-id",
+      "message": "Referenced inherited shape id \"2\" was not found on source slide 6.",
+      "outputSlide": 6,
+      "sourceSlide": 6,
+      "targetIndex": 0,
+      "target": {
+        "action": "rewrite",
+        "shapeIds": [
+          "2",
+          "5",
+          "6",
+          "7",
+          "9",
+          "10",
+          "11",
+          "13",
+          "14",
+          "15",
+          "17",
+          "18",
+          "19",
+          "20"
+        ],
+        "reason": "Replace the outdated account summary with the implemented registration and verification sequence while preserving the inherited row layout."
+      },
+      "shapeId": "2"
+    },
+    {
+      "severity": "fail",
+      "id": "unknown-shape-id",
+      "message": "Referenced inherited shape id \"5\" was not found on source slide 6.",
+      "outputSlide": 6,
+      "sourceSlide": 6,
+      "targetIndex": 0,
+      "target": {
+        "action": "rewrite",
+        "shapeIds": [
+          "2",
+          "5",
+          "6",
+          "7",
+          "9",
+          "10",
+          "11",
+          "13",
+          "14",
+          "15",
+          "17",
+          "18",
+          "19",
+          "20"
+        ],
+        "reason": "Replace the outdated account summary with the implemented registration and verification sequence while preserving the inherited row layout."
+      },
+      "shapeId": "5"
+    },
+    {
+      "severity": "fail",
+      "id": "unknown-shape-id",
+      "message": "Referenced inherited shape id \"6\" was not found on source slide 6.",
+      "outputSlide": 6,
+      "sourceSlide": 6,
+      "targetIndex": 0,
+      "target": {
+        "action": "rewrite",
+        "shapeIds": [
+          "2",
+          "5",
+          "6",
+          "7",
+          "9",
+          "10",
+          "11",
+          "13",
+          "14",
+          "15",
+          "17",
+          "18",
+          "19",
+          "20"
+        ],
+        "reason": "Replace the outdated account summary with the implemented registration and verification sequence while preserving the inherited row layout."
+      },
+      "shapeId": "6"
+    },
+    {
+      "severity": "fail",
+      "id": "unknown-shape-id",
+      "message": "Referenced inherited shape id \"7\" was not found on source slide 6.",
+      "outputSlide": 6,
+      "sourceSlide": 6,
+      "targetIndex": 0,
+      "target": {
+        "action": "rewrite",
+        "shapeIds": [
+          "2",
+          "5",
+          "6",
+          "7",
+          "9",
+          "10",
+          "11",
+          "13",
+          "14",
+          "15",
+          "17",
+          "18",
+          "19",
+          "20"
+        ],
+        "reason": "Replace the outdated account summary with the implemented registration and verification sequence while preserving the inherited row layout."
+      },
+      "shapeId": "7"
+    },
+    {
+      "severity": "fail",
+      "id": "unknown-shape-id",
+      "message": "Referenced inherited shape id \"9\" was not found on source slide 6.",
+      "outputSlide": 6,
+      "sourceSlide": 6,
+      "targetIndex": 0,
+      "target": {
+        "action": "rewrite",
+        "shapeIds": [
+          "2",
+          "5",
+          "6",
+          "7",
+          "9",
+          "10",
+          "11",
+          "13",
+          "14",
+          "15",
+          "17",
+          "18",
+          "19",
+          "20"
+        ],
+        "reason": "Replace the outdated account summary with the implemented registration and verification sequence while preserving the inherited row layout."
+      },
+      "shapeId": "9"
+    },
+    {
+      "severity": "fail",
+      "id": "unknown-shape-id",
+      "message": "Referenced inherited shape id \"10\" was not found on source slide 6.",
+      "outputSlide": 6,
+      "sourceSlide": 6,
+      "targetIndex": 0,
+      "target": {
+        "action": "rewrite",
+        "shapeIds": [
+          "2",
+          "5",
+          "6",
+          "7",
+          "9",
+          "10",
+          "11",
+          "13",
+          "14",
+          "15",
+          "17",
+          "18",
+          "19",
+          "20"
+        ],
+        "reason": "Replace the outdated account summary with the implemented registration and verification sequence while preserving the inherited row layout."
+      },
+      "shapeId": "10"
+    },
+    {
+      "severity": "fail",
+      "id": "unknown-shape-id",
+      "message": "Referenced inherited shape id \"11\" was not found on source slide 6.",
+      "outputSlide": 6,
+      "sourceSlide": 6,
+      "targetIndex": 0,
+      "target": {
+        "action": "rewrite",
+        "shapeIds": [
+          "2",
+          "5",
+          "6",
+          "7",
+          "9",
+          "10",
+          "11",
+          "13",
+          "14",
+          "15",
+          "17",
+          "18",
+          "19",
+          "20"
+        ],
+        "reason": "Replace the outdated account summary with the implemented registration and verification sequence while preserving the inherited row layout."
+      },
+      "shapeId": "11"
+    },
+    {
+      "severity": "fail",
+      "id": "unknown-shape-id",
+      "message": "Referenced inherited shape id \"13\" was not found on source slide 6.",
+      "outputSlide": 6,
+      "sourceSlide": 6,
+      "targetIndex": 0,
+      "target": {
+        "action": "rewrite",
+        "shapeIds": [
+          "2",
+          "5",
+          "6",
+          "7",
+          "9",
+          "10",
+          "11",
+          "13",
+          "14",
+          "15",
+          "17",
+          "18",
+          "19",
+          "20"
+        ],
+        "reason": "Replace the outdated account summary with the implemented registration and verification sequence while preserving the inherited row layout."
+      },
+      "shapeId": "13"
+    },
+    {
+      "severity": "fail",
+      "id": "unknown-shape-id",
+      "message": "Referenced inherited shape id \"14\" was not found on source slide 6.",
+      "outputSlide": 6,
+      "sourceSlide": 6,
+      "targetIndex": 0,
+      "target": {
+        "action": "rewrite",
+        "shapeIds": [
+          "2",
+          "5",
+          "6",
+          "7",
+          "9",
+          "10",
+          "11",
+          "13",
+          "14",
+          "15",
+          "17",
+          "18",
+          "19",
+          "20"
+        ],
+        "reason": "Replace the outdated account summary with the implemented registration and verification sequence while preserving the inherited row layout."
+      },
+      "shapeId": "14"
+    },
+    {
+      "severity": "fail",
+      "id": "unknown-shape-id",
+      "message": "Referenced inherited shape id \"15\" was not found on source slide 6.",
+      "outputSlide": 6,
+      "sourceSlide": 6,
+      "targetIndex": 0,
+      "target": {
+        "action": "rewrite",
+        "shapeIds": [
+          "2",
+          "5",
+          "6",
+          "7",
+          "9",
+          "10",
+          "11",
+          "13",
+          "14",
+          "15",
+          "17",
+          "18",
+          "19",
+          "20"
+        ],
+        "reason": "Replace the outdated account summary with the implemented registration and verification sequence while preserving the inherited row layout."
+      },
+      "shapeId": "15"
+    },
+    {
+      "severity": "fail",
+      "id": "unknown-shape-id",
+      "message": "Referenced inherited shape id \"17\" was not found on source slide 6.",
+      "outputSlide": 6,
+      "sourceSlide": 6,
+      "targetIndex": 0,
+      "target": {
+        "action": "rewrite",
+        "shapeIds": [
+          "2",
+          "5",
+          "6",
+          "7",
+          "9",
+          "10",
+          "11",
+          "13",
+          "14",
+          "15",
+          "17",
+          "18",
+          "19",
+          "20"
+        ],
+        "reason": "Replace the outdated account summary with the implemented registration and verification sequence while preserving the inherited row layout."
+      },
+      "shapeId": "17"
+    },
+    {
+      "severity": "fail",
+      "id": "unknown-shape-id",
+      "message": "Referenced inherited shape id \"18\" was not found on source slide 6.",
+      "outputSlide": 6,
+      "sourceSlide": 6,
+      "targetIndex": 0,
+      "target": {
+        "action": "rewrite",
+        "shapeIds": [
+          "2",
+          "5",
+          "6",
+          "7",
+          "9",
+          "10",
+          "11",
+          "13",
+          "14",
+          "15",
+          "17",
+          "18",
+          "19",
+          "20"
+        ],
+        "reason": "Replace the outdated account summary with the implemented registration and verification sequence while preserving the inherited row layout."
+      },
+      "shapeId": "18"
+    },
+    {
+      "severity": "fail",
+      "id": "unknown-shape-id",
+      "message": "Referenced inherited shape id \"19\" was not found on source slide 6.",
+      "outputSlide": 6,
+      "sourceSlide": 6,
+      "targetIndex": 0,
+      "target": {
+        "action": "rewrite",
+        "shapeIds": [
+          "2",
+          "5",
+          "6",
+          "7",
+          "9",
+          "10",
+          "11",
+          "13",
+          "14",
+          "15",
+          "17",
+          "18",
+          "19",
+          "20"
+        ],
+        "reason": "Replace the outdated account summary with the implemented registration and verification sequence while preserving the inherited row layout."
+      },
+      "shapeId": "19"
+    },
+    {
+      "severity": "fail",
+      "id": "unknown-shape-id",
+      "message": "Referenced inherited shape id \"20\" was not found on source slide 6.",
+      "outputSlide": 6,
+      "sourceSlide": 6,
+      "targetIndex": 0,
+      "target": {
+        "action": "rewrite",
+        "shapeIds": [
+          "2",
+          "5",
+          "6",
+          "7",
+          "9",
+          "10",
+          "11",
+          "13",
+          "14",
+          "15",
+          "17",
+          "18",
+          "19",
+          "20"
+        ],
+        "reason": "Replace the outdated account summary with the implemented registration and verification sequence while preserving the inherited row layout."
+      },
+      "shapeId": "20"
+    },
+    {
+      "severity": "fail",
+      "id": "preserve-only-content-role",
+      "message": "editTargets: [] means preserve-only, but narrativeRole \"testing evidence\" appears content-bearing.",
+      "outputSlide": 14,
+      "sourceSlide": 14
+    },
+    {
+      "severity": "fail",
+      "id": "preserve-only-content-role",
+      "message": "editTargets: [] means preserve-only, but narrativeRole \"long-term expansion\" appears content-bearing.",
+      "outputSlide": 19,
+      "sourceSlide": 19
+    },
+    {
+      "severity": "fail",
+      "id": "preserve-only-content-role",
+      "message": "editTargets: [] means preserve-only, but narrativeRole \"closing synthesis\" appears content-bearing.",
+      "outputSlide": 20,
+      "sourceSlide": 20
+    }
+  ]
+}

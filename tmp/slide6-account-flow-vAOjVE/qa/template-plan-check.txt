@@ -1,0 +1,19 @@
+Template plan check: fail
+FAIL preserve-only-content-role: editTargets: [] means preserve-only, but narrativeRole "technology stack" appears content-bearing. outputSlide=3 sourceSlide=3
+FAIL unknown-shape-id: Referenced inherited shape id "2" was not found on source slide 6. outputSlide=6 sourceSlide=6
+FAIL unknown-shape-id: Referenced inherited shape id "5" was not found on source slide 6. outputSlide=6 sourceSlide=6
+FAIL unknown-shape-id: Referenced inherited shape id "6" was not found on source slide 6. outputSlide=6 sourceSlide=6
+FAIL unknown-shape-id: Referenced inherited shape id "7" was not found on source slide 6. outputSlide=6 sourceSlide=6
+FAIL unknown-shape-id: Referenced inherited shape id "9" was not found on source slide 6. outputSlide=6 sourceSlide=6
+FAIL unknown-shape-id: Referenced inherited shape id "10" was not found on source slide 6. outputSlide=6 sourceSlide=6
+FAIL unknown-shape-id: Referenced inherited shape id "11" was not found on source slide 6. outputSlide=6 sourceSlide=6
+FAIL unknown-shape-id: Referenced inherited shape id "13" was not found on source slide 6. outputSlide=6 sourceSlide=6
+FAIL unknown-shape-id: Referenced inherited shape id "14" was not found on source slide 6. outputSlide=6 sourceSlide=6
+FAIL unknown-shape-id: Referenced inherited shape id "15" was not found on source slide 6. outputSlide=6 sourceSlide=6
+FAIL unknown-shape-id: Referenced inherited shape id "17" was not found on source slide 6. outputSlide=6 sourceSlide=6
+FAIL unknown-shape-id: Referenced inherited shape id "18" was not found on source slide 6. outputSlide=6 sourceSlide=6
+FAIL unknown-shape-id: Referenced inherited shape id "19" was not found on source slide 6. outputSlide=6 sourceSlide=6
+FAIL unknown-shape-id: Referenced inherited shape id "20" was not found on source slide 6. outputSlide=6 sourceSlide=6
+FAIL preserve-only-content-role: editTargets: [] means preserve-only, but narrativeRole "testing evidence" appears content-bearing. outputSlide=14 sourceSlide=14
+FAIL preserve-only-content-role: editTargets: [] means preserve-only, but narrativeRole "long-term expansion" appears content-bearing. outputSlide=19 sourceSlide=19
+FAIL preserve-only-content-role: editTargets: [] means preserve-only, but narrativeRole "closing synthesis" appears content-bearing. outputSlide=20 sourceSlide=20
